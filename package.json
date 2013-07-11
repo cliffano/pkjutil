@@ -33,7 +33,7 @@
     "bagofcli": "0.0.4",
     "bagofrequest": "0.0.3",
     "colors": "0.6.0-1",
-    "semver": "2.0.9"
+    "semver": "2.0.10"
   },
   "devDependencies": {
     "buster": "0.6.12"
