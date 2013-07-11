@@ -1,0 +1,51 @@
+{
+  "name": "pkjutil",
+  "description": "Package.json utility tool",
+  "keywords": [
+    "package.json",
+    "utility",
+    "tool"
+  ],
+  "version": "0.0.1",
+  "homepage": "http://github.com/cliffano/pkjutil",
+  "author": "Cliffano Subagio <blah@cliffano.com> (http://blog.cliffano.com)",
+  "contributors": [
+    "All contributors (https://github.com/cliffano/pkjutil/graphs/contributors)"
+  ],
+  "main": "./lib/pkjutil",
+  "bin": {
+    "pkjutil": "./bin/pkjutil"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cliffano/pkjutil.git"
+  },
+  "bugs": {
+    "url": "http://github.com/cliffano/pkjutil/issues"
+  },
+  "directories": {
+    "bin": "./bin",
+    "lib": "./lib",
+    "test": "./test"
+  },
+  "dependencies": {
+    "async": "0.2.9",
+    "bagofcli": "0.0.4",
+    "bagofrequest": "0.0.3",
+    "colors": "0.6.0-1",
+    "semver": "2.0.9"
+  },
+  "devDependencies": {
+    "buster": "0.6.12"
+  },
+  "scripts": {},
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/cliffano/pkjutil/raw/master/LICENSE"
+    }
+  ]
+}

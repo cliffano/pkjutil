@@ -1,0 +1,25 @@
+{
+  "options": [
+    { "arg": "-f, --file <file>", "desc": "package.json file path" }
+  ],
+  "commands": {
+    "upgrade-version-patch": {
+      "desc": "Upgrade patch version number"
+    },
+    "upgrade-version-minor": {
+      "desc": "Upgrade minor version number"
+    },
+    "upgrade-version-major": {
+      "desc": "Upgrade major version number"
+    },
+    "upgrade-version": {
+      "desc": "Alias for upversion-patch"
+    },
+    "upgrade-dependencies": {
+      "desc": "Upgrade all dependencies to latest version",
+      "options": [
+        { "arg": "-r, --registry <registry>", "desc": "package.json file path" }
+      ]
+    }
+  }
+}
