@@ -30,14 +30,14 @@
     "test": "./test"
   },
   "dependencies": {
-    "async": "0.2.9",
-    "bagofcli": "0.0.4",
-    "bagofrequest": "0.0.3",
-    "colors": "0.6.0-1",
-    "semver": "2.0.10"
+    "async": "~0.2.9",
+    "bagofcli": "~0.0.5",
+    "bagofrequest": "~0.0.5",
+    "colors": "~0.6.1",
+    "semver": "~2.1.0"
   },
   "devDependencies": {
-    "buster": "0.6.12"
+    "buster": "~0.6.12"
   },
   "scripts": {},
   "engines": {
