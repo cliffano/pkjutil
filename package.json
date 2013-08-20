@@ -16,6 +16,7 @@
   "bin": {
     "pkjutil": "./bin/pkjutil"
   },
+  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "http://github.com/cliffano/pkjutil.git"
