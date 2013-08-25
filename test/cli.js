@@ -1,5 +1,5 @@
-var bag = require('bagofcli'),
-  buster = require('buster'),
+var buster = require('buster'),
+  _cli = require('bagofcli'),
   cli = require('../lib/cli'),
   PkjUtil = new require('../lib/pkjutil');
 
@@ -17,7 +17,7 @@ buster.testCase('cli - exec', {
       assert.defined(actions.commands['upgrade-dependencies'].action);
       done();
     };
-    this.stub(bag, 'command', mockCommand);
+    this.stub(_cli, 'command', mockCommand);
     cli.exec();
   }
 });
@@ -30,7 +30,7 @@ buster.testCase('cli - list-*', {
   'should list dependencies': function () {
     this.mockConsole.expects('log').withExactArgs('dep1');
     this.mockConsole.expects('log').withExactArgs('dep2');
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['list-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
@@ -42,7 +42,7 @@ buster.testCase('cli - list-*', {
   'should list dev dependencies': function () {
     this.mockConsole.expects('log').withExactArgs('dep1');
     this.mockConsole.expects('log').withExactArgs('dep2');
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['list-devdependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
@@ -54,7 +54,7 @@ buster.testCase('cli - list-*', {
   'should list all dependencies': function () {
     this.mockConsole.expects('log').withExactArgs('dep1');
     this.mockConsole.expects('log').withExactArgs('dep2');
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['list-alldependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
@@ -71,7 +71,7 @@ buster.testCase('cli - upgrade-version-*', {
     this.mockProcess = this.mock(process);
   },
   'upgraded-version-patch should pass correct type, log upgraded version, then exit': function () {
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['upgrade-version-patch'].action({ file: 'somepackage.json' });
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '0.0.1');
@@ -83,7 +83,7 @@ buster.testCase('cli - upgrade-version-*', {
     cli.exec();
   },
   'upgraded-version-minor should pass correct type, log upgraded version, then exit': function () {
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['upgrade-version-minor'].action({ file: 'somepackage.json' });
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '0.1.0');
@@ -95,7 +95,7 @@ buster.testCase('cli - upgrade-version-*', {
     cli.exec();
   },
   'upgraded-version-major should pass correct type, log upgraded version, then exit': function () {
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['upgrade-version-major'].action({ file: 'somepackage.json' });
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '1.0.0');
@@ -107,7 +107,7 @@ buster.testCase('cli - upgrade-version-*', {
     cli.exec();
   },
   'upgraded-version should pass correct type, log upgraded version, then exit': function () {
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['upgrade-version'].action({ file: 'somepackage.json' });
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '0.0.1');
@@ -125,7 +125,7 @@ buster.testCase('cli - upgrade-dependencies', {
     this.mockProcess = this.mock(process);
   },
   'upgraded-version should pass correct type, log upgraded version, then exit': function () {
-    this.stub(bag, 'command', function (base, actions) {
+    this.stub(_cli, 'command', function (base, actions) {
       actions.commands['upgrade-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);

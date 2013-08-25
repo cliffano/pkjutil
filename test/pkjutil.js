@@ -1,7 +1,7 @@
-var bag = require('bagofrequest'),
-  buster = require('buster'),
+var buster = require('buster'),
   fs = require('fs'),
-  PkjUtil = require('../lib/pkjutil');
+  PkjUtil = require('../lib/pkjutil'),
+  req = require('bagofrequest');
 
 buster.testCase('pkjutil - upgradeVersion', {
   setUp: function () {
@@ -103,7 +103,6 @@ buster.testCase('pkjutil - upgradeVersion', {
 
 buster.testCase('pkjutil - upgradeDependencies', {
   setUp: function () {
-    this.mockBag = this.mock(bag);
     this.mockConsole = this.mock(console);
     this.mockFs = this.mock(fs);
     this.pkjUtil = new PkjUtil();
@@ -125,7 +124,7 @@ buster.testCase('pkjutil - upgradeDependencies', {
       }
       opts.handlers[200]({ statusCode: 200, body: body }, cb);
     };
-    this.stub(bag, 'request', mockRequest);
+    this.stub(req, 'request', mockRequest);
 
     this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
       assert.isNull(err);
@@ -151,7 +150,7 @@ buster.testCase('pkjutil - upgradeDependencies', {
       }
       opts.handlers[200]({ statusCode: 200, body: body }, cb);
     };
-    this.stub(bag, 'request', mockRequest);
+    this.stub(req, 'request', mockRequest);
 
     this.pkjUtil.upgradeDependencies({ registry: 'http://someregistry' }, function (err, pkg) {
       assert.isNull(err);
@@ -177,7 +176,7 @@ buster.testCase('pkjutil - upgradeDependencies', {
       }
       opts.handlers[200]({ statusCode: 200, body: body }, cb);
     };
-    this.stub(bag, 'request', mockRequest);
+    this.stub(req, 'request', mockRequest);
 
     this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
       assert.isNull(err);
@@ -203,7 +202,7 @@ buster.testCase('pkjutil - upgradeDependencies', {
       }
       opts.handlers[200]({ statusCode: 200, body: body }, cb);
     };
-    this.stub(bag, 'request', mockRequest);
+    this.stub(req, 'request', mockRequest);
 
     this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
       assert.isNull(err);
