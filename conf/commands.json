@@ -29,6 +29,15 @@
     },
     "list-alldependencies": {
       "desc": "List dependencies and dev dependencies"
+    },
+    "sort-dependencies": {
+      "desc": "Sort dependencies"
+    },
+    "sort-devdependencies": {
+      "desc": "Sort dev dependencies"
+    },
+    "sort-alldependencies": {
+      "desc": "Sort dependencies and dev dependencies"
     }
   }
 }

@@ -3,7 +3,7 @@ var buster = require('buster'),
   PkjUtil = require('../lib/pkjutil'),
   req = require('bagofrequest');
 
-buster.testCase('pkjutil - upgradeVersion', {
+buster.testCase('pkjutil - listDependencies', {
   setUp: function () {
     this.mockFs = this.mock(fs);
     this.pkjUtil = new PkjUtil();
@@ -27,6 +27,37 @@ buster.testCase('pkjutil - upgradeVersion', {
     this.pkjUtil.listDependencies(null, function (err, deps) {
       assert.isNull(err);
       assert.equals(deps, ['dep1', 'dep2', 'shareddep', 'devdep1']);
+      done();
+    });
+  }
+});
+
+buster.testCase('pkjutil - sortDependencies', {
+  setUp: function () {
+    this.mockFs = this.mock(fs);
+    this.pkjUtil = new PkjUtil();
+    this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, null, '{"dependencies": { "bdep1": "0.0.1", "adep2": "0.0.2", "cdep": "0.0.1" }, "devDependencies": { "zdep1": "0.0.1", "cdep": "0.0.1" }}');
+    this.mockFs.expects('writeFile').once().callsArgWith(2, null);
+  },
+  'should sort dependency module names when type is dependencies': function (done) {
+    this.pkjUtil.sortDependencies('dependencies', function (err, pkg) {
+      assert.isNull(err);
+      assert.equals(JSON.stringify(pkg.dependencies), '{"adep2":"0.0.2","bdep1":"0.0.1","cdep":"0.0.1"}');
+      done();
+    });
+  },
+  'should pass dev dependency module names when type is devDependencies': function (done) {
+    this.pkjUtil.sortDependencies('devDependencies', function (err, pkg) {
+      assert.isNull(err);
+      assert.equals(JSON.stringify(pkg.devDependencies), '{"cdep":"0.0.1","zdep1":"0.0.1"}');
+      done();
+    });
+  },
+  'should sort both dependency and dev dependency module names when type is null': function (done) {
+    this.pkjUtil.sortDependencies(null, function (err, pkg) {
+      assert.isNull(err);
+      assert.equals(JSON.stringify(pkg.dependencies), '{"adep2":"0.0.2","bdep1":"0.0.1","cdep":"0.0.1"}');
+      assert.equals(JSON.stringify(pkg.devDependencies), '{"cdep":"0.0.1","zdep1":"0.0.1"}');
       done();
     });
   }

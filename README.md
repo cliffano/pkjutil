@@ -52,3 +52,15 @@ List dev dependencies:
 List dependencies and dev dependencies:
 
     pkjutil list-alldependencies
+
+Sort dependencies:
+
+    pkjutil sort-dependencies
+
+Sort dev dependencies:
+
+    pkjutil sort-devdependencies
+
+Sort dependencies and dev dependencies:
+
+    pkjutil sort-alldependencies

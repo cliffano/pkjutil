@@ -10,6 +10,9 @@ buster.testCase('cli - exec', {
       assert.defined(actions.commands['list-dependencies'].action);
       assert.defined(actions.commands['list-devdependencies'].action);
       assert.defined(actions.commands['list-alldependencies'].action);
+      assert.defined(actions.commands['sort-dependencies'].action);
+      assert.defined(actions.commands['sort-devdependencies'].action);
+      assert.defined(actions.commands['sort-alldependencies'].action);
       assert.defined(actions.commands['upgrade-version-patch'].action);
       assert.defined(actions.commands['upgrade-version-minor'].action);
       assert.defined(actions.commands['upgrade-version-major'].action);
@@ -28,8 +31,8 @@ buster.testCase('cli - list-*', {
     this.mockProcess = this.mock(process);
   },
   'should list dependencies': function () {
-    this.mockConsole.expects('log').withExactArgs('dep1');
-    this.mockConsole.expects('log').withExactArgs('dep2');
+    this.mockConsole.expects('log').once().withExactArgs('dep1');
+    this.mockConsole.expects('log').once().withExactArgs('dep2');
     this.stub(_cli, 'command', function (base, actions) {
       actions.commands['list-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
@@ -40,8 +43,8 @@ buster.testCase('cli - list-*', {
     cli.exec();
   },
   'should list dev dependencies': function () {
-    this.mockConsole.expects('log').withExactArgs('dep1');
-    this.mockConsole.expects('log').withExactArgs('dep2');
+    this.mockConsole.expects('log').once().withExactArgs('dep1');
+    this.mockConsole.expects('log').once().withExactArgs('dep2');
     this.stub(_cli, 'command', function (base, actions) {
       actions.commands['list-devdependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
@@ -52,14 +55,53 @@ buster.testCase('cli - list-*', {
     cli.exec();
   },
   'should list all dependencies': function () {
-    this.mockConsole.expects('log').withExactArgs('dep1');
-    this.mockConsole.expects('log').withExactArgs('dep2');
+    this.mockConsole.expects('log').once().withExactArgs('dep1');
+    this.mockConsole.expects('log').once().withExactArgs('dep2');
     this.stub(_cli, 'command', function (base, actions) {
       actions.commands['list-alldependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
       cb(null, ['dep1', 'dep2']);
+    });
+    cli.exec();
+  }
+});
+
+buster.testCase('cli - sort-*', {
+  setUp: function () {
+    this.mockConsole = this.mock(console);
+    this.mockProcess = this.mock(process);
+
+    this.mockConsole.expects('log').once().withExactArgs('Dependencies sorted');
+  },
+  'should sort dependencies': function () {
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['sort-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
+      cb(null, {});
+    });
+    cli.exec();
+  },
+  'should sort dev dependencies': function () {
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['sort-devdependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
+      cb(null, {});
+    });
+    cli.exec();
+  },
+  'should sort all dependencies': function () {
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['sort-alldependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
+      cb(null, {});
     });
     cli.exec();
   }
