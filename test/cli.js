@@ -34,7 +34,7 @@ buster.testCase('cli - list-*', {
       actions.commands['list-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
-    this.stub(PkjUtil.prototype, 'list', function (opts, cb) {
+    this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
       cb(null, ['dep1', 'dep2']);
     });
     cli.exec();
@@ -46,7 +46,7 @@ buster.testCase('cli - list-*', {
       actions.commands['list-devdependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
-    this.stub(PkjUtil.prototype, 'list', function (opts, cb) {
+    this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
       cb(null, ['dep1', 'dep2']);
     });
     cli.exec();
@@ -58,7 +58,7 @@ buster.testCase('cli - list-*', {
       actions.commands['list-alldependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
-    this.stub(PkjUtil.prototype, 'list', function (opts, cb) {
+    this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
       cb(null, ['dep1', 'dep2']);
     });
     cli.exec();
