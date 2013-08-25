@@ -40,3 +40,15 @@ Upgrade dependencies:
 Upgrade dependencies using custom registry:
 
     pkjutil upgrade-dependencies --registry http://someregistry
+
+List dependencies:
+
+    pkjutil list-dependencies
+
+List dev dependencies:
+
+    pkjutil list-devdependencies
+
+List dependencies and dev dependencies:
+
+    pkjutil list-alldependencies

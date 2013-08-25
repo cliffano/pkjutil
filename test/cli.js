@@ -7,6 +7,9 @@ buster.testCase('cli - exec', {
   'should contain commands with actions': function (done) {
     var mockCommand = function (base, actions) {
       assert.defined(base);
+      assert.defined(actions.commands['list-dependencies'].action);
+      assert.defined(actions.commands['list-devdependencies'].action);
+      assert.defined(actions.commands['list-alldependencies'].action);
       assert.defined(actions.commands['upgrade-version-patch'].action);
       assert.defined(actions.commands['upgrade-version-minor'].action);
       assert.defined(actions.commands['upgrade-version-major'].action);
@@ -15,6 +18,49 @@ buster.testCase('cli - exec', {
       done();
     };
     this.stub(bag, 'command', mockCommand);
+    cli.exec();
+  }
+});
+
+buster.testCase('cli - list-*', {
+  setUp: function () {
+    this.mockConsole = this.mock(console);
+    this.mockProcess = this.mock(process);
+  },
+  'should list dependencies': function () {
+    this.mockConsole.expects('log').withExactArgs('dep1');
+    this.mockConsole.expects('log').withExactArgs('dep2');
+    this.stub(bag, 'command', function (base, actions) {
+      actions.commands['list-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'list', function (opts, cb) {
+      cb(null, ['dep1', 'dep2']);
+    });
+    cli.exec();
+  },
+  'should list dev dependencies': function () {
+    this.mockConsole.expects('log').withExactArgs('dep1');
+    this.mockConsole.expects('log').withExactArgs('dep2');
+    this.stub(bag, 'command', function (base, actions) {
+      actions.commands['list-devdependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'list', function (opts, cb) {
+      cb(null, ['dep1', 'dep2']);
+    });
+    cli.exec();
+  },
+  'should list all dependencies': function () {
+    this.mockConsole.expects('log').withExactArgs('dep1');
+    this.mockConsole.expects('log').withExactArgs('dep2');
+    this.stub(bag, 'command', function (base, actions) {
+      actions.commands['list-alldependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'list', function (opts, cb) {
+      cb(null, ['dep1', 'dep2']);
+    });
     cli.exec();
   }
 });

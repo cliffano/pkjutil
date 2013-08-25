@@ -20,6 +20,15 @@
       "options": [
         { "arg": "-r, --registry <registry>", "desc": "package.json file path" }
       ]
+    },
+    "list-dependencies": {
+      "desc": "List dependencies"
+    },
+    "list-devdependencies": {
+      "desc": "List dev dependencies"
+    },
+    "list-alldependencies": {
+      "desc": "List dependencies and dev dependencies"
     }
   }
 }

@@ -7,9 +7,37 @@ buster.testCase('pkjutil - upgradeVersion', {
   setUp: function () {
     this.mockFs = this.mock(fs);
     this.pkjUtil = new PkjUtil();
+    this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, null, '{"dependencies": { "dep1": "0.0.1", "dep2": "0.0.2", "shareddep": "0.0.1" }, "devDependencies": { "devdep1": "0.0.1", "shareddep": "0.0.1" }}');
+  },
+  'should pass dependency module names when type is dependencies': function (done) {
+    this.pkjUtil.list('dependencies', function (err, deps) {
+      assert.isNull(err);
+      assert.equals(deps, ['dep1', 'dep2', 'shareddep']);
+      done();
+    });
+  },
+  'should pass dev dependency module names when type is devDependencies': function (done) {
+    this.pkjUtil.list('devDependencies', function (err, deps) {
+      assert.isNull(err);
+      assert.equals(deps, ['devdep1', 'shareddep']);
+      done();
+    });
+  },
+  'should pass both dependency and dev dependency module names when type is null': function (done) {
+    this.pkjUtil.list(null, function (err, deps) {
+      assert.isNull(err);
+      assert.equals(deps, ['dep1', 'dep2', 'shareddep', 'devdep1']);
+      done();
+    });
+  }
+});
+
+buster.testCase('pkjutil - upgradeVersion', {
+  setUp: function () {
+    this.mockFs = this.mock(fs);
+    this.pkjUtil = new PkjUtil();
   },
   'should pass error to callback when an error occurs while reading package file': function (done) {
-    this.pkjUtil = new PkjUtil();
     this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, new Error('some error'));
     this.pkjUtil.upgradeVersion(null, function (err, pkg) {
       assert.equals(err.message, 'some error');
