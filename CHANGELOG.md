@@ -1,4 +1,7 @@
-### 0.0.3-pre
+### 0.0.4
+*
+
+### 0.0.3
 * Add list-dependencies, list-devdependencies, list-alldependencies commands
 * Add sort-dependencies, sort-devdependencies, sort-alldependencies commands
 
