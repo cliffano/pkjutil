@@ -1,7 +1,9 @@
-var buster = require('buster'),
+var buster = require('buster-node'),
   fs = require('fs'),
   PkjUtil = require('../lib/pkjutil'),
-  req = require('bagofrequest');
+  referee = require('referee'),
+  req = require('bagofrequest'),
+  assert = referee.assert;
 
 buster.testCase('pkjutil - listDependencies', {
   setUp: function () {

@@ -1,7 +1,9 @@
-var buster = require('buster'),
+var buster = require('buster-node'),
   _cli = require('bagofcli'),
   cli = require('../lib/cli'),
-  PkjUtil = new require('../lib/pkjutil');
+  PkjUtil = new require('../lib/pkjutil'),
+  referee = require('referee'),
+  assert = referee.assert;
 
 buster.testCase('cli - exec', {
   'should contain commands with actions': function (done) {
