@@ -1,0 +1,59 @@
+- description: Command help should display help information
+  command: ../../../../../bin/pkjutil --help
+  exitcode: 0
+  output: 'Usage: pkjutil'
+
+- description: Command list-dependencies should list dependencies
+  command: ../../../../../bin/pkjutil list-dependencies --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: '.+'
+
+- description: Command list-dependencies should list dev dependencies
+  command: ../../../../../bin/pkjutil list-devdependencies --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: '.+'
+
+- description: Command list-alldependencies should list all dependencies
+  command: ../../../../../bin/pkjutil list-alldependencies --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: '.+'
+
+- description: Command sort-dependencies should sort dependencies
+  command: ../../../../../bin/pkjutil sort-dependencies --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: '.+'
+
+- description: Command sort-devdependencies should sort dev dependencies
+  command: ../../../../../bin/pkjutil sort-devdependencies --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: '.+'
+
+- description: Command sort-alldependencies should sort all dependencies
+  command: ../../../../../bin/pkjutil sort-alldependencies --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: '.+'
+
+- description: Command upgrade-version-patch should upgrade patch version number
+  command: ../../../../../bin/pkjutil upgrade-version-patch --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: 'Upgraded version to [0-9].[0-9].[0-9]'
+
+- description: Command upgrade-version-minor should upgrade minor version number
+  command: ../../../../../bin/pkjutil upgrade-version-minor --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: 'Upgraded version to [0-9].[0-9].[0-9]'
+
+- description: Command upgrade-version-major should upgrade major version number
+  command: ../../../../../bin/pkjutil upgrade-version-major --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: 'Upgraded version to [0-9].[0-9].[0-9]'
+
+- description: Command upgrade-version should upgrade patch version number
+  command: ../../../../../bin/pkjutil upgrade-version --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: 'Upgraded version to [0-9].[0-9].[0-9]'
+
+- description: Command upgrade-dependencies should upgrade dependencies
+  command: ../../../../../bin/pkjutil upgrade-dependencies --file ../../../../../test-integration/fixtures/somepackage.json
+  exitcode: 0
+  output: '.+'
