@@ -36,7 +36,7 @@ buster.testCase('cli - list-*', {
     this.mockConsole.expects('log').once().withExactArgs('dep1');
     this.mockConsole.expects('log').once().withExactArgs('dep2');
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['list-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+      actions.commands['list-dependencies'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
@@ -48,7 +48,7 @@ buster.testCase('cli - list-*', {
     this.mockConsole.expects('log').once().withExactArgs('dep1');
     this.mockConsole.expects('log').once().withExactArgs('dep2');
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['list-devdependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+      actions.commands['list-devdependencies'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
@@ -60,7 +60,7 @@ buster.testCase('cli - list-*', {
     this.mockConsole.expects('log').once().withExactArgs('dep1');
     this.mockConsole.expects('log').once().withExactArgs('dep2');
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['list-alldependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+      actions.commands['list-alldependencies'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
@@ -79,7 +79,7 @@ buster.testCase('cli - sort-*', {
   },
   'should sort dependencies': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['sort-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+      actions.commands['sort-dependencies'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
@@ -89,7 +89,7 @@ buster.testCase('cli - sort-*', {
   },
   'should sort dev dependencies': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['sort-devdependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+      actions.commands['sort-devdependencies'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
@@ -99,7 +99,7 @@ buster.testCase('cli - sort-*', {
   },
   'should sort all dependencies': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['sort-alldependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+      actions.commands['sort-alldependencies'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
@@ -116,7 +116,7 @@ buster.testCase('cli - upgrade-version-*', {
   },
   'upgraded-version-patch should pass correct type, log upgraded version, then exit': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['upgrade-version-patch'].action({ file: 'somepackage.json' });
+      actions.commands['upgrade-version-patch'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '0.0.1');
     this.mockProcess.expects('exit').once().withExactArgs(0);
@@ -128,7 +128,7 @@ buster.testCase('cli - upgrade-version-*', {
   },
   'upgraded-version-minor should pass correct type, log upgraded version, then exit': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['upgrade-version-minor'].action({ file: 'somepackage.json' });
+      actions.commands['upgrade-version-minor'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '0.1.0');
     this.mockProcess.expects('exit').once().withExactArgs(0);
@@ -140,7 +140,7 @@ buster.testCase('cli - upgrade-version-*', {
   },
   'upgraded-version-major should pass correct type, log upgraded version, then exit': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['upgrade-version-major'].action({ file: 'somepackage.json' });
+      actions.commands['upgrade-version-major'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '1.0.0');
     this.mockProcess.expects('exit').once().withExactArgs(0);
@@ -152,7 +152,7 @@ buster.testCase('cli - upgrade-version-*', {
   },
   'upgraded-version should pass correct type, log upgraded version, then exit': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['upgrade-version'].action({ file: 'somepackage.json' });
+      actions.commands['upgrade-version'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockConsole.expects('log').once().withExactArgs('Upgraded version to %s', '0.0.1');
     this.mockProcess.expects('exit').once().withExactArgs(0);
@@ -170,7 +170,7 @@ buster.testCase('cli - upgrade-dependencies', {
   },
   'upgraded-version should pass correct type, log upgraded version, then exit': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['upgrade-dependencies'].action({ file: 'somepackage.json', registry: 'http://someregistry' });
+      actions.commands['upgrade-dependencies'].action({ parent: { file: 'somepackage.json' }, registry: 'http://someregistry' });
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'upgradeDependencies', function (opts, cb) {
