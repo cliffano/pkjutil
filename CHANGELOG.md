@@ -1,5 +1,5 @@
 ### 0.0.5-pre
-*
+* Fix error handling on sort-* and upgrade-* commands
 
 ### 0.0.4
 * Fix file arg on list-*, sort-*, and upgrade-* commands

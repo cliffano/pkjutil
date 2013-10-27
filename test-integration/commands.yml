@@ -61,3 +61,8 @@
   command: ../../../../../bin/pkjutil upgrade-dependencies --file ../../somepackage.json
   exitcode: 0
   output: '.+[a|m|z].+ - upgraded to ~[0-9].[0-9].[0-9]'
+
+- description: Command upgrade-dependencies should fail when registry does not exist
+  command: ../../../../../bin/pkjutil upgrade-dependencies --file ../../somepackage.json --registry http://inexistingregistry:12345
+  exitcode: 0
+  output: 'getaddrinfo ENOTFOUND'
