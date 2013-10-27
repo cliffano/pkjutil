@@ -1,4 +1,7 @@
-### 0.0.5-pre
+### 0.0.6-pre
+*
+
+### 0.0.5
 * Fix error handling on sort-* and upgrade-* commands
 
 ### 0.0.4
