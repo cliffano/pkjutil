@@ -6,28 +6,28 @@
     "upgrade-version-patch": {
       "desc": "Upgrade patch version number",
       "options": [
-        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+        { "arg": "-p, --parsable", "desc": "Display upgraded version number only, for non-human consumption." }
       ]
     },
     "upgrade-version-minor": {
       "desc": "Upgrade minor version number",
       "options": [
-        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+        { "arg": "-p, --parsable", "desc": "Display upgraded version number only, for non-human consumption." }
       ]
     },
     "upgrade-version-major": {
       "desc": "Upgrade major version number",
       "options": [
-        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+        { "arg": "-p, --parsable", "desc": "Display upgraded version number only, for non-human consumption." }
       ]
     },
     "upgrade-version": {
       "desc": "Alias for upversion-patch",
       "options": [
-        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+        { "arg": "-p, --parsable", "desc": "Display upgraded version number only, for non-human consumption." }
       ],
       "examples": [
-        "pkjutil upgrade-version --parseable"
+        "pkjutil upgrade-version --parsable"
       ]
     },
     "upgrade-dependencies": {

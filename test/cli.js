@@ -126,9 +126,9 @@ buster.testCase('cli - upgrade-version-*', {
     });
     cli.exec();
   },
-  'upgraded-version-patch with parseable arg should log the upgraded version only': function () {
+  'upgraded-version-patch with parsable arg should log the upgraded version only': function () {
     this.stub(_cli, 'command', function (base, actions) {
-      actions.commands['upgrade-version-patch'].action({ parseable: true, parent: { file: 'somepackage.json' }});
+      actions.commands['upgrade-version-patch'].action({ parsable: true, parent: { file: 'somepackage.json' }});
     });
     this.mockConsole.expects('log').once().withExactArgs('0.0.1');
     this.mockProcess.expects('exit').once().withExactArgs(0);

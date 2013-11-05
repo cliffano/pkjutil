@@ -1,5 +1,5 @@
 ### 0.0.6-pre
-* Add --parseable flag to upgrade-version* commands
+* Add --parsable flag to upgrade-version* commands
 
 ### 0.0.5
 * Fix error handling on sort-* and upgrade-* commands
