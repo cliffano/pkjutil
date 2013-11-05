@@ -57,6 +57,11 @@
   exitcode: 0
   output: 'Upgraded version to 2.0.1'
 
+- description: Command upgrade-version with parseable flag should display the upgraded version value only
+  command: ../../../../../bin/pkjutil upgrade-version --file ../../somepackage.json --parseable
+  exitcode: 0
+  output: '2.0.2'
+
 - description: Command upgrade-dependencies should upgrade dependencies
   command: ../../../../../bin/pkjutil upgrade-dependencies --file ../../somepackage.json
   exitcode: 0

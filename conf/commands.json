@@ -4,21 +4,39 @@
   ],
   "commands": {
     "upgrade-version-patch": {
-      "desc": "Upgrade patch version number"
+      "desc": "Upgrade patch version number",
+      "options": [
+        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+      ]
     },
     "upgrade-version-minor": {
-      "desc": "Upgrade minor version number"
+      "desc": "Upgrade minor version number",
+      "options": [
+        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+      ]
     },
     "upgrade-version-major": {
-      "desc": "Upgrade major version number"
+      "desc": "Upgrade major version number",
+      "options": [
+        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+      ]
     },
     "upgrade-version": {
-      "desc": "Alias for upversion-patch"
+      "desc": "Alias for upversion-patch",
+      "options": [
+        { "arg": "-p, --parseable", "desc": "Display upgraded version number only, for non-human consumption." }
+      ],
+      "examples": [
+        "pkjutil upgrade-version --parseable"
+      ]
     },
     "upgrade-dependencies": {
       "desc": "Upgrade all dependencies to latest version",
       "options": [
         { "arg": "-r, --registry <registry>", "desc": "package.json file path" }
+      ],
+      "examples": [
+        "pkjutil upgrade-dependencies --registry http://user:pass@registry:port"
       ]
     },
     "list-dependencies": {

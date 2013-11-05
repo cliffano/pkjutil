@@ -126,6 +126,18 @@ buster.testCase('cli - upgrade-version-*', {
     });
     cli.exec();
   },
+  'upgraded-version-patch with parseable arg should log the upgraded version only': function () {
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['upgrade-version-patch'].action({ parseable: true, parent: { file: 'somepackage.json' }});
+    });
+    this.mockConsole.expects('log').once().withExactArgs('0.0.1');
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'upgradeVersion', function (type, cb) {
+      assert.equals(type, 'patch');
+      cb(null, { version: '0.0.1' });
+    });
+    cli.exec();
+  },
   'upgraded-version-minor should pass correct type, log upgraded version, then exit': function () {
     this.stub(_cli, 'command', function (base, actions) {
       actions.commands['upgrade-version-minor'].action({ parent: { file: 'somepackage.json' }});
