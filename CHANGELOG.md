@@ -1,4 +1,7 @@
-### 0.0.6-pre
+### 0.0.7-pre
+*
+
+### 0.0.6
 * Add --parsable flag to upgrade-version* commands
 
 ### 0.0.5
