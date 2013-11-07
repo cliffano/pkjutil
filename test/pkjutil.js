@@ -166,6 +166,20 @@ buster.testCase('pkjutil - upgradeDependencies', {
       done();
     });
   },
+  'should pass error to callback when upgrade dependencies fail': function (done) {
+    this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, null, '{"dependencies":{"dep1":"0.0.1","dep2":"0.0.2"}}');
+    
+    var mockRequest = function (method, url, opts, cb) {
+      assert.equals(method, 'get');
+      cb(new Error('some error'));
+    };
+    this.stub(req, 'request', mockRequest);
+
+    this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
+      assert.equals(err.message, 'some error');
+      done();
+    });
+  },
   'should add trailing slash when custom registry does not have trailing slash': function (done) {
     this.mockConsole.expects('log').once().withExactArgs('%s - upgraded to %s', 'dep1'.green, '0.0.2');
     this.mockConsole.expects('log').once().withExactArgs('%s - already latest %s', 'dep2'.grey, '0.0.2');
