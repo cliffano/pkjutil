@@ -1,73 +1,75 @@
-- description: Prepare test data
-  command: cp ../../../../../test-integration/fixtures/somepackage.json ../../
-  exitcode: 0
+- fixtures:
+    - test-integration/fixtures
+
+- params:
+    pkjutil: ../../../../../bin/pkjutil --file somepackage.json
 
 - description: Command help should display help information
-  command: ../../../../../bin/pkjutil --help
+  command: '{pkjutil} --help'
   exitcode: 0
   output: 'Usage: pkjutil'
 
 - description: Command list-dependencies should list dependencies
-  command: ../../../../../bin/pkjutil list-dependencies --file ../../somepackage.json
+  command: '{pkjutil} list-dependencies'
   exitcode: 0
   output: 'z\nm\na'
 
 - description: Command list-dependencies should list dev dependencies
-  command: ../../../../../bin/pkjutil list-devdependencies --file ../../somepackage.json
+  command: '{pkjutil} list-devdependencies'
   exitcode: 0
   output: 'x\nn'
 
 - description: Command list-alldependencies should list all dependencies
-  command: ../../../../../bin/pkjutil list-alldependencies --file ../../somepackage.json
+  command: '{pkjutil} list-alldependencies'
   exitcode: 0
   output: 'z\nm\na\nx\nn'
 
 - description: Command sort-dependencies should sort dependencies
-  command: ../../../../../bin/pkjutil sort-dependencies --file ../../somepackage.json
+  command: '{pkjutil} sort-dependencies'
   exitcode: 0
   output: 'Dependencies sorted'
 
 - description: Command sort-devdependencies should sort dev dependencies
-  command: ../../../../../bin/pkjutil sort-devdependencies --file ../../somepackage.json
+  command: '{pkjutil} sort-devdependencies'
   exitcode: 0
   output: 'Dependencies sorted'
 
 - description: Command sort-alldependencies should sort all dependencies
-  command: ../../../../../bin/pkjutil sort-alldependencies --file ../../somepackage.json
+  command: '{pkjutil} sort-alldependencies'
   exitcode: 0
   output: 'Dependencies sorted'
 
 - description: Command upgrade-version-patch should upgrade patch version number
-  command: ../../../../../bin/pkjutil upgrade-version-patch --file ../../somepackage.json
+  command: '{pkjutil} upgrade-version-patch'
   exitcode: 0
   output: 'Upgraded version to 1.2.4'
 
 - description: Command upgrade-version-minor should upgrade minor version number
-  command: ../../../../../bin/pkjutil upgrade-version-minor --file ../../somepackage.json
+  command: '{pkjutil} upgrade-version-minor'
   exitcode: 0
   output: 'Upgraded version to 1.3.0'
 
 - description: Command upgrade-version-major should upgrade major version number
-  command: ../../../../../bin/pkjutil upgrade-version-major --file ../../somepackage.json
+  command: '{pkjutil} upgrade-version-major'
   exitcode: 0
   output: 'Upgraded version to 2.0.0'
 
 - description: Command upgrade-version should upgrade patch version number
-  command: ../../../../../bin/pkjutil upgrade-version --file ../../somepackage.json
+  command: '{pkjutil} upgrade-version'
   exitcode: 0
   output: 'Upgraded version to 2.0.1'
 
 - description: Command upgrade-version with parsable flag should display the upgraded version value only
-  command: ../../../../../bin/pkjutil upgrade-version --file ../../somepackage.json --parsable
+  command: '{pkjutil} upgrade-version --parsable'
   exitcode: 0
   output: '2.0.2'
 
 - description: Command upgrade-dependencies should upgrade dependencies
-  command: ../../../../../bin/pkjutil upgrade-dependencies --file ../../somepackage.json
+  command: '{pkjutil} upgrade-dependencies'
   exitcode: 0
   output: '.+[a|m|z].+ - upgraded to ~[0-9].[0-9].[0-9]'
 
 - description: Command upgrade-dependencies should fail when registry does not exist
-  command: ../../../../../bin/pkjutil upgrade-dependencies --file ../../somepackage.json --registry http://inexistingregistry:12345
-  exitcode: 0
+  command: '{pkjutil} upgrade-dependencies --registry http://inexistingregistry:12345'
+  exitcode: 1
   output: 'getaddrinfo ENOTFOUND'
