@@ -1,5 +1,5 @@
-### 0.0.7-pre
-*
+### 0.1.0-pre
+* Set min node engine to >= v0.10.0
 
 ### 0.0.6
 * Add --parsable flag to upgrade-version* commands
