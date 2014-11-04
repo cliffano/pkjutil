@@ -22,6 +22,7 @@ buster.testCase('cli - exec', {
       assert.defined(actions.commands['upgrade-dependencies'].action);
       done();
     };
+    this.mock({});
     this.stub(_cli, 'command', mockCommand);
     cli.exec();
   }

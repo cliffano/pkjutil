@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "buster-node": "~0.7.0",
-    "referee": "~1.0.3"
+    "referee": "~1.1.0"
   },
   "scripts": {},
   "engines": {
