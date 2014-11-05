@@ -14,10 +14,20 @@
   exitcode: 0
   output: 'z\nm\na'
 
-- description: Command list-dependencies should list dev dependencies
+- description: Command list-devdependencies should list dev dependencies
   command: '{pkjutil} list-devdependencies'
   exitcode: 0
   output: 'x\nn'
+
+- description: Command list-peerdependencies should list peer dependencies
+  command: '{pkjutil} list-peerdependencies'
+  exitcode: 0
+  output: 'x'
+
+- description: Command list-optdependencies should list optional dependencies
+  command: '{pkjutil} list-optdependencies'
+  exitcode: 0
+  output: 'n'
 
 - description: Command list-alldependencies should list all dependencies
   command: '{pkjutil} list-alldependencies'
@@ -31,6 +41,16 @@
 
 - description: Command sort-devdependencies should sort dev dependencies
   command: '{pkjutil} sort-devdependencies'
+  exitcode: 0
+  output: 'Dependencies sorted'
+
+- description: Command sort-peerdependencies should sort peer dependencies
+  command: '{pkjutil} sort-peerdependencies'
+  exitcode: 0
+  output: 'Dependencies sorted'
+
+- description: Command sort-optdependencies should sort opt dependencies
+  command: '{pkjutil} sort-optdependencies'
   exitcode: 0
   output: 'Dependencies sorted'
 

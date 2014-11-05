@@ -45,6 +45,12 @@
     "list-devdependencies": {
       "desc": "List dev dependencies"
     },
+    "list-peerdependencies": {
+      "desc": "List peer dependencies"
+    },
+    "list-optdependencies": {
+      "desc": "List opt dependencies"
+    },
     "list-alldependencies": {
       "desc": "List dependencies and dev dependencies"
     },
@@ -53,6 +59,12 @@
     },
     "sort-devdependencies": {
       "desc": "Sort dev dependencies"
+    },
+    "sort-peerdependencies": {
+      "desc": "Sort peer dependencies"
+    },
+    "sort-optdependencies": {
+      "desc": "Sort optional dependencies"
     },
     "sort-alldependencies": {
       "desc": "Sort dependencies and dev dependencies"

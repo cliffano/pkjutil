@@ -9,5 +9,11 @@
   "devDependencies": {
     "x": "~0.0.1",
     "n": "~0.0.1"
+  },
+  "peerDependencies": {
+    "x": "~0.0.1"
+  },
+  "optDependencies": {
+    "n": "~0.0.1"
   }
 }
