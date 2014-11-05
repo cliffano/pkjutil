@@ -50,6 +50,14 @@ List dev dependencies:
 
     pkjutil list-devdependencies
 
+List peer dependencies:
+
+    pkjutil list-peerdependencies
+
+List optional dependencies (non-standard property in package.json):
+
+    pkjutil list-optdependencies
+
 List dependencies and dev dependencies:
 
     pkjutil list-alldependencies
@@ -61,6 +69,14 @@ Sort dependencies:
 Sort dev dependencies:
 
     pkjutil sort-devdependencies
+
+Sort peer dependencies:
+
+    pkjutil sort-peerdependencies
+
+Sort optional dependencies (non-standard property in package.json):
+
+    pkjutil sort-optdependencies
 
 Sort dependencies and dev dependencies:
 

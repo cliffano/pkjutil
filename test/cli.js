@@ -11,9 +11,13 @@ buster.testCase('cli - exec', {
       assert.defined(base);
       assert.defined(actions.commands['list-dependencies'].action);
       assert.defined(actions.commands['list-devdependencies'].action);
+      assert.defined(actions.commands['list-peerdependencies'].action);
+      assert.defined(actions.commands['list-optdependencies'].action);
       assert.defined(actions.commands['list-alldependencies'].action);
       assert.defined(actions.commands['sort-dependencies'].action);
       assert.defined(actions.commands['sort-devdependencies'].action);
+      assert.defined(actions.commands['sort-peerdependencies'].action);
+      assert.defined(actions.commands['sort-optdependencies'].action);
       assert.defined(actions.commands['sort-alldependencies'].action);
       assert.defined(actions.commands['upgrade-version-patch'].action);
       assert.defined(actions.commands['upgrade-version-minor'].action);
@@ -57,6 +61,30 @@ buster.testCase('cli - list-*', {
     });
     cli.exec();
   },
+  'should list peer dependencies': function () {
+    this.mockConsole.expects('log').once().withExactArgs('dep1');
+    this.mockConsole.expects('log').once().withExactArgs('dep2');
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['list-peerdependencies'].action({ parent: { file: 'somepackage.json' }});
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
+      cb(null, ['dep1', 'dep2']);
+    });
+    cli.exec();
+  },
+  'should list opt dependencies': function () {
+    this.mockConsole.expects('log').once().withExactArgs('dep1');
+    this.mockConsole.expects('log').once().withExactArgs('dep2');
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['list-optdependencies'].action({ parent: { file: 'somepackage.json' }});
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'listDependencies', function (opts, cb) {
+      cb(null, ['dep1', 'dep2']);
+    });
+    cli.exec();
+  },
   'should list all dependencies': function () {
     this.mockConsole.expects('log').once().withExactArgs('dep1');
     this.mockConsole.expects('log').once().withExactArgs('dep2');
@@ -91,6 +119,26 @@ buster.testCase('cli - sort-*', {
   'should sort dev dependencies': function () {
     this.stub(_cli, 'command', function (base, actions) {
       actions.commands['sort-devdependencies'].action({ parent: { file: 'somepackage.json' }});
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
+      cb(null, {});
+    });
+    cli.exec();
+  },
+  'should sort peer dependencies': function () {
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['sort-peerdependencies'].action({ parent: { file: 'somepackage.json' }});
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
+      cb(null, {});
+    });
+    cli.exec();
+  },
+  'should sort opt dependencies': function () {
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['sort-optdependencies'].action({ parent: { file: 'somepackage.json' }});
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
