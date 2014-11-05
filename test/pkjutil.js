@@ -25,7 +25,7 @@ buster.testCase('pkjutil - listDependencies', {
       done();
     });
   },
-  'should pass both dependency and dev dependency module names when type is null': function (done) {
+  'should pass all dependency types module names when type is null': function (done) {
     this.pkjUtil.listDependencies(null, function (err, deps) {
       assert.isNull(err);
       assert.equals(deps, ['dep1', 'dep2', 'shareddep', 'devdep1']);
@@ -55,7 +55,7 @@ buster.testCase('pkjutil - sortDependencies', {
       done();
     });
   },
-  'should sort both dependency and dev dependency module names when type is null': function (done) {
+  'should sort all dependency types module names when type is null': function (done) {
     this.pkjUtil.sortDependencies(null, function (err, pkg) {
       assert.isNull(err);
       assert.equals(JSON.stringify(pkg.dependencies), '{"adep2":"0.0.2","bdep1":"0.0.1","cdep":"0.0.1"}');
