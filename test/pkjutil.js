@@ -1,6 +1,7 @@
 var buster = require('buster-node'),
   fs = require('fs'),
   PkjUtil = require('../lib/pkjutil'),
+  proxyquire = require('proxyquire'),
   referee = require('referee'),
   req = require('bagofrequest'),
   assert = referee.assert;
@@ -60,6 +61,67 @@ buster.testCase('pkjutil - sortDependencies', {
       assert.isNull(err);
       assert.equals(JSON.stringify(pkg.dependencies), '{"adep2":"0.0.2","bdep1":"0.0.1","cdep":"0.0.1"}');
       assert.equals(JSON.stringify(pkg.devDependencies), '{"cdep":"0.0.1","zdep1":"0.0.1"}');
+      done();
+    });
+  }
+});
+
+buster.testCase('pkjutil - traverseDependencies', {
+  setUp: function () {
+    this.mock({});
+  },
+  'should pass error when prod load gets an error': function (done) {
+    var mockProd = function () {
+      return {
+        load: function (cb) {
+          cb(new Error('some error'));
+        }
+      };
+    };
+    var PkjUtil = proxyquire('../lib/pkjutil', { 'prod': mockProd }),
+      pkjUtil = new PkjUtil();
+    pkjUtil.traverseDependencies(function (err, result) {
+      assert.equals(err.message, 'some error');
+      assert.equals(result, undefined);
+      done();
+    });
+  },
+  'should format dependencies result': function (done) {
+    var mockProd = function () {
+      return {
+        load: function (cb) {
+          var dependencies = [
+            { 
+              name: 'dep1',
+              version: '0.0.1',
+              _dependencies: {
+                'subdep': '1.0.0'
+              },
+              devDependencies: {
+                'subdevdep': '2.0.0'
+              },
+              peerDependencies: {
+                'subpeerdep': '3.0.0'
+              },
+              foo: 'bar'
+            }
+          ];
+          cb(null, dependencies);
+        }
+      };
+    };
+
+    var PkjUtil = proxyquire('../lib/pkjutil', { 'prod': mockProd }),
+      pkjUtil = new PkjUtil();
+    
+    pkjUtil.traverseDependencies(function (err, result) {
+      assert.isNull(err);
+
+      var dep = result['dep1@0.0.1'];
+      assert.defined(dep);
+      assert.equals(dep.dependencies.subdep, '1.0.0');
+      assert.equals(dep.devDependencies.subdevdep, '2.0.0');
+      assert.equals(dep.peerDependencies.subpeerdep, '3.0.0');
       done();
     });
   }

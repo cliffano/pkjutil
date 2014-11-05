@@ -1,6 +1,7 @@
 ### 0.1.1-pre
 * Modify upgradeDependencies to also uprade dependencies in devDependencies and peerDependencies properties
 * Add list-peerdependencies, sort-peerdependencies, list-optdependencies, and sort-optdependencies commands
+* Add traverse-dependencies command
 
 ### 0.1.0
 * Set min node engine to >= v0.10.0

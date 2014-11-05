@@ -81,3 +81,7 @@ Sort optional dependencies (non-standard property in package.json):
 Sort dependencies and dev dependencies:
 
     pkjutil sort-alldependencies
+
+Traverse dependencies, similar to 'npm ls' but listing dependency references instead of versions:
+
+    pkjutil traverse-dependencies

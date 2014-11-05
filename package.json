@@ -35,10 +35,12 @@
     "bagofrequest": "~0.1.0",
     "colors": "~1.0.3",
     "lodash": "~2.4.1",
+    "prod": "~1.0.0",
     "semver": "~4.1.0"
   },
   "devDependencies": {
     "buster-node": "~0.7.0",
+    "proxyquire": "~1.0.1",
     "referee": "~1.1.0"
   },
   "scripts": {},

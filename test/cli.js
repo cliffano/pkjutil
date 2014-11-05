@@ -19,6 +19,7 @@ buster.testCase('cli - exec', {
       assert.defined(actions.commands['sort-peerdependencies'].action);
       assert.defined(actions.commands['sort-optdependencies'].action);
       assert.defined(actions.commands['sort-alldependencies'].action);
+      assert.defined(actions.commands['traverse-dependencies'].action);
       assert.defined(actions.commands['upgrade-version-patch'].action);
       assert.defined(actions.commands['upgrade-version-minor'].action);
       assert.defined(actions.commands['upgrade-version-major'].action);
@@ -153,6 +154,33 @@ buster.testCase('cli - sort-*', {
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'sortDependencies', function (opts, cb) {
       cb(null, {});
+    });
+    cli.exec();
+  }
+});
+
+buster.testCase('cli - traverse-dependencies', {
+  setUp: function () {
+    this.mockConsole = this.mock(console);
+    this.mockProcess = this.mock(process);
+  },
+  'should log packages with their dependencies': function () {
+    this.mockConsole.expects('log').once().withExactArgs('* %s', 'dep1@0.0.1');
+    this.mockConsole.expects('log').once().withExactArgs('  - %s:', 'dependencies');
+    this.mockConsole.expects('log').once().withExactArgs('    - %s: %s', 'subdep1', '0.0.1');
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['traverse-dependencies'].action({ parent: { file: 'somepackage.json' }});
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'traverseDependencies', function (cb) {
+      var result = {
+        'dep1@0.0.1': {
+          dependencies: {
+            subdep1: '0.0.1'
+          }
+        }
+      };
+      cb(null, result);
     });
     cli.exec();
   }
