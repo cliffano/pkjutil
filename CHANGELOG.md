@@ -1,4 +1,7 @@
-### 0.1.1-pre
+### 0.1.2-pre
+*
+
+### 0.1.1
 * Modify upgradeDependencies to also uprade dependencies in devDependencies and peerDependencies properties
 * Add list-peerdependencies, sort-peerdependencies, list-optdependencies, and sort-optdependencies commands
 * Add traverse-dependencies command
