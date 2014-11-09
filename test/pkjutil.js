@@ -207,9 +207,10 @@ buster.testCase('pkjutil - upgradeDependencies', {
     this.mockConsole.expects('log').once().withExactArgs('%s - %s - upgraded to %s', 'dep1'.green, 'devDependencies', '0.0.2');
     this.mockConsole.expects('log').once().withExactArgs('%s - %s - already latest %s', 'dep2'.grey, 'dependencies', '0.0.2');
     this.mockConsole.expects('log').once().withExactArgs('%s - %s - already latest %s', 'dep2'.grey, 'peerDependencies', '0.0.2');
+    this.mockConsole.expects('log').once().withExactArgs('%s - %s - already latest %s', 'dep2'.grey, 'optDependencies', '0.0.2');
 
-    this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, null, '{"dependencies":{"dep1":"0.0.1","dep2":"0.0.2"},"devDependencies":{"dep1":"0.0.1"},"peerDependencies":{"dep2":"0.0.2"}}');
-    this.mockFs.expects('writeFile').once().withArgs('package.json', '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  },\n  "devDependencies": {\n    "dep1": "0.0.2"\n  },\n  "peerDependencies": {\n    "dep2": "0.0.2"\n  }\n}').callsArgWith(2, null);
+    this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, null, '{"dependencies":{"dep1":"0.0.1","dep2":"0.0.2"},"devDependencies":{"dep1":"0.0.1"},"peerDependencies":{"dep2":"0.0.2"},"optDependencies":{"dep2":"0.0.2"}}');
+    this.mockFs.expects('writeFile').once().withArgs('package.json', '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  },\n  "devDependencies": {\n    "dep1": "0.0.2"\n  },\n  "peerDependencies": {\n    "dep2": "0.0.2"\n  },\n  "optDependencies": {\n    "dep2": "0.0.2"\n  }\n}').callsArgWith(2, null);
 
     var mockRequest = function (method, url, opts, cb) {
       assert.equals(method, 'get');

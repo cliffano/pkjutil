@@ -1,5 +1,5 @@
 ### 0.1.2-pre
-*
+* Add optDependencies to the list of dependency types to upgrade
 
 ### 0.1.1
 * Modify upgradeDependencies to also uprade dependencies in devDependencies and peerDependencies properties
