@@ -70,7 +70,7 @@
       "desc": "Sort dependencies and dev dependencies"
     },
     "traverse-dependencies": {
-      "desc": "Traverse dependencies, similar to 'npm ls' but listing dependency references instead of versions"
+      "desc": "Traverse dependencies, similar to 'npm ls' but listing dependency references instead of versions, execute this command from package root directory"
     }
   }
 }
