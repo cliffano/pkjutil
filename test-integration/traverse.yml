@@ -1,0 +1,16 @@
+# can't 'npm install pkjutil' since it will find ancestor package.json above .bob
+# need to copy package.json to test directory and 'npm install' it from there
+- fixtures:
+    - package.json
+
+- params:
+    pkjutil: ../../../../../bin/pkjutil
+
+- description: Install dependencies to traverse
+  command: 'npm install .'
+  exitcode: 0
+
+- description: Command traverse-dependencies should display dependencies list
+  command: '{pkjutil} traverse-dependencies'
+  exitcode: 0
+  output: '^\* pkjutil@.+'
