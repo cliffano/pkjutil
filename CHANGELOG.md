@@ -1,4 +1,7 @@
-### 0.1.2-pre
+### 0.1.3-pre
+*
+
+### 0.1.2
 * Add optDependencies to the list of dependency types to upgrade
 
 ### 0.1.1
