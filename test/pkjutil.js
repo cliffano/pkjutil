@@ -68,9 +68,10 @@ buster.testCase('pkjutil - sortDependencies', {
 
 buster.testCase('pkjutil - traverseDependencies', {
   setUp: function () {
-    this.mock({});
+    this.mockFs = this.mock(fs);
   },
   'should pass error when prod load gets an error': function (done) {
+    this.mockFs.expects('existsSync').once().withArgs('package.json').returns(true);
     var mockProd = function () {
       return {
         load: function (cb) {
@@ -87,6 +88,7 @@ buster.testCase('pkjutil - traverseDependencies', {
     });
   },
   'should format dependencies result': function (done) {
+    this.mockFs.expects('existsSync').once().withArgs('package.json').returns(true);
     var mockProd = function () {
       return {
         load: function (cb) {
@@ -122,6 +124,15 @@ buster.testCase('pkjutil - traverseDependencies', {
       assert.equals(dep.dependencies.subdep, '1.0.0');
       assert.equals(dep.devDependencies.subdevdep, '2.0.0');
       assert.equals(dep.peerDependencies.subpeerdep, '3.0.0');
+      done();
+    });
+  },
+  'should pass error to callback when neither package.json nor node_modules exist': function (done) {
+    this.mockFs.expects('existsSync').once().withArgs('package.json').returns(false);
+    this.mockFs.expects('existsSync').once().withArgs('node_modules').returns(false);
+    var pkjUtil = new PkjUtil(); 
+    pkjUtil.traverseDependencies(function (err, result) {
+      assert.equals(err.message, 'Either package.json file or node_modules directory must exist');
       done();
     });
   }

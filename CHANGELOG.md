@@ -1,5 +1,5 @@
 ### 0.1.3-pre
-*
+* Modify traverseDependencies to check for the existence of package.json and node_modules
 
 ### 0.1.2
 * Add optDependencies to the list of dependency types to upgrade
