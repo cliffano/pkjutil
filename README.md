@@ -85,3 +85,8 @@ Sort dependencies and dev dependencies:
 Traverse dependencies, similar to 'npm ls' but listing dependency references instead of versions:
 
     pkjutil traverse-dependencies
+
+Colophon
+--------
+
+[Developer's Guide](http://cliffano.github.io/developers_guide.html#nodejs)
