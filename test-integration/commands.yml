@@ -87,7 +87,7 @@
 - description: Command upgrade-dependencies should upgrade dependencies
   command: '{pkjutil} upgrade-dependencies'
   exitcode: 0
-  output: '.+[a|m|z].+ - dependencies - upgraded to ~[0-9].[0-9].[0-9]'
+  output: '.*[a|m|z].* - dependencies - upgraded to ~[0-9].[0-9].[0-9]'
 
 - description: Command upgrade-dependencies should fail when registry does not exist
   command: '{pkjutil} upgrade-dependencies --registry http://inexistingregistry:12345'
