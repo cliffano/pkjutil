@@ -1,7 +1,7 @@
 <img align="right" src="https://raw.github.com/cliffano/pkjutil/master/avatar.jpg" alt="Avatar"/>
 
-[![Build Status](https://secure.travis-ci.org/cliffano/pkjutil.png?branch=master)](http://travis-ci.org/cliffano/pkjutil)
-[![Dependencies Status](https://david-dm.org/cliffano/pkjutil.png)](http://david-dm.org/cliffano/pkjutil)
+[![Build Status](https://img.shields.io/travis/cliffano/pkjutil.svg)](http://travis-ci.org/cliffano/pkjutil)
+[![Dependencies Status](https://img.shields.io/david/cliffano/pkjutil.svg)](http://david-dm.org/cliffano/pkjutil)
 [![Coverage Status](https://coveralls.io/repos/cliffano/pkjutil/badge.png?branch=master)](https://coveralls.io/r/cliffano/pkjutil?branch=master)
 [![Published Version](https://badge.fury.io/js/pkjutil.png)](http://badge.fury.io/js/pkjutil)
 <br/>
