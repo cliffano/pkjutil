@@ -2,8 +2,8 @@
 
 [![Build Status](https://img.shields.io/travis/cliffano/pkjutil.svg)](http://travis-ci.org/cliffano/pkjutil)
 [![Dependencies Status](https://img.shields.io/david/cliffano/pkjutil.svg)](http://david-dm.org/cliffano/pkjutil)
-[![Coverage Status](https://coveralls.io/repos/cliffano/pkjutil/badge.png?branch=master)](https://coveralls.io/r/cliffano/pkjutil?branch=master)
-[![Published Version](https://badge.fury.io/js/pkjutil.png)](http://badge.fury.io/js/pkjutil)
+[![Coverage Status](https://img.shields.io/coveralls/cliffano/pkjutil.svg)](https://coveralls.io/r/cliffano/pkjutil?branch=master)
+[![Published Version](https://img.shields.io/npm/v/pkjutil.svg)](http://www.npmjs.com/package/pkjutil)
 <br/>
 [![npm Badge](https://nodei.co/npm/pkjutil.png)](http://npmjs.org/package/pkjutil)
 
