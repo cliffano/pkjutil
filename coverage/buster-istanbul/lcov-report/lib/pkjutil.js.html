@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for lib/pkjutil.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">lib/pkjutil.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(93 / 93)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(42 / 42)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(30 / 30)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(90 / 90)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">lib/</a> &#187; pkjutil.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214</td><td class="line-coverage"><span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">39</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">32</span>
+<span class="cline-any cline-yes">11</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">24</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">16</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">15</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-yes">14</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var _ = require('lodash'),
+  async = require('async'),
+  colors = require('colors'),
+  fs = require('fs'),
+  prod = require('prod'),
+  req = require('bagofrequest'),
+  semver = require('semver'),
+  util = require('util');
+&nbsp;
+const DEPENDENCY_TYPES = ['dependencies', 'devDependencies', 'peerDependencies', 'optDependencies'];
+&nbsp;
+/**
+ * class PkjUtil
+ *
+ * @param {String} file: path to package.json file
+ */
+function PkjUtil(file) {
+  this.file = file || 'package.json';
+}
+&nbsp;
+/**
+ * List dependencies.
+ *
+ * @param {String} type: dependencies type (dependencies or devDependencies), all when type is not provided
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.listDependencies = function (type, cb) {
+  fs.readFile(this.file, function (err, data) {
+    var pkg = JSON.parse(data),
+      types = type ? [type] : DEPENDENCY_TYPES,
+      modules = [];
+    _.filter(types, function (type) { return pkg[type]; }).forEach(function (type) {
+      modules = modules.concat(_.keys(pkg[type]));
+    });
+    modules = _.uniq(modules);
+    cb(err, modules);
+  });
+};
+&nbsp;
+/**
+ * Sort dependencies in alphabetical order.
+ *
+ * @param {String} type: dependencies type (dependencies or devDependencies), all when type is not provided
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.sortDependencies = function (type, cb) {
+&nbsp;
+  function process(pkg, cb) {
+    var types = type ? [type] : DEPENDENCY_TYPES,
+      modules = [];
+    _.filter(types, function (type) { return pkg[type]; }).forEach(function (type) {
+      var sorted = [];
+      _.keys(pkg[type]).sort().forEach(function (module) {
+        sorted.push(util.format('"%s": "%s"', module, pkg[type][module]));
+      });
+      pkg[type] = JSON.parse(util.format('{%s}', sorted.join(',')));
+    });
+    cb(null, pkg);
+  }
+&nbsp;
+  this._updatePackage(process, cb);
+};
+&nbsp;
+/**
+ * Traverse dependencies and group each package with its dependencies reference
+ *
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.traverseDependencies = function (cb) {
+  if (fs.existsSync('package.json') || fs.existsSync('node_modules')) {
+    prod().load(function (err, dependencies) {
+      var result;
+      if (!err) {
+        result = {};
+        dependencies.map(function(pkg) {
+          function filter(type) {
+            var checkType = (type === 'dependencies') ? '_dependencies' : type;
+            return pkg[checkType] &amp;&amp; !_.isEmpty(pkg[checkType]);
+          }
+          var name = util.format('%s@%s', pkg.name, pkg.version);
+          result[name] = {};
+          _.filter(DEPENDENCY_TYPES, filter).forEach(function (type) {
+            var checkType = (type === 'dependencies') ? '_dependencies' : type;
+            result[name][type] = pkg[checkType];
+          });
+        });
+      }
+      cb(err, result);
+    });
+  } else {
+    cb(new Error('Either package.json file or node_modules directory must exist'));
+  }
+};
+&nbsp;
+/**
+ * Upgrade version based on type.
+ *
+ * @param {String} type: version type (major, minor, patch), default to patch
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.upgradeVersion = function (type, cb) {
+&nbsp;
+  function process(pkg, cb) {
+    var version = semver.parse(pkg.version);
+    if (type === 'major') {
+      version.major += 1;
+      version.minor = 0;
+      version.patch = 0;
+    } else if (type === 'minor') {
+      version.minor += 1;
+      version.patch = 0;
+    } else {
+      version.patch += 1;
+    }
+    pkg.version = version.format();
+    cb(null, pkg);
+  }
+&nbsp;
+  this._updatePackage(process, cb);
+};
+&nbsp;
+/**
+ * Upgrade the version of each dependency to the latest published
+ * in the registry.
+ * Version range will be kept, e.g. ~0.0.1 is upgraded to ~0.0.18 .
+ * If version does not contain numeric major.minor.patch, then
+ * version is upgraded to latest, e.g. 0.0.x is upgraded to 0.0.18 . 
+ *
+ * @param {Object} opts: optional
+ *   - registry: npm registry, default to public npm registry
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.upgradeDependencies = function (opts, cb) {
+  const LIMIT = 5;
+&nbsp;
+  opts = opts || {};
+  opts.registry = opts.registry || 'https://registry.npmjs.org/';
+  if (!opts.registry.match(/\/$/)) {
+    opts.registry += '/';
+  }
+&nbsp;
+  function process(pkg, cb) {
+    function iterator(dependency, cb) {
+      var requestOpts = {
+        handlers: {
+          200: function (result, cb) {
+&nbsp;
+            var latestVersion = JSON.parse(result.body).version;
+&nbsp;
+            function update(type) {
+              var dependencies = pkg[type],
+                currVersionMatch = dependencies[dependency].match(/[0-9]+\.[0-9]+\.[0-9]+/),
+                currVersion = currVersionMatch ? currVersionMatch.toString() : null,
+                range = currVersionMatch ? dependencies[dependency].replace(/[0-9]+\.[0-9]+\.[0-9]+.*$/, '') : null;
+              
+              if (currVersion != latestVersion) {
+                dependencies[dependency] = (range || '') + latestVersion;
+                console.log('%s - %s - upgraded to %s', dependency.green, type, dependencies[dependency]);
+              } else {
+                console.log('%s - %s - already latest %s', dependency.grey, type, dependencies[dependency]);
+              }
+            }
+&nbsp;
+            _.filter(DEPENDENCY_TYPES, function (type) { return pkg[type] &amp;&amp; pkg[type][dependency]; }).forEach(function (type) {
+              update(type);
+            });
+            cb();
+          }
+        }
+      };
+      req.request('get', opts.registry + dependency + '/latest', requestOpts, cb);
+    }
+&nbsp;
+    var dependencies = [];
+    DEPENDENCY_TYPES.forEach(function (type) {
+      dependencies = _.union(dependencies, _.keys(pkg[type]));
+    });
+&nbsp;
+    async.eachLimit(dependencies, LIMIT, iterator, function (err) {
+      cb(err, pkg);
+    });
+  }
+&nbsp;
+  this._updatePackage(process, cb);
+};
+&nbsp;
+/**
+ * Read package.json file, apply process function, then overwrite the file.
+ *
+ * @param {Function} process: process function to be applied to parsed package.json
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype._updatePackage = function (process, cb) {
+  var self = this;
+  fs.readFile(this.file, function (err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      var pkg = JSON.parse(data);
+      process(pkg, function (err, result) {
+        if (err) {
+          cb(err, result);
+        } else {
+          fs.writeFile(self.file, JSON.stringify(result, null, 2), function (err) {
+            cb(err, result);
+          });
+        }
+      });
+    }
+  });
+};
+&nbsp;
+module.exports = PkjUtil;
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jun 21 2015 12:50:23 GMT+1000 (AEST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

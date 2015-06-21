@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - lib/pkjutil.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>lib/pkjutil.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">76.13</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">213</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">39.40</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.88</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">var _ = require(&#039;lodash&#039;),
+  async = require(&#039;async&#039;),
+  colors = require(&#039;colors&#039;),
+  fs = require(&#039;fs&#039;),
+  prod = require(&#039;prod&#039;),
+  req = require(&#039;bagofrequest&#039;),
+  semver = require(&#039;semver&#039;),
+  util = require(&#039;util&#039;);
+
+const DEPENDENCY_TYPES = [&#039;dependencies&#039;, &#039;devDependencies&#039;, &#039;peerDependencies&#039;, &#039;optDependencies&#039;];
+
+/**
+ * class PkjUtil
+ *
+ * @param {String} file: path to package.json file
+ */
+function PkjUtil(file) {
+  this.file = file || &#039;package.json&#039;;
+}
+
+/**
+ * List dependencies.
+ *
+ * @param {String} type: dependencies type (dependencies or devDependencies), all when type is not provided
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.listDependencies = function (type, cb) {
+  fs.readFile(this.file, function (err, data) {
+    var pkg = JSON.parse(data),
+      types = type ? [type] : DEPENDENCY_TYPES,
+      modules = [];
+    _.filter(types, function (type) { return pkg[type]; }).forEach(function (type) {
+      modules = modules.concat(_.keys(pkg[type]));
+    });
+    modules = _.uniq(modules);
+    cb(err, modules);
+  });
+};
+
+/**
+ * Sort dependencies in alphabetical order.
+ *
+ * @param {String} type: dependencies type (dependencies or devDependencies), all when type is not provided
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.sortDependencies = function (type, cb) {
+
+  function process(pkg, cb) {
+    var types = type ? [type] : DEPENDENCY_TYPES,
+      modules = [];
+    _.filter(types, function (type) { return pkg[type]; }).forEach(function (type) {
+      var sorted = [];
+      _.keys(pkg[type]).sort().forEach(function (module) {
+        sorted.push(util.format(&#039;&quot;%s&quot;: &quot;%s&quot;&#039;, module, pkg[type][module]));
+      });
+      pkg[type] = JSON.parse(util.format(&#039;{%s}&#039;, sorted.join(&#039;,&#039;)));
+    });
+    cb(null, pkg);
+  }
+
+  this._updatePackage(process, cb);
+};
+
+/**
+ * Traverse dependencies and group each package with its dependencies reference
+ *
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.traverseDependencies = function (cb) {
+  if (fs.existsSync(&#039;package.json&#039;) || fs.existsSync(&#039;node_modules&#039;)) {
+    prod().load(function (err, dependencies) {
+      var result;
+      if (!err) {
+        result = {};
+        dependencies.map(function(pkg) {
+          function filter(type) {
+            var checkType = (type === &#039;dependencies&#039;) ? &#039;_dependencies&#039; : type;
+            return pkg[checkType] &amp;&amp; !_.isEmpty(pkg[checkType]);
+          }
+          var name = util.format(&#039;%s@%s&#039;, pkg.name, pkg.version);
+          result[name] = {};
+          _.filter(DEPENDENCY_TYPES, filter).forEach(function (type) {
+            var checkType = (type === &#039;dependencies&#039;) ? &#039;_dependencies&#039; : type;
+            result[name][type] = pkg[checkType];
+          });
+        });
+      }
+      cb(err, result);
+    });
+  } else {
+    cb(new Error(&#039;Either package.json file or node_modules directory must exist&#039;));
+  }
+};
+
+/**
+ * Upgrade version based on type.
+ *
+ * @param {String} type: version type (major, minor, patch), default to patch
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.upgradeVersion = function (type, cb) {
+
+  function process(pkg, cb) {
+    var version = semver.parse(pkg.version);
+    if (type === &#039;major&#039;) {
+      version.major += 1;
+      version.minor = 0;
+      version.patch = 0;
+    } else if (type === &#039;minor&#039;) {
+      version.minor += 1;
+      version.patch = 0;
+    } else {
+      version.patch += 1;
+    }
+    pkg.version = version.format();
+    cb(null, pkg);
+  }
+
+  this._updatePackage(process, cb);
+};
+
+/**
+ * Upgrade the version of each dependency to the latest published
+ * in the registry.
+ * Version range will be kept, e.g. ~0.0.1 is upgraded to ~0.0.18 .
+ * If version does not contain numeric major.minor.patch, then
+ * version is upgraded to latest, e.g. 0.0.x is upgraded to 0.0.18 . 
+ *
+ * @param {Object} opts: optional
+ *   - registry: npm registry, default to public npm registry
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype.upgradeDependencies = function (opts, cb) {
+  const LIMIT = 5;
+
+  opts = opts || {};
+  opts.registry = opts.registry || &#039;https://registry.npmjs.org/&#039;;
+  if (!opts.registry.match(/\/$/)) {
+    opts.registry += &#039;/&#039;;
+  }
+
+  function process(pkg, cb) {
+    function iterator(dependency, cb) {
+      var requestOpts = {
+        handlers: {
+          200: function (result, cb) {
+
+            var latestVersion = JSON.parse(result.body).version;
+
+            function update(type) {
+              var dependencies = pkg[type],
+                currVersionMatch = dependencies[dependency].match(/[0-9]+\.[0-9]+\.[0-9]+/),
+                currVersion = currVersionMatch ? currVersionMatch.toString() : null,
+                range = currVersionMatch ? dependencies[dependency].replace(/[0-9]+\.[0-9]+\.[0-9]+.*$/, &#039;&#039;) : null;
+              
+              if (currVersion != latestVersion) {
+                dependencies[dependency] = (range || &#039;&#039;) + latestVersion;
+                console.log(&#039;%s - %s - upgraded to %s&#039;, dependency.green, type, dependencies[dependency]);
+              } else {
+                console.log(&#039;%s - %s - already latest %s&#039;, dependency.grey, type, dependencies[dependency]);
+              }
+            }
+
+            _.filter(DEPENDENCY_TYPES, function (type) { return pkg[type] &amp;&amp; pkg[type][dependency]; }).forEach(function (type) {
+              update(type);
+            });
+            cb();
+          }
+        }
+      };
+      req.request(&#039;get&#039;, opts.registry + dependency + &#039;/latest&#039;, requestOpts, cb);
+    }
+
+    var dependencies = [];
+    DEPENDENCY_TYPES.forEach(function (type) {
+      dependencies = _.union(dependencies, _.keys(pkg[type]));
+    });
+
+    async.eachLimit(dependencies, LIMIT, iterator, function (err) {
+      cb(err, pkg);
+    });
+  }
+
+  this._updatePackage(process, cb);
+};
+
+/**
+ * Read package.json file, apply process function, then overwrite the file.
+ *
+ * @param {Function} process: process function to be applied to parsed package.json
+ * @param {Function} cb: standard cb(err, result) callback
+ */
+PkjUtil.prototype._updatePackage = function (process, cb) {
+  var self = this;
+  fs.readFile(this.file, function (err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      var pkg = JSON.parse(data);
+      process(pkg, function (err, result) {
+        if (err) {
+          cb(err, result);
+        } else {
+          fs.writeFile(self.file, JSON.stringify(result, null, 2), function (err) {
+            cb(err, result);
+          });
+        }
+      });
+    }
+  });
+};
+
+module.exports = PkjUtil;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

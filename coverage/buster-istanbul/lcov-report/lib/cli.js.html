@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for lib/cli.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../prettify.css">
+    <link rel="stylesheet" href="../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">lib/cli.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(58 / 58)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(2 / 2)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(27 / 27)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(58 / 58)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../index.html">All files</a> &#187; <a href="index.html">lib/</a> &#187; cli.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">10</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">18</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var cli = require('bagofcli'),
+  PkjUtil = require('./pkjutil');
+&nbsp;
+function __list(type, file) {
+  pkjUtil = new PkjUtil(file);
+  pkjUtil.listDependencies(type, cli.exitCb(null, function (result) {
+    result.forEach(function (module) {
+      console.log(module);
+    });
+  }));
+}
+&nbsp;
+function _listDependencies(args) {
+  __list('dependencies', args.parent.file);
+}
+&nbsp;
+function _listDevDependencies(args) {
+  __list('devDependencies', args.parent.file);
+}
+&nbsp;
+function _listPeerDependencies(args) {
+  __list('peerDependencies', args.parent.file);
+}
+&nbsp;
+function _listOptDependencies(args) {
+  __list('optDependencies', args.parent.file);
+}
+&nbsp;
+function _listAllDependencies(args) {
+  __list(null, args.parent.file);
+}
+&nbsp;
+function __sort(type, file) {
+  pkjUtil = new PkjUtil(file);
+  pkjUtil.sortDependencies(type, cli.exitCb(null, function (pkg) {
+    console.log('Dependencies sorted');
+  }));
+}
+&nbsp;
+function _sortDependencies(args) {
+  __sort('dependencies', args.parent.file);
+}
+&nbsp;
+function _sortDevDependencies(args) {
+  __sort('devDependencies', args.parent.file);
+}
+&nbsp;
+function _sortPeerDependencies(args) {
+  __sort('peerDependencies', args.parent.file);
+}
+&nbsp;
+function _sortOptDependencies(args) {
+  __sort('optDependencies', args.parent.file);
+}
+&nbsp;
+function _sortAllDependencies(args) {
+  __sort(null, args.parent.file);
+}
+&nbsp;
+function _traverseDependencies(args) {
+  var pkjUtil = new PkjUtil();
+  pkjUtil.traverseDependencies(cli.exitCb(null, function (result) {
+    Object.keys(result).forEach(function (name) {
+      console.log('* %s', name);
+      Object.keys(result[name]).forEach(function (type) {
+        console.log('  - %s:', type);
+        Object.keys(result[name][type]).forEach(function (dependency) {
+          console.log('    - %s: %s', dependency, result[name][type][dependency]);
+        });
+      });
+    });
+  }));
+}
+&nbsp;
+function __upgradeVersion(type, file, parsable) {
+  pkjUtil = new PkjUtil(file);
+  pkjUtil.upgradeVersion(type, cli.exitCb(null, function (pkg) {
+    if (parsable) {
+      console.log(pkg.version);
+    } else {
+      console.log('Upgraded version to %s', pkg.version);
+    }
+  }));
+}
+&nbsp;
+function _upgradeVersionPatch(args) {
+  __upgradeVersion('patch', args.parent.file, args.parsable);
+}
+&nbsp;
+function _upgradeVersionMinor(args) {
+  __upgradeVersion('minor', args.parent.file, args.parsable);
+}
+&nbsp;
+function _upgradeVersionMajor(args) {
+  __upgradeVersion('major', args.parent.file, args.parsable);
+}
+&nbsp;
+function _upgradeDependencies(args) {
+  pkjUtil = new PkjUtil(args.parent.file);
+  pkjUtil.upgradeDependencies({ registry: args.registry }, cli.exit);
+}
+&nbsp;
+/**
+ * Execute PkjUtil CLI.
+ */
+function exec() {
+&nbsp;
+  var actions = {
+    commands: {
+      'list-dependencies': { action: _listDependencies },
+      'list-devdependencies': { action: _listDevDependencies },
+      'list-peerdependencies': { action: _listPeerDependencies },
+      'list-optdependencies': { action: _listOptDependencies },
+      'list-alldependencies': { action: _listAllDependencies },
+      'sort-dependencies': { action: _sortDependencies },
+      'sort-devdependencies': { action: _sortDevDependencies },
+      'sort-peerdependencies': { action: _sortPeerDependencies },
+      'sort-optdependencies': { action: _sortOptDependencies },
+      'sort-alldependencies': { action: _sortAllDependencies },
+      'traverse-dependencies': { action: _traverseDependencies },
+      'upgrade-version-patch': { action: _upgradeVersionPatch },
+      'upgrade-version-minor': { action: _upgradeVersionMinor },
+      'upgrade-version-major': { action: _upgradeVersionMajor },
+      'upgrade-version': { action: _upgradeVersionPatch },
+      'upgrade-dependencies': { action: _upgradeDependencies }
+    }
+  };
+&nbsp;
+  cli.command(__dirname, actions);
+}
+&nbsp;
+exports.exec = exec;
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Jun 21 2015 12:50:23 GMT+1000 (AEST)</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

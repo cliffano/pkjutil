@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - lib/cli.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>lib/cli.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">79.76</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">132</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">17.94</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.11</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">var cli = require(&#039;bagofcli&#039;),
+  PkjUtil = require(&#039;./pkjutil&#039;);
+
+function __list(type, file) {
+  pkjUtil = new PkjUtil(file);
+  pkjUtil.listDependencies(type, cli.exitCb(null, function (result) {
+    result.forEach(function (module) {
+      console.log(module);
+    });
+  }));
+}
+
+function _listDependencies(args) {
+  __list(&#039;dependencies&#039;, args.parent.file);
+}
+
+function _listDevDependencies(args) {
+  __list(&#039;devDependencies&#039;, args.parent.file);
+}
+
+function _listPeerDependencies(args) {
+  __list(&#039;peerDependencies&#039;, args.parent.file);
+}
+
+function _listOptDependencies(args) {
+  __list(&#039;optDependencies&#039;, args.parent.file);
+}
+
+function _listAllDependencies(args) {
+  __list(null, args.parent.file);
+}
+
+function __sort(type, file) {
+  pkjUtil = new PkjUtil(file);
+  pkjUtil.sortDependencies(type, cli.exitCb(null, function (pkg) {
+    console.log(&#039;Dependencies sorted&#039;);
+  }));
+}
+
+function _sortDependencies(args) {
+  __sort(&#039;dependencies&#039;, args.parent.file);
+}
+
+function _sortDevDependencies(args) {
+  __sort(&#039;devDependencies&#039;, args.parent.file);
+}
+
+function _sortPeerDependencies(args) {
+  __sort(&#039;peerDependencies&#039;, args.parent.file);
+}
+
+function _sortOptDependencies(args) {
+  __sort(&#039;optDependencies&#039;, args.parent.file);
+}
+
+function _sortAllDependencies(args) {
+  __sort(null, args.parent.file);
+}
+
+function _traverseDependencies(args) {
+  var pkjUtil = new PkjUtil();
+  pkjUtil.traverseDependencies(cli.exitCb(null, function (result) {
+    Object.keys(result).forEach(function (name) {
+      console.log(&#039;* %s&#039;, name);
+      Object.keys(result[name]).forEach(function (type) {
+        console.log(&#039;  - %s:&#039;, type);
+        Object.keys(result[name][type]).forEach(function (dependency) {
+          console.log(&#039;    - %s: %s&#039;, dependency, result[name][type][dependency]);
+        });
+      });
+    });
+  }));
+}
+
+function __upgradeVersion(type, file, parsable) {
+  pkjUtil = new PkjUtil(file);
+  pkjUtil.upgradeVersion(type, cli.exitCb(null, function (pkg) {
+    if (parsable) {
+      console.log(pkg.version);
+    } else {
+      console.log(&#039;Upgraded version to %s&#039;, pkg.version);
+    }
+  }));
+}
+
+function _upgradeVersionPatch(args) {
+  __upgradeVersion(&#039;patch&#039;, args.parent.file, args.parsable);
+}
+
+function _upgradeVersionMinor(args) {
+  __upgradeVersion(&#039;minor&#039;, args.parent.file, args.parsable);
+}
+
+function _upgradeVersionMajor(args) {
+  __upgradeVersion(&#039;major&#039;, args.parent.file, args.parsable);
+}
+
+function _upgradeDependencies(args) {
+  pkjUtil = new PkjUtil(args.parent.file);
+  pkjUtil.upgradeDependencies({ registry: args.registry }, cli.exit);
+}
+
+/**
+ * Execute PkjUtil CLI.
+ */
+function exec() {
+
+  var actions = {
+    commands: {
+      &#039;list-dependencies&#039;: { action: _listDependencies },
+      &#039;list-devdependencies&#039;: { action: _listDevDependencies },
+      &#039;list-peerdependencies&#039;: { action: _listPeerDependencies },
+      &#039;list-optdependencies&#039;: { action: _listOptDependencies },
+      &#039;list-alldependencies&#039;: { action: _listAllDependencies },
+      &#039;sort-dependencies&#039;: { action: _sortDependencies },
+      &#039;sort-devdependencies&#039;: { action: _sortDevDependencies },
+      &#039;sort-peerdependencies&#039;: { action: _sortPeerDependencies },
+      &#039;sort-optdependencies&#039;: { action: _sortOptDependencies },
+      &#039;sort-alldependencies&#039;: { action: _sortAllDependencies },
+      &#039;traverse-dependencies&#039;: { action: _traverseDependencies },
+      &#039;upgrade-version-patch&#039;: { action: _upgradeVersionPatch },
+      &#039;upgrade-version-minor&#039;: { action: _upgradeVersionMinor },
+      &#039;upgrade-version-major&#039;: { action: _upgradeVersionMajor },
+      &#039;upgrade-version&#039;: { action: _upgradeVersionPatch },
+      &#039;upgrade-dependencies&#039;: { action: _upgradeDependencies }
+    }
+  };
+
+  cli.command(__dirname, actions);
+}
+
+exports.exec = exec;</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
