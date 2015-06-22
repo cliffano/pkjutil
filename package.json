@@ -30,17 +30,17 @@
     "test": "./test"
   },
   "dependencies": {
-    "async": "^0.9.0",
-    "bagofcli": "^0.2.1",
-    "bagofrequest": "^0.1.0",
-    "colors": "^1.1.0",
-    "lodash": "^3.7.0",
+    "async": "^1.2.1",
+    "bagofcli": "^0.2.2",
+    "bagofrequest": "^0.1.1",
+    "colors": "^1.1.2",
+    "lodash": "^3.9.3",
     "prod": "^1.0.0",
-    "semver": "^4.3.3"
+    "semver": "^4.3.6"
   },
   "devDependencies": {
     "buster-node": "^0.7.1",
-    "proxyquire": "^1.4.0",
+    "proxyquire": "^1.5.0",
     "referee": "^1.1.1"
   },
   "scripts": {},
