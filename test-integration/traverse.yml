@@ -1,7 +1,7 @@
 # can't 'npm install pkjutil' since it will find ancestor package.json above .bob
 # need to copy package.json to test directory and 'npm install' it from there
 - fixtures:
-    - package.json
+    - ./package.json
 
 - params:
     pkjutil: ../../../../../bin/pkjutil
