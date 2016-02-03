@@ -1,3 +1,6 @@
+### 1.0.0
+*
+
 ### 0.1.3
 * Modify traverseDependencies to check for the existence of package.json and node_modules
 
