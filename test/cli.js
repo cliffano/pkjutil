@@ -14,6 +14,7 @@ buster.testCase('cli - exec', {
       assert.defined(actions.commands['list-peerdependencies'].action);
       assert.defined(actions.commands['list-optdependencies'].action);
       assert.defined(actions.commands['list-alldependencies'].action);
+      assert.defined(actions.commands['set-node-engine'].action);
       assert.defined(actions.commands['sort-dependencies'].action);
       assert.defined(actions.commands['sort-devdependencies'].action);
       assert.defined(actions.commands['sort-peerdependencies'].action);
@@ -263,6 +264,22 @@ buster.testCase('cli - upgrade-dependencies', {
     });
     this.mockProcess.expects('exit').once().withExactArgs(0);
     this.stub(PkjUtil.prototype, 'upgradeDependencies', function (opts, cb) {
+      cb(null);
+    });
+    cli.exec();
+  }
+});
+
+buster.testCase('cli - set-node-engine', {
+  setUp: function () {
+    this.mockProcess = this.mock(process);
+  },
+  'set-node-engine should pass correct version, then exit': function () {
+    this.stub(_cli, 'command', function (base, actions) {
+      actions.commands['set-node-engine'].action({ version: '>= 4.0' });
+    });
+    this.mockProcess.expects('exit').once().withExactArgs(0);
+    this.stub(PkjUtil.prototype, 'setNodeEngine', function (opts, cb) {
       cb(null);
     });
     cli.exec();

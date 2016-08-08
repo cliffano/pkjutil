@@ -1,5 +1,5 @@
 ### 1.0.1
-*
+* Add set-node-engine command
 
 ### 1.0.0
 * Major version upgrade only
@@ -34,7 +34,7 @@
 * Add sort-dependencies, sort-devdependencies, sort-alldependencies commands
 
 ### 0.0.2
-* Add range version support to dependencies upgrade 
+* Add range version support to dependencies upgrade
 
 ### 0.0.1
 * Initial version

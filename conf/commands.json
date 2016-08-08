@@ -30,6 +30,15 @@
         "pkjutil upgrade-version --parsable"
       ]
     },
+    "set-node-engine": {
+      "desc": "Set node engine version",
+      "args": [
+        { "name": "version", "rules": [ "required" ] }
+      ],
+      "examples": [
+        "pkjutil set-node-engine \">= 4.0.0\""
+      ]
+    },
     "upgrade-dependencies": {
       "desc": "Upgrade all dependencies to latest version",
       "options": [

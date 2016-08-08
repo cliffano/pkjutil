@@ -35,6 +35,22 @@ buster.testCase('pkjutil - listDependencies', {
   }
 });
 
+buster.testCase('pkjutil - setNodeEngine', {
+  setUp: function () {
+    this.mockFs = this.mock(fs);
+    this.pkjUtil = new PkjUtil();
+    this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, null, '{"engines": { "node": "> 1.0.0"}}');
+    this.mockFs.expects('writeFile').once().callsArgWith(2, null);
+  },
+  'should set node engine value': function (done) {
+    this.pkjUtil.setNodeEngine('>= 4.0.0', function (err, pkg) {
+      assert.isNull(err);
+      assert.equals(JSON.stringify(pkg.engines), '{"node":">= 4.0.0"}');
+      done();
+    });
+  }
+});
+
 buster.testCase('pkjutil - sortDependencies', {
   setUp: function () {
     this.mockFs = this.mock(fs);
@@ -93,7 +109,7 @@ buster.testCase('pkjutil - traverseDependencies', {
       return {
         load: function (cb) {
           var dependencies = [
-            { 
+            {
               name: 'dep1',
               version: '0.0.1',
               _dependencies: {
@@ -115,7 +131,7 @@ buster.testCase('pkjutil - traverseDependencies', {
 
     var PkjUtil = proxyquire('../lib/pkjutil', { 'prod': mockProd }),
       pkjUtil = new PkjUtil();
-    
+
     pkjUtil.traverseDependencies(function (err, result) {
       assert.isNull(err);
 
@@ -130,7 +146,7 @@ buster.testCase('pkjutil - traverseDependencies', {
   'should pass error to callback when neither package.json nor node_modules exist': function (done) {
     this.mockFs.expects('existsSync').once().withArgs('package.json').returns(false);
     this.mockFs.expects('existsSync').once().withArgs('node_modules').returns(false);
-    var pkjUtil = new PkjUtil(); 
+    var pkjUtil = new PkjUtil();
     pkjUtil.traverseDependencies(function (err, result) {
       assert.equals(err.message, 'Either package.json file or node_modules directory must exist');
       done();
@@ -244,7 +260,7 @@ buster.testCase('pkjutil - upgradeDependencies', {
   },
   'should pass error to callback when upgrade dependencies fail': function (done) {
     this.mockFs.expects('readFile').once().withArgs('package.json').callsArgWith(1, null, '{"dependencies":{"dep1":"0.0.1","dep2":"0.0.2"}}');
-    
+
     var mockRequest = function (method, url, opts, cb) {
       assert.equals(method, 'get');
       cb(new Error('some error'));
