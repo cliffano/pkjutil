@@ -13,4 +13,4 @@
 - description: Command traverse-dependencies should display dependencies list
   command: '{pkjutil} traverse-dependencies'
   exitcode: 0
-  output: '^\* pkjutil@.+'
+  output: '\* pkjutil@.+'
