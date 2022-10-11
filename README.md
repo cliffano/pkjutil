@@ -89,12 +89,12 @@ Traverse dependencies, similar to 'npm ls' but listing dependency references ins
 Colophon
 --------
 
-[Developer's Guide](http://cliffano.github.io/developers_guide.html#nodejs)
+[Developer's Guide](https://cliffano.github.io/developers_guide.html#nodejs)
 
 Build reports:
 
-* [Code complexity report](http://cliffano.github.io/pkjutil/complexity/plato/index.html)
-* [Unit tests report](http://cliffano.github.io/pkjutil/test/buster.out)
-* [Test coverage report](http://cliffano.github.io/pkjutil/coverage/buster-istanbul/lcov-report/lib/index.html)
-* [Integration tests report](http://cliffano.github.io/pkjutil/test-integration/cmdt.out)
-* [API Documentation](http://cliffano.github.io/pkjutil/doc/dox-foundation/index.html)
+* [Code complexity report](https://cliffano.github.io/pkjutil/complexity/plato/index.html)
+* [Unit tests report](https://cliffano.github.io/pkjutil/test/buster.out)
+* [Test coverage report](https://cliffano.github.io/pkjutil/coverage/buster-istanbul/lcov-report/lib/index.html)
+* [Integration tests report](https://cliffano.github.io/pkjutil/test-integration/cmdt.out)
+* [API Documentation](https://cliffano.github.io/pkjutil/doc/dox-foundation/index.html)
