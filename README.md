@@ -1,9 +1,13 @@
-<img align="right" src="https://raw.github.com/cliffano/pkjutil/master/avatar.jpg" alt="Avatar"/>
+<!-- BEGIN:AVATAR -->
+![Avatar](avatar.jpg)
+<!-- END:AVATAR -->
 
+<!-- BEGIN:BADGES -->
 [![Build Status](https://img.shields.io/travis/cliffano/pkjutil.svg)](http://travis-ci.org/cliffano/pkjutil)
 [![Dependencies Status](https://img.shields.io/david/cliffano/pkjutil.svg)](http://david-dm.org/cliffano/pkjutil)
-[![Coverage Status](https://img.shields.io/coveralls/cliffano/pkjutil.svg)](https://coveralls.io/r/cliffano/pkjutil?branch=master)
+[![Coverage Status](https://img.shields.io/coveralls/cliffano/pkjutil.svg)](https://coveralls.io/r/cliffano/pkjutil?branch=main)
 [![Published Version](https://img.shields.io/npm/v/pkjutil.svg)](http://www.npmjs.com/package/pkjutil)
+<!-- END:BADGES -->
 <br/>
 [![npm Badge](https://nodei.co/npm/pkjutil.png)](http://npmjs.org/package/pkjutil)
 
@@ -17,80 +21,117 @@ This is handy for upgrading major/minor/patch version in package.json file, and 
 Installation
 ------------
 
-    npm install -g pkjutil
+```shell
+npm install -g pkjutil
+```
 
 Usage
 -----
 
 Upgrade patch version number:
 
-    pkjutil upgrade-version
+```text
+pkjutil upgrade-version
+```
 
 Upgrade minor version number with custom package.json file path:
 
-    pkjutil upgrade-version-minor --file /tmp/package.json
+```text
+pkjutil upgrade-version-minor --file /tmp/package.json
+```
 
 Upgrade major version number:
 
-    pkjutil upgrade-version-major
+```text
+pkjutil upgrade-version-major
+```
 
 Upgrade dependencies:
 
-    pkjutil upgrade-dependencies
+```text
+pkjutil upgrade-dependencies
+```
 
 Upgrade dependencies using custom registry:
 
-    pkjutil upgrade-dependencies --registry http://someregistry
+```text
+pkjutil upgrade-dependencies --registry http://someregistry
+```
 
 List dependencies:
 
-    pkjutil list-dependencies
+```text
+pkjutil list-dependencies
+```
 
 List dev dependencies:
 
-    pkjutil list-devdependencies
+```text
+pkjutil list-devdependencies
+```
 
 List peer dependencies:
 
-    pkjutil list-peerdependencies
+```text
+pkjutil list-peerdependencies
+```
 
 List optional dependencies (non-standard property in package.json):
 
-    pkjutil list-optdependencies
+```text
+pkjutil list-optdependencies
+```
 
 List dependencies and dev dependencies:
 
-    pkjutil list-alldependencies
+```text
+pkjutil list-alldependencies
+```
 
 Sort dependencies:
 
-    pkjutil sort-dependencies
+```text
+pkjutil sort-dependencies
+```
 
 Sort dev dependencies:
 
-    pkjutil sort-devdependencies
+```text
+pkjutil sort-devdependencies
+```
 
 Sort peer dependencies:
 
-    pkjutil sort-peerdependencies
+```text
+pkjutil sort-peerdependencies
+```
 
 Sort optional dependencies (non-standard property in package.json):
 
-    pkjutil sort-optdependencies
+```text
+pkjutil sort-optdependencies
+```
 
 Sort dependencies and dev dependencies:
 
-    pkjutil sort-alldependencies
+```text
+pkjutil sort-alldependencies
+```
 
 Traverse dependencies, similar to 'npm ls' but listing dependency references instead of versions:
 
-    pkjutil traverse-dependencies
+```text
+pkjutil traverse-dependencies
+```
 
 Colophon
 --------
 
+<!-- BEGIN:DEVELOPERS_GUIDE -->
 [Developer's Guide](https://cliffano.github.io/developers_guide.html#nodejs)
+<!-- END:DEVELOPERS_GUIDE -->
 
+<!-- BEGIN:BUILD_REPORTS -->
 Build reports:
 
 * [Code complexity report](https://cliffano.github.io/pkjutil/complexity/plato/index.html)
@@ -98,3 +139,4 @@ Build reports:
 * [Test coverage report](https://cliffano.github.io/pkjutil/coverage/buster-istanbul/lcov-report/lib/index.html)
 * [Integration tests report](https://cliffano.github.io/pkjutil/test-integration/cmdt.out)
 * [API Documentation](https://cliffano.github.io/pkjutil/doc/dox-foundation/index.html)
+<!-- END:BUILD_REPORTS -->
