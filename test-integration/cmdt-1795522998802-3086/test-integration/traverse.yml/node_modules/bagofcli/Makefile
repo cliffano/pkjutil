@@ -4,7 +4,7 @@
 ################################################################
 
 # Suntory info
-SUNTORY_VERSION = 1.9.1-pre.0
+SUNTORY_VERSION = 1.10.0
 
 UPDATE_GH_ID = cliffano
 UPDATE_MAKEFILE = suntory

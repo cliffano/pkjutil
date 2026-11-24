@@ -1,4 +1,4 @@
-Using directory: .bob/test-integration/cmdt-1795521287079-2880
+Using directory: .bob/test-integration/cmdt-1795522998802-3086
 
 test-integration/commands.yml ..................
 test-integration/traverse.yml ..

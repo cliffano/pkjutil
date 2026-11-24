@@ -1,4 +1,4 @@
-test | /opt/hostedtoolcache/node/26.13.1/x64/lib/node_modules/bob/node_modules/.bin/mocha --colors --reporter spec --recursive test/
+test | /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules/bob/node_modules/.bin/mocha --colors --reporter spec --recursive test/
 
 [0m[0m
 [0m  cli - exec[0m
@@ -49,8 +49,6 @@ test | /opt/hostedtoolcache/node/26.13.1/x64/lib/node_modules/bob/node_modules/.
 
 [0m  pkjutil - traverseDependencies[0m
   [32m  [32m✔[39m[0m[90m should pass error when prod load gets an error[0m
-(node:2773) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
-(Use `node --trace-deprecation ...` to show where the warning was created)
   [32m  [32m✔[39m[0m[90m should format dependencies result[0m
   [32m  [32m✔[39m[0m[90m should pass error to callback when neither package.json nor node_modules exist[0m
 
@@ -72,7 +70,7 @@ test | /opt/hostedtoolcache/node/26.13.1/x64/lib/node_modules/bob/node_modules/.
   [32m  [32m✔[39m[0m[90m should do nothing when package.json does not specify dependencies, devDependencies, peerDependencies field[0m
 
 
-[92m [0m[32m 42 passing[0m[90m (81ms)[0m
+[92m [0m[32m 42 passing[0m[90m (92ms)[0m
 
 SUCCESS | exit code 0
 ------------|---------|----------|---------|---------|-------------------
