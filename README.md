@@ -3,140 +3,143 @@
 <!-- END:AVATAR -->
 
 <!-- BEGIN:BADGES -->
-[![Build Status](https://img.shields.io/travis/cliffano/pkjutil.svg)](http://travis-ci.org/cliffano/pkjutil)
-[![Dependencies Status](https://img.shields.io/david/cliffano/pkjutil.svg)](http://david-dm.org/cliffano/pkjutil)
-[![Coverage Status](https://img.shields.io/coveralls/cliffano/pkjutil.svg)](https://coveralls.io/r/cliffano/pkjutil?branch=main)
-[![Published Version](https://img.shields.io/npm/v/pkjutil.svg)](http://www.npmjs.com/package/pkjutil)
+[![Build Status](https://github.com/cliffano/pkjutil/workflows/CI/badge.svg)](https://github.com/cliffano/pkjutil/actions?query=workflow%3ACI)
+[![Dependencies Status](https://img.shields.io/librariesio/release/npm/pkjutil)](https://libraries.io/npm/pkjutil)
+[![Code Scanning Status](https://github.com/cliffano/pkjutil/workflows/CodeQL/badge.svg)](https://github.com/cliffano/pkjutil/actions?query=workflow%3ACodeQL)
+[![Coverage Status](https://coveralls.io/repos/github/cliffano/pkjutil/badge.svg?branch=main)](https://coveralls.io/r/cliffano/pkjutil?branch=main)
+[![Security Status](https://snyk.io/test/github/cliffano/pkjutil/badge.svg)](https://snyk.io/test/github/cliffano/pkjutil)
+[![Published Version](https://img.shields.io/npm/v/pkjutil.svg)](https://www.npmjs.com/package/pkjutil)
 <!-- END:BADGES -->
-<br/>
-[![npm Badge](https://nodei.co/npm/pkjutil.png)](http://npmjs.org/package/pkjutil)
 
-PkjUtil 
-------
+# PkjUtil
 
 PkjUtil is a package.json utility tool.
 
 This is handy for upgrading major/minor/patch version in package.json file, and also to upgrade all dependencies to latest version.
 
-Installation
-------------
+## Installation
 
-```shell
+```bash
 npm install -g pkjutil
 ```
 
-Usage
------
+## Usage
 
 Upgrade patch version number:
 
-```text
+```bash
 pkjutil upgrade-version
 ```
 
 Upgrade minor version number with custom package.json file path:
 
-```text
+```bash
 pkjutil upgrade-version-minor --file /tmp/package.json
 ```
 
 Upgrade major version number:
 
-```text
+```bash
 pkjutil upgrade-version-major
 ```
 
 Upgrade dependencies:
 
-```text
+```bash
 pkjutil upgrade-dependencies
 ```
 
 Upgrade dependencies using custom registry:
 
-```text
+```bash
 pkjutil upgrade-dependencies --registry http://someregistry
 ```
 
 List dependencies:
 
-```text
+```bash
 pkjutil list-dependencies
 ```
 
 List dev dependencies:
 
-```text
+```bash
 pkjutil list-devdependencies
 ```
 
 List peer dependencies:
 
-```text
+```bash
 pkjutil list-peerdependencies
 ```
 
 List optional dependencies (non-standard property in package.json):
 
-```text
+```bash
 pkjutil list-optdependencies
 ```
 
 List dependencies and dev dependencies:
 
-```text
+```bash
 pkjutil list-alldependencies
 ```
 
 Sort dependencies:
 
-```text
+```bash
 pkjutil sort-dependencies
 ```
 
 Sort dev dependencies:
 
-```text
+```bash
 pkjutil sort-devdependencies
 ```
 
 Sort peer dependencies:
 
-```text
+```bash
 pkjutil sort-peerdependencies
 ```
 
 Sort optional dependencies (non-standard property in package.json):
 
-```text
+```bash
 pkjutil sort-optdependencies
 ```
 
 Sort dependencies and dev dependencies:
 
-```text
+```bash
 pkjutil sort-alldependencies
 ```
 
 Traverse dependencies, similar to 'npm ls' but listing dependency references instead of versions:
 
-```text
+```bash
 pkjutil traverse-dependencies
 ```
 
-Colophon
---------
+Show help guide:
+
+```bash
+pkjutil --help
+```
+
+## Colophon
 
 <!-- BEGIN:DEVELOPERS_GUIDE -->
-[Developer's Guide](https://cliffano.github.io/developers_guide.html#nodejs)
+[Developer's Guide](https://cliffano.github.io/developers-guide-nodejs.html)
 <!-- END:DEVELOPERS_GUIDE -->
 
 <!-- BEGIN:BUILD_REPORTS -->
 Build reports:
 
 * [Code complexity report](https://cliffano.github.io/pkjutil/complexity/plato/index.html)
-* [Unit tests report](https://cliffano.github.io/pkjutil/test/buster.out)
-* [Test coverage report](https://cliffano.github.io/pkjutil/coverage/buster-istanbul/lcov-report/lib/index.html)
-* [Integration tests report](https://cliffano.github.io/pkjutil/test-integration/cmdt.out)
-* [API Documentation](https://cliffano.github.io/pkjutil/doc/dox-foundation/index.html)
+* [Unit tests report](https://cliffano.github.io/pkjutil/test/mocha.txt)
+* [Test coverage report](https://cliffano.github.io/pkjutil/coverage/c8/index.html)
+* [Integration tests report](https://cliffano.github.io/pkjutil/test-integration/cmdt.txt)
+* [API Documentation](https://cliffano.github.io/pkjutil/doc/jsdoc/index.html)
+
 <!-- END:BUILD_REPORTS -->

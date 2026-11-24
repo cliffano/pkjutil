@@ -1,0 +1,15 @@
+---
+package_name: pkjutil
+author: Cliffano Subagio
+generator:
+  component: node-cli
+  inputs:
+    project_id: pkjutil
+    project_name: PkjUtil
+    project_desc: Package.json utility tool
+    author_name: Cliffano Subagio
+    author_email: cliffano@gmail.com
+    author_url: https://github.com/cliffano
+    github_id: cliffano
+    github_repo: pkjutil
+    github_token_prefix: STUDIO

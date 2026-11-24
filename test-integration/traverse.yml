@@ -4,7 +4,7 @@
     - ./package.json
 
 - params:
-    pkjutil: ../../../../../bin/pkjutil
+    pkjutil: ../../../../../bin/pkjutil.js
 
 - description: Install dependencies to traverse
   command: 'npm install .'

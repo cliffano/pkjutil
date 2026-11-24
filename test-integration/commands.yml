@@ -2,7 +2,7 @@
     - test-integration/fixtures
 
 - params:
-    pkjutil: ../../../../../bin/pkjutil --file somepackage.json
+    pkjutil: ../../../../../bin/pkjutil.js --file somepackage.json
 
 - description: Command help should display help information
   command: '{pkjutil} --help'
