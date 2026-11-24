@@ -47,7 +47,9 @@
   [32m  [32m✔[39m[0m[90m should sort all dependency types module names when type is null[0m
 
 [0m  pkjutil - traverseDependencies[0m
-  [32m  [32m✔[39m[0m[90m should pass error when prod load gets an error[0m[33m (57ms)[0m
+  [32m  [32m✔[39m[0m[90m should pass error when prod load gets an error[0m
+(node:2773) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
   [32m  [32m✔[39m[0m[90m should format dependencies result[0m
   [32m  [32m✔[39m[0m[90m should pass error to callback when neither package.json nor node_modules exist[0m
 
@@ -69,5 +71,5 @@
   [32m  [32m✔[39m[0m[90m should do nothing when package.json does not specify dependencies, devDependencies, peerDependencies field[0m
 
 
-[92m [0m[32m 42 passing[0m[90m (136ms)[0m
+[92m [0m[32m 42 passing[0m[90m (81ms)[0m
 
