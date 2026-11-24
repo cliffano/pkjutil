@@ -92,4 +92,4 @@
 - description: Command upgrade-dependencies should fail when registry does not exist
   command: '{pkjutil} upgrade-dependencies --registry http://inexistingregistry:12345'
   exitcode: 1
-  output: 'getaddrinfo ENOTFOUND'
+  output: 'getaddrinfo (ENOTFOUND|EAI_AGAIN)'
