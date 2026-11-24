@@ -1,0 +1,34 @@
+{
+  "options": [
+    { "arg": "--myopt1 <value>", "desc": "Global option 1" },
+    { "arg": "--myopt2 <value>", "desc": "Global option 2" }
+  ],
+  "commands": {
+    "mycommand1": {
+      "desc": "My command 1 description",
+      "args": [
+        { "name": "myarg1a", "rules": [ "required" ] },
+        { "name": "myarg1b", "rules": [ "required" ] }
+      ],
+      "options": [
+        { "arg": "--mycmd1opt <value>", "desc": "A command option, applicable only to mycommand1" }
+      ],
+      "examples": [
+        "basecommand mycommand1 myarg1a myarg1b"
+      ]
+    },
+    "mycommand2": {
+      "desc": "My command 2 description",
+      "args": [
+        { "name": "myarg2a", "rules": [ "required" ] },
+        { "name": "myarg2b", "rules": [ "required" ] }
+      ],
+      "options": [
+        { "arg": "--mycmd2opt <value>", "desc": "A command option, applicable only to mycommand2" }
+      ],
+      "examples": [
+        "basecommand mycommand1 myarg2a myarg2b"
+      ]
+    }
+  }
+}

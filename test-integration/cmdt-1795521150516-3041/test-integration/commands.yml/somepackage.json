@@ -1,0 +1,19 @@
+{
+  "name": "somename",
+  "version": "2.0.2",
+  "dependencies": {
+    "a": "~4.0.8",
+    "m": "~1.10.0",
+    "z": "~1.0.9"
+  },
+  "devDependencies": {
+    "n": "~12.0.0",
+    "x": "~0.1.2"
+  },
+  "peerDependencies": {
+    "x": "~0.1.2"
+  },
+  "optDependencies": {
+    "n": "~12.0.0"
+  }
+}

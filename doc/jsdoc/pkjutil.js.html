@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>pkjutil.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html">PkjUtil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#listDependencies">listDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#setNodeEngine">setNodeEngine</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#sortDependencies">sortDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#traverseDependencies">traverseDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#upgradeDependencies">upgradeDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#upgradeVersion">upgradeVersion</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-cli.html">cli</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-cli.html#~exec">exec</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-pkjutil.html">pkjutil</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">pkjutil.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module pkjutil
+ */
+"use strict";
+import _ from "lodash";
+import async from "async";
+import "colors";
+import fs from "fs";
+import prod from "prod";
+import req from "bagofrequest";
+import semver from "semver";
+import util from "util";
+
+const DEPENDENCY_TYPES = [
+  "dependencies",
+  "devDependencies",
+  "peerDependencies",
+  "optDependencies",
+];
+
+/**
+ * Utility for reading and modifying a package.json file.
+ */
+class PkjUtil {
+  /**
+   * Constructor for initialising PkjUtil.
+   *
+   * @param {String} [file=package.json] - path to package.json file
+   */
+  constructor(file) {
+    this.file = file || "package.json";
+  }
+
+  /**
+   * List dependencies.
+   *
+   * @param {String} [type] - dependencies type (dependencies,
+   *   devDependencies, peerDependencies, optDependencies), all types when
+   *   not provided
+   * @param {Function} cb - standard cb(err, result) callback
+   */
+  listDependencies(type, cb) {
+    fs.readFile(this.file, function (err, data) {
+      const pkg = JSON.parse(data);
+      const types = type ? [type] : DEPENDENCY_TYPES;
+      let modules = [];
+      _.filter(types, function (type) {
+        return pkg[type];
+      }).forEach(function (type) {
+        modules = modules.concat(_.keys(pkg[type]));
+      });
+      modules = _.uniq(modules);
+      cb(err, modules);
+    });
+  }
+
+  /**
+   * Sort dependencies in alphabetical order.
+   *
+   * @param {String} [type] - dependencies type (dependencies,
+   *   devDependencies, peerDependencies, optDependencies), all types when
+   *   not provided
+   * @param {Function} cb - standard cb(err, result) callback
+   */
+  sortDependencies(type, cb) {
+    function process(pkg, cb) {
+      const types = type ? [type] : DEPENDENCY_TYPES;
+      _.filter(types, function (type) {
+        return pkg[type];
+      }).forEach(function (type) {
+        const sorted = [];
+        _.keys(pkg[type])
+          .sort()
+          .forEach(function (module) {
+            sorted.push(util.format('"%s": "%s"', module, pkg[type][module]));
+          });
+        pkg[type] = JSON.parse(util.format("{%s}", sorted.join(",")));
+      });
+      cb(null, pkg);
+    }
+
+    this._updatePackage(process, cb);
+  }
+
+  /**
+   * Traverse dependencies and group each package with its dependencies
+   * reference.
+   *
+   * @param {Function} cb - standard cb(err, result) callback
+   */
+  traverseDependencies(cb) {
+    if (fs.existsSync("package.json") || fs.existsSync("node_modules")) {
+      prod().load(function (err, dependencies) {
+        let result;
+        if (!err) {
+          result = {};
+          dependencies.map(function (pkg) {
+            function filter(type) {
+              const checkType =
+                type === "dependencies" ? "_dependencies" : type;
+              return pkg[checkType] &amp;&amp; !_.isEmpty(pkg[checkType]);
+            }
+            const name = util.format("%s@%s", pkg.name, pkg.version);
+            result[name] = {};
+            _.filter(DEPENDENCY_TYPES, filter).forEach(function (type) {
+              const checkType =
+                type === "dependencies" ? "_dependencies" : type;
+              result[name][type] = pkg[checkType];
+            });
+          });
+        }
+        cb(err, result);
+      });
+    } else {
+      cb(
+        new Error(
+          "Either package.json file or node_modules directory must exist",
+        ),
+      );
+    }
+  }
+
+  /**
+   * Upgrade version based on type.
+   *
+   * @param {String} [type=patch] - version type (major, minor, patch)
+   * @param {Function} cb - standard cb(err, result) callback
+   */
+  upgradeVersion(type, cb) {
+    function process(pkg, cb) {
+      const version = semver.parse(pkg.version);
+      if (type === "major") {
+        version.major += 1;
+        version.minor = 0;
+        version.patch = 0;
+      } else if (type === "minor") {
+        version.minor += 1;
+        version.patch = 0;
+      } else {
+        version.patch += 1;
+      }
+      pkg.version = version.format();
+      cb(null, pkg);
+    }
+
+    this._updatePackage(process, cb);
+  }
+
+  /**
+   * Upgrade the version of each dependency to the latest published
+   * in the registry.
+   * Version range will be kept, e.g. ~0.0.1 is upgraded to ~0.0.18 .
+   * If version does not contain numeric major.minor.patch, then
+   * version is upgraded to latest, e.g. 0.0.x is upgraded to 0.0.18 .
+   *
+   * @param {Object} [opts] - optional settings
+   * @param {String} [opts.registry=https://registry.npmjs.org/] - npm
+   *   registry URL
+   * @param {Function} cb - standard cb(err, result) callback
+   */
+  upgradeDependencies(opts, cb) {
+    const LIMIT = 5;
+
+    opts = opts || {};
+    opts.registry = opts.registry || "https://registry.npmjs.org/";
+    if (!opts.registry.match(/\/$/)) {
+      opts.registry += "/";
+    }
+
+    function process(pkg, cb) {
+      function iterator(dependency, cb) {
+        const requestOpts = {
+          handlers: {
+            200: function (result, cb) {
+              const latestVersion = JSON.parse(result.body).version;
+
+              function update(type) {
+                const dependencies = pkg[type];
+                const currVersionMatch = dependencies[dependency].match(
+                  /[0-9]+\.[0-9]+\.[0-9]+/,
+                );
+                const currVersion = currVersionMatch
+                  ? currVersionMatch.toString()
+                  : null;
+                const range = currVersionMatch
+                  ? dependencies[dependency].replace(
+                      /[0-9]+\.[0-9]+\.[0-9]+.*$/,
+                      "",
+                    )
+                  : null;
+
+                if (currVersion != latestVersion) {
+                  dependencies[dependency] = (range || "") + latestVersion;
+                  console.log(
+                    "%s - %s - upgraded to %s",
+                    dependency.green,
+                    type,
+                    dependencies[dependency],
+                  );
+                } else {
+                  console.log(
+                    "%s - %s - already latest %s",
+                    dependency.grey,
+                    type,
+                    dependencies[dependency],
+                  );
+                }
+              }
+
+              _.filter(DEPENDENCY_TYPES, function (type) {
+                return pkg[type] &amp;&amp; pkg[type][dependency];
+              }).forEach(function (type) {
+                update(type);
+              });
+              cb();
+            },
+          },
+        };
+        req.request(
+          "get",
+          opts.registry + dependency + "/latest",
+          requestOpts,
+          cb,
+        );
+      }
+
+      let dependencies = [];
+      DEPENDENCY_TYPES.forEach(function (type) {
+        dependencies = _.union(dependencies, _.keys(pkg[type]));
+      });
+
+      async.eachLimit(dependencies, LIMIT, iterator, function (err) {
+        cb(err, pkg);
+      });
+    }
+
+    this._updatePackage(process, cb);
+  }
+
+  /**
+   * Set the node engine version.
+   *
+   * @param {String} version - node engine version, e.g. >= 4.0
+   * @param {Function} cb - standard cb(err, result) callback
+   */
+  setNodeEngine(version, cb) {
+    function process(pkg, cb) {
+      pkg.engines.node = version;
+      cb(null, pkg);
+    }
+
+    this._updatePackage(process, cb);
+  }
+
+  /**
+   * Read package.json file, apply process function, then overwrite the file.
+   *
+   * @private
+   * @param {Function} process - process function to be applied to parsed
+   *   package.json
+   * @param {Function} cb - standard cb(err, result) callback
+   */
+  _updatePackage(process, cb) {
+    const self = this;
+    fs.readFile(this.file, function (err, data) {
+      if (err) {
+        cb(err);
+      } else {
+        const pkg = JSON.parse(data);
+        process(pkg, function (err, result) {
+          if (err) {
+            cb(err, result);
+          } else {
+            fs.writeFile(
+              self.file,
+              JSON.stringify(result, null, 2),
+              function (err) {
+                cb(err, result);
+              },
+            );
+          }
+        });
+      }
+    });
+  }
+}
+
+export { PkjUtil as default };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Tue Nov 24 2026 11:52:29 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>cli.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html">PkjUtil</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#listDependencies">listDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#setNodeEngine">setNodeEngine</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#sortDependencies">sortDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#traverseDependencies">traverseDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#upgradeDependencies">upgradeDependencies</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-pkjutil-PkjUtil.html#upgradeVersion">upgradeVersion</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-cli.html">cli</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-cli.html#~exec">exec</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-pkjutil.html">pkjutil</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">cli.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module cli
+ */
+"use strict";
+import bag from "bagofcli";
+import { program as commander } from "commander";
+import p from "path";
+import { fileURLToPath } from "url";
+import PkjUtil from "./pkjutil.js";
+
+const DIRNAME = p.dirname(fileURLToPath(import.meta.url));
+
+/**
+ * List dependencies of a given type and print each one.
+ *
+ * @private
+ * @param {String} [type] - dependencies type, all types when not provided
+ * @param {String} [file] - path to package.json file
+ */
+function __list(type, file) {
+  const pkjUtil = new PkjUtil(file);
+  pkjUtil.listDependencies(
+    type,
+    bag.exitCb(null, function (result) {
+      result.forEach(function (module) {
+        console.log(module);
+      });
+    }),
+  );
+}
+
+/**
+ * Action handler for list-dependencies command.
+ *
+ * @private
+ */
+function _listDependencies() {
+  __list("dependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for list-devdependencies command.
+ *
+ * @private
+ */
+function _listDevDependencies() {
+  __list("devDependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for list-peerdependencies command.
+ *
+ * @private
+ */
+function _listPeerDependencies() {
+  __list("peerDependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for list-optdependencies command.
+ *
+ * @private
+ */
+function _listOptDependencies() {
+  __list("optDependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for list-alldependencies command.
+ *
+ * @private
+ */
+function _listAllDependencies() {
+  __list(null, commander.opts().file);
+}
+
+/**
+ * Action handler for set-node-engine command.
+ *
+ * @private
+ * @param {Object} args - command arguments, node engine version in args.args[0]
+ */
+function _setNodeEngine(args) {
+  const version = args.args[0];
+  const pkjUtil = new PkjUtil();
+  pkjUtil.setNodeEngine(version, bag.exit);
+}
+
+/**
+ * Sort dependencies of a given type in alphabetical order.
+ *
+ * @private
+ * @param {String} [type] - dependencies type, all types when not provided
+ * @param {String} [file] - path to package.json file
+ */
+function __sort(type, file) {
+  const pkjUtil = new PkjUtil(file);
+  pkjUtil.sortDependencies(
+    type,
+    bag.exitCb(null, function () {
+      console.log("Dependencies sorted");
+    }),
+  );
+}
+
+/**
+ * Action handler for sort-dependencies command.
+ *
+ * @private
+ */
+function _sortDependencies() {
+  __sort("dependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for sort-devdependencies command.
+ *
+ * @private
+ */
+function _sortDevDependencies() {
+  __sort("devDependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for sort-peerdependencies command.
+ *
+ * @private
+ */
+function _sortPeerDependencies() {
+  __sort("peerDependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for sort-optdependencies command.
+ *
+ * @private
+ */
+function _sortOptDependencies() {
+  __sort("optDependencies", commander.opts().file);
+}
+
+/**
+ * Action handler for sort-alldependencies command.
+ *
+ * @private
+ */
+function _sortAllDependencies() {
+  __sort(null, commander.opts().file);
+}
+
+/**
+ * Action handler for traverse-dependencies command.
+ *
+ * @private
+ */
+function _traverseDependencies() {
+  const pkjUtil = new PkjUtil();
+  pkjUtil.traverseDependencies(
+    bag.exitCb(null, function (result) {
+      Object.keys(result).forEach(function (name) {
+        console.log("* %s", name);
+        Object.keys(result[name]).forEach(function (type) {
+          console.log("  - %s:", type);
+          Object.keys(result[name][type]).forEach(function (dependency) {
+            console.log(
+              "    - %s: %s",
+              dependency,
+              result[name][type][dependency],
+            );
+          });
+        });
+      });
+    }),
+  );
+}
+
+/**
+ * Upgrade package version and print the new version.
+ *
+ * @private
+ * @param {String} type - version type (major, minor, patch)
+ * @param {String} [file] - path to package.json file
+ * @param {Boolean} [parsable] - print only the version number when true
+ */
+function __upgradeVersion(type, file, parsable) {
+  const pkjUtil = new PkjUtil(file);
+  pkjUtil.upgradeVersion(
+    type,
+    bag.exitCb(null, function (pkg) {
+      if (parsable) {
+        console.log(pkg.version);
+      } else {
+        console.log("Upgraded version to %s", pkg.version);
+      }
+    }),
+  );
+}
+
+/**
+ * Action handler for upgrade-version-patch and upgrade-version commands.
+ *
+ * @private
+ * @param {Object} args - command options
+ * @param {Boolean} [args.parsable] - print only the version number when true
+ */
+function _upgradeVersionPatch(args) {
+  __upgradeVersion("patch", commander.opts().file, args.parsable);
+}
+
+/**
+ * Action handler for upgrade-version-minor command.
+ *
+ * @private
+ * @param {Object} args - command options
+ * @param {Boolean} [args.parsable] - print only the version number when true
+ */
+function _upgradeVersionMinor(args) {
+  __upgradeVersion("minor", commander.opts().file, args.parsable);
+}
+
+/**
+ * Action handler for upgrade-version-major command.
+ *
+ * @private
+ * @param {Object} args - command options
+ * @param {Boolean} [args.parsable] - print only the version number when true
+ */
+function _upgradeVersionMajor(args) {
+  __upgradeVersion("major", commander.opts().file, args.parsable);
+}
+
+/**
+ * Action handler for upgrade-dependencies command.
+ *
+ * @private
+ * @param {Object} args - command options
+ * @param {String} [args.registry] - npm registry URL
+ */
+function _upgradeDependencies(args) {
+  const pkjUtil = new PkjUtil(commander.opts().file);
+  pkjUtil.upgradeDependencies({ registry: args.registry }, bag.exit);
+}
+
+/**
+ * Execute PkjUtil CLI.
+ */
+function exec() {
+  const actions = {
+    commands: {
+      "list-dependencies": { action: _listDependencies },
+      "list-devdependencies": { action: _listDevDependencies },
+      "list-peerdependencies": { action: _listPeerDependencies },
+      "list-optdependencies": { action: _listOptDependencies },
+      "list-alldependencies": { action: _listAllDependencies },
+      "set-node-engine": { action: _setNodeEngine },
+      "sort-dependencies": { action: _sortDependencies },
+      "sort-devdependencies": { action: _sortDevDependencies },
+      "sort-peerdependencies": { action: _sortPeerDependencies },
+      "sort-optdependencies": { action: _sortOptDependencies },
+      "sort-alldependencies": { action: _sortAllDependencies },
+      "traverse-dependencies": { action: _traverseDependencies },
+      "upgrade-version-patch": { action: _upgradeVersionPatch },
+      "upgrade-version-minor": { action: _upgradeVersionMinor },
+      "upgrade-version-major": { action: _upgradeVersionMajor },
+      "upgrade-version": { action: _upgradeVersionPatch },
+      "upgrade-dependencies": { action: _upgradeDependencies },
+    },
+  };
+
+  bag.command(DIRNAME, actions);
+}
+
+const exports = {
+  exec: exec,
+};
+
+export { exports as default };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Tue Nov 24 2026 11:52:29 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

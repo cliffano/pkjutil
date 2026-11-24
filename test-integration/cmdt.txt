@@ -1,0 +1,5 @@
+Using directory: .bob/test-integration/cmdt-1795521150516-3041
+
+test-integration/commands.yml ..................
+test-integration/traverse.yml ..
+20 tests, 20 successes, 0 failure

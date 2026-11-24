@@ -1,0 +1,7 @@
+{
+  "name": "test-fixture",
+  "private": true,
+  "dependencies": {
+    "tape": "2.0.0"
+  }
+}

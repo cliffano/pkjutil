@@ -1,0 +1,73 @@
+
+[0m[0m
+[0m  cli - exec[0m
+  [32m  [32m✔[39m[0m[90m should contain commands with actions[0m
+
+[0m  cli - list-*[0m
+  [32m  [32m✔[39m[0m[90m should list dependencies[0m
+  [32m  [32m✔[39m[0m[90m should list dev dependencies[0m
+  [32m  [32m✔[39m[0m[90m should list peer dependencies[0m
+  [32m  [32m✔[39m[0m[90m should list opt dependencies[0m
+  [32m  [32m✔[39m[0m[90m should list all dependencies[0m
+
+[0m  cli - sort-*[0m
+  [32m  [32m✔[39m[0m[90m should sort dependencies[0m
+  [32m  [32m✔[39m[0m[90m should sort dev dependencies[0m
+  [32m  [32m✔[39m[0m[90m should sort peer dependencies[0m
+  [32m  [32m✔[39m[0m[90m should sort opt dependencies[0m
+  [32m  [32m✔[39m[0m[90m should sort all dependencies[0m
+
+[0m  cli - traverse-dependencies[0m
+  [32m  [32m✔[39m[0m[90m should log packages with their dependencies[0m
+
+[0m  cli - upgrade-version-*[0m
+  [32m  [32m✔[39m[0m[90m upgraded-version-patch should pass correct type, log upgraded version, then exit[0m
+  [32m  [32m✔[39m[0m[90m upgraded-version-patch with parsable arg should log the upgraded version only[0m
+  [32m  [32m✔[39m[0m[90m upgraded-version-minor should pass correct type, log upgraded version, then exit[0m
+  [32m  [32m✔[39m[0m[90m upgraded-version-major should pass correct type, log upgraded version, then exit[0m
+  [32m  [32m✔[39m[0m[90m upgraded-version should pass correct type, log upgraded version, then exit[0m
+
+[0m  cli - upgrade-dependencies[0m
+  [32m  [32m✔[39m[0m[90m upgraded-version should pass correct type, log upgraded version, then exit[0m
+
+[0m  cli - set-node-engine[0m
+  [32m  [32m✔[39m[0m[90m set-node-engine should pass correct version, then exit[0m
+
+[0m  pkjutil - listDependencies[0m
+  [32m  [32m✔[39m[0m[90m should pass dependency module names when type is dependencies[0m
+  [32m  [32m✔[39m[0m[90m should pass dev dependency module names when type is devDependencies[0m
+  [32m  [32m✔[39m[0m[90m should pass all dependency types module names when type is null[0m
+
+[0m  pkjutil - setNodeEngine[0m
+  [32m  [32m✔[39m[0m[90m should set node engine value[0m
+
+[0m  pkjutil - sortDependencies[0m
+  [32m  [32m✔[39m[0m[90m should sort dependency module names when type is dependencies[0m
+  [32m  [32m✔[39m[0m[90m should pass dev dependency module names when type is devDependencies[0m
+  [32m  [32m✔[39m[0m[90m should sort all dependency types module names when type is null[0m
+
+[0m  pkjutil - traverseDependencies[0m
+  [32m  [32m✔[39m[0m[90m should pass error when prod load gets an error[0m[33m (39ms)[0m
+  [32m  [32m✔[39m[0m[90m should format dependencies result[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when neither package.json nor node_modules exist[0m
+
+[0m  pkjutil - upgradeVersion[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when an error occurs while reading package file[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when an error occurs while writing package file[0m
+  [32m  [32m✔[39m[0m[90m should upgrade patch number when type is not specified[0m
+  [32m  [32m✔[39m[0m[90m should upgrade patch number when type is patch[0m
+  [32m  [32m✔[39m[0m[90m should upgrade minor number and reset patch to 0 when type is minor[0m
+  [32m  [32m✔[39m[0m[90m should upgrade major number and reset minor and patch to 0 when type is major[0m
+  [32m  [32m✔[39m[0m[90m should keep prerelease detail when upgrading a version[0m
+
+[0m  pkjutil - upgradeDependencies[0m
+  [32m  [32m✔[39m[0m[90m should set all deps to latest version and log messages[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when upgrade dependencies fail[0m
+  [32m  [32m✔[39m[0m[90m should add trailing slash when custom registry does not have trailing slash[0m
+  [32m  [32m✔[39m[0m[90m should keep version range[0m
+  [32m  [32m✔[39m[0m[90m should upgrade wildcards to latest version[0m
+  [32m  [32m✔[39m[0m[90m should do nothing when package.json does not specify dependencies, devDependencies, peerDependencies field[0m
+
+
+[92m [0m[32m 42 passing[0m[90m (93ms)[0m
+
