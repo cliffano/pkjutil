@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix list-* commands crashing when the package.json file cannot be read
 - Fix set-node-engine crashing when package.json has no engines field
 - Fix commands crashing when the package.json file contains invalid JSON
+- Fix rewritten package.json missing its trailing newline
 
 ## 1.0.2 - 2025-08-09
 ### Changed

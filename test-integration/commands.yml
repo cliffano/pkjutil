@@ -100,6 +100,11 @@
   exitcode: 0
   output: '2.0.2'
 
+- description: Command upgrade-version should write package file with trailing newline
+  command: |-
+    {pkjutil} upgrade-version > /dev/null && [ "$(tail -c 1 somepackage.json | od -An -c | tr -d ' ')" = '\n' ]
+  exitcode: 0
+
 - description: Command set-node-engine should set node engine version in the specified file
   command: |-
     {pkjutil} set-node-engine ">= 22.0.0" && grep -q '"node": ">= 22.0.0"' somepackage.json

@@ -356,6 +356,28 @@ describe("pkjutil - upgradeVersion", function () {
     });
   });
 
+  it("should write package file with trailing newline when upgrading version", function (done) {
+    this.mockFs
+      .expects("readFile")
+      .once()
+      .withArgs("package.json")
+      .callsArgWith(1, null, '{"version":"9.8.1"}');
+    this.mockFs
+      .expects("writeFile")
+      .once()
+      .withArgs(
+        "package.json",
+        sinon.match(function (data) {
+          return data.endsWith("}\n");
+        }, "ends with trailing newline"),
+      )
+      .callsArgWith(2, null);
+    this.pkjUtil.upgradeVersion(null, function (err, pkg) {
+      assert.isNull(err);
+      done();
+    });
+  });
+
   it("should pass error to callback when an error occurs while writing package file", function (done) {
     this.mockFs
       .expects("readFile")
@@ -365,7 +387,7 @@ describe("pkjutil - upgradeVersion", function () {
     this.mockFs
       .expects("writeFile")
       .once()
-      .withArgs("package.json", '{\n  "version": "9.8.2"\n}')
+      .withArgs("package.json", '{\n  "version": "9.8.2"\n}\n')
       .callsArgWith(2, new Error("some error"));
     this.pkjUtil.upgradeVersion(null, function (err, pkg) {
       assert.equals(err.message, "some error");
@@ -383,7 +405,7 @@ describe("pkjutil - upgradeVersion", function () {
     this.mockFs
       .expects("writeFile")
       .once()
-      .withArgs("package.json", '{\n  "version": "9.8.2"\n}')
+      .withArgs("package.json", '{\n  "version": "9.8.2"\n}\n')
       .callsArgWith(2, null);
     this.pkjUtil.upgradeVersion(null, function (err, pkg) {
       assert.isNull(err);
@@ -401,7 +423,7 @@ describe("pkjutil - upgradeVersion", function () {
     this.mockFs
       .expects("writeFile")
       .once()
-      .withArgs("package.json", '{\n  "version": "9.8.2"\n}')
+      .withArgs("package.json", '{\n  "version": "9.8.2"\n}\n')
       .callsArgWith(2, null);
     this.pkjUtil.upgradeVersion("patch", function (err, pkg) {
       assert.isNull(err);
@@ -419,7 +441,7 @@ describe("pkjutil - upgradeVersion", function () {
     this.mockFs
       .expects("writeFile")
       .once()
-      .withArgs("package.json", '{\n  "version": "9.9.0"\n}')
+      .withArgs("package.json", '{\n  "version": "9.9.0"\n}\n')
       .callsArgWith(2, null);
     this.pkjUtil.upgradeVersion("minor", function (err, pkg) {
       assert.isNull(err);
@@ -437,7 +459,7 @@ describe("pkjutil - upgradeVersion", function () {
     this.mockFs
       .expects("writeFile")
       .once()
-      .withArgs("package.json", '{\n  "version": "10.0.0"\n}')
+      .withArgs("package.json", '{\n  "version": "10.0.0"\n}\n')
       .callsArgWith(2, null);
     this.pkjUtil.upgradeVersion("major", function (err, pkg) {
       assert.isNull(err);
@@ -455,7 +477,7 @@ describe("pkjutil - upgradeVersion", function () {
     this.mockFs
       .expects("writeFile")
       .once()
-      .withArgs("package.json", '{\n  "version": "9.8.2-pre"\n}')
+      .withArgs("package.json", '{\n  "version": "9.8.2-pre"\n}\n')
       .callsArgWith(2, null);
     this.pkjUtil.upgradeVersion(null, function (err, pkg) {
       assert.isNull(err);
@@ -539,7 +561,7 @@ describe("pkjutil - upgradeDependencies", function () {
       .once()
       .withArgs(
         "package.json",
-        '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  },\n  "devDependencies": {\n    "dep1": "0.0.2"\n  },\n  "peerDependencies": {\n    "dep2": "0.0.2"\n  },\n  "optDependencies": {\n    "dep2": "0.0.2"\n  }\n}',
+        '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  },\n  "devDependencies": {\n    "dep1": "0.0.2"\n  },\n  "peerDependencies": {\n    "dep2": "0.0.2"\n  },\n  "optDependencies": {\n    "dep2": "0.0.2"\n  }\n}\n',
       )
       .callsArgWith(2, null);
 
@@ -618,7 +640,7 @@ describe("pkjutil - upgradeDependencies", function () {
       .once()
       .withArgs(
         "package.json",
-        '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  }\n}',
+        '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  }\n}\n',
       )
       .callsArgWith(2, null);
 
@@ -678,7 +700,7 @@ describe("pkjutil - upgradeDependencies", function () {
       .once()
       .withArgs(
         "package.json",
-        '{\n  "dependencies": {\n    "dep1": ">=0.0.2",\n    "dep2": "~0.0.2"\n  }\n}',
+        '{\n  "dependencies": {\n    "dep1": ">=0.0.2",\n    "dep2": "~0.0.2"\n  }\n}\n',
       )
       .callsArgWith(2, null);
 
@@ -731,7 +753,7 @@ describe("pkjutil - upgradeDependencies", function () {
       .once()
       .withArgs(
         "package.json",
-        '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  }\n}',
+        '{\n  "dependencies": {\n    "dep1": "0.0.2",\n    "dep2": "0.0.2"\n  }\n}\n',
       )
       .callsArgWith(2, null);
 
@@ -763,7 +785,7 @@ describe("pkjutil - upgradeDependencies", function () {
     this.mockFs
       .expects("writeFile")
       .once()
-      .withArgs("package.json", "{}")
+      .withArgs("package.json", "{}\n")
       .callsArgWith(2, null);
 
     this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
