@@ -22,7 +22,7 @@
       ]
     },
     "upgrade-version": {
-      "desc": "Alias for upversion-patch",
+      "desc": "Alias for upgrade-version-patch",
       "options": [
         { "arg": "-p, --parsable", "desc": "Display upgraded version number only, for non-human consumption." }
       ],
@@ -42,7 +42,7 @@
     "upgrade-dependencies": {
       "desc": "Upgrade all dependencies to latest version",
       "options": [
-        { "arg": "-r, --registry <registry>", "desc": "package.json file path" }
+        { "arg": "-r, --registry <registry>", "desc": "npm registry URL" }
       ],
       "examples": [
         "pkjutil upgrade-dependencies --registry http://user:pass@registry:port"
@@ -61,7 +61,7 @@
       "desc": "List opt dependencies"
     },
     "list-alldependencies": {
-      "desc": "List dependencies and dev dependencies"
+      "desc": "List dependencies, dev, peer, and opt dependencies"
     },
     "sort-dependencies": {
       "desc": "Sort dependencies"
@@ -76,7 +76,7 @@
       "desc": "Sort optional dependencies"
     },
     "sort-alldependencies": {
-      "desc": "Sort dependencies and dev dependencies"
+      "desc": "Sort dependencies, dev, peer, and opt dependencies"
     },
     "traverse-dependencies": {
       "desc": "Traverse dependencies, similar to 'npm ls' but listing dependency references instead of versions, execute this command from package root directory"

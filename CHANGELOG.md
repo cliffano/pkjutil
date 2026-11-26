@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace Travis CI with GH Actions (CI, CodeQL, publish, release-major/minor/patch, upgrade-deps)
 - Add Suntory as build Makefile
 - Add AGENTS.md with Node.js project conventions
-- Upgrade bagofcli to 3.x, read global CLI options via commander's `program.opts()` and positional args via `args.args` instead of the old `args.parent`/variadic-arguments convention
+- Upgrade bagofcli to 4.x, read global CLI options via commander's `program.opts()` and positional args via `args.args` instead of the old `args.parent`/variadic-arguments convention
 - Set min node engine to >= 22.0.0
 
 ### Fixed
@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix set-node-engine crashing when package.json has no engines field
 - Fix commands crashing when the package.json file contains invalid JSON
 - Fix rewritten package.json missing its trailing newline
+- Fix incorrect help text for upgrade-version, upgrade-dependencies --registry, list-alldependencies, and sort-alldependencies
 
 ## 1.0.2 - 2025-08-09
 ### Changed

@@ -79,7 +79,7 @@ List optional dependencies (non-standard property in package.json):
 pkjutil list-optdependencies
 ```
 
-List dependencies and dev dependencies:
+List dependencies, dev, peer, and opt dependencies:
 
 ```bash
 pkjutil list-alldependencies
@@ -109,7 +109,7 @@ Sort optional dependencies (non-standard property in package.json):
 pkjutil sort-optdependencies
 ```
 
-Sort dependencies and dev dependencies:
+Sort dependencies, dev, peer, and opt dependencies:
 
 ```bash
 pkjutil sort-alldependencies
