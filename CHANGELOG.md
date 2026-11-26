@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade bagofcli to 3.x, read global CLI options via commander's `program.opts()` and positional args via `args.args` instead of the old `args.parent`/variadic-arguments convention
 - Set min node engine to >= 22.0.0
 
+### Fixed
+- Fix set-node-engine ignoring the --file option
+
 ## 1.0.2 - 2025-08-09
 ### Changed
 - Set min node engine to >= 20.0.0
