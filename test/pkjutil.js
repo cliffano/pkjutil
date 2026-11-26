@@ -103,6 +103,49 @@ describe("pkjutil - setNodeEngine", function () {
   });
 });
 
+describe("pkjutil - setNodeEngine engines field", function () {
+  beforeEach(function () {
+    this.mockFs = sinon.mock(fs);
+    this.pkjUtil = new PkjUtil();
+    this.mockFs.expects("writeFile").once().callsArgWith(2, null);
+  });
+
+  afterEach(function () {
+    this.mockFs.verify();
+    sinon.restore();
+  });
+
+  it("should add engines field with node engine value when engines field does not exist", function (done) {
+    this.mockFs
+      .expects("readFile")
+      .once()
+      .withArgs("package.json")
+      .callsArgWith(1, null, '{"name": "somename"}');
+    this.pkjUtil.setNodeEngine(">= 4.0.0", function (err, pkg) {
+      assert.isNull(err);
+      assert.equals(pkg.engines, { node: ">= 4.0.0" });
+      done();
+    });
+  });
+
+  it("should keep other engines values when setting node engine value", function (done) {
+    this.mockFs
+      .expects("readFile")
+      .once()
+      .withArgs("package.json")
+      .callsArgWith(
+        1,
+        null,
+        '{"engines": { "node": "> 1.0.0", "npm": ">= 10.0.0" }}',
+      );
+    this.pkjUtil.setNodeEngine(">= 4.0.0", function (err, pkg) {
+      assert.isNull(err);
+      assert.equals(pkg.engines, { node: ">= 4.0.0", npm: ">= 10.0.0" });
+      done();
+    });
+  });
+});
+
 describe("pkjutil - sortDependencies", function () {
   beforeEach(function () {
     this.mockFs = sinon.mock(fs);

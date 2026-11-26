@@ -94,6 +94,11 @@
     {pkjutil} set-node-engine ">= 22.0.0" && grep -q '"node": ">= 22.0.0"' somepackage.json
   exitcode: 0
 
+- description: Command set-node-engine should add engines field when package file does not have one
+  command: |-
+    ../../../../../bin/pkjutil.js --file noengines.json set-node-engine ">= 22.0.0" && grep -q '"node": ">= 22.0.0"' noengines.json
+  exitcode: 0
+
 - description: Command upgrade-dependencies should upgrade dependencies
   command: '{pkjutil} upgrade-dependencies'
   exitcode: 0

@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix set-node-engine ignoring the --file option
 - Fix list-* commands crashing when the package.json file cannot be read
+- Fix set-node-engine crashing when package.json has no engines field
 
 ## 1.0.2 - 2025-08-09
 ### Changed
