@@ -1,6 +1,7 @@
 "use strict";
 /* eslint no-unused-vars: 0 */
 import bag from "bagofcli";
+import { program as commander } from "commander";
 import referee from "@sinonjs/referee";
 import sinon from "sinon";
 import cli from "../lib/cli.js";
@@ -426,6 +427,22 @@ describe("cli - set-node-engine", function () {
     sinon
       .stub(PkjUtil.prototype, "setNodeEngine")
       .callsFake(function (version, cb) {
+        assert.equals(version, ">= 4.0");
+        cb(null);
+      });
+    cli.exec();
+  });
+
+  it("should use the file from global option when file option is specified", function () {
+    sinon.stub(commander, "opts").returns({ file: "somepackage.json" });
+    sinon.stub(bag, "command").value(function (base, actions) {
+      actions.commands["set-node-engine"].action({ args: [">= 4.0"] });
+    });
+    this.mockProcess.expects("exit").once().withExactArgs(0);
+    sinon
+      .stub(PkjUtil.prototype, "setNodeEngine")
+      .callsFake(function (version, cb) {
+        assert.equals(this.file, "somepackage.json");
         assert.equals(version, ">= 4.0");
         cb(null);
       });

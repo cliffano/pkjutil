@@ -84,6 +84,11 @@
   exitcode: 0
   output: '2.0.2'
 
+- description: Command set-node-engine should set node engine version in the specified file
+  command: |-
+    {pkjutil} set-node-engine ">= 22.0.0" && grep -q '"node": ">= 22.0.0"' somepackage.json
+  exitcode: 0
+
 - description: Command upgrade-dependencies should upgrade dependencies
   command: '{pkjutil} upgrade-dependencies'
   exitcode: 0
