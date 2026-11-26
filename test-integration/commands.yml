@@ -34,6 +34,11 @@
   exitcode: 0
   output: 'z\nm\na\nx\nn'
 
+- description: Command list-dependencies should fail when package file does not exist
+  command: '../../../../../bin/pkjutil.js --file missing.json list-dependencies'
+  exitcode: 1
+  output: 'ENOENT'
+
 - description: Command sort-dependencies should sort dependencies
   command: '{pkjutil} sort-dependencies'
   exitcode: 0

@@ -52,6 +52,31 @@ describe("pkjutil - listDependencies", function () {
   });
 });
 
+describe("pkjutil - listDependencies error", function () {
+  beforeEach(function () {
+    this.mockFs = sinon.mock(fs);
+    this.pkjUtil = new PkjUtil("missing.json");
+  });
+
+  afterEach(function () {
+    this.mockFs.verify();
+    sinon.restore();
+  });
+
+  it("should pass error to callback when an error occurs while reading package file", function (done) {
+    this.mockFs
+      .expects("readFile")
+      .once()
+      .withArgs("missing.json")
+      .callsArgWith(1, new Error("someerror"));
+    this.pkjUtil.listDependencies("dependencies", function (err, deps) {
+      assert.equals(err.message, "someerror");
+      assert.isUndefined(deps);
+      done();
+    });
+  });
+});
+
 describe("pkjutil - setNodeEngine", function () {
   beforeEach(function () {
     this.mockFs = sinon.mock(fs);
