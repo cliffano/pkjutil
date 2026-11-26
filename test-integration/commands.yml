@@ -39,6 +39,17 @@
   exitcode: 1
   output: 'ENOENT'
 
+- description: Command list-dependencies should fail when package file contains invalid JSON
+  command: '../../../../../bin/pkjutil.js --file invalid.json list-dependencies'
+  exitcode: 1
+  output: 'Unable to parse invalid.json'
+
+- description: Command upgrade-version should fail and leave package file unchanged when package file contains invalid JSON
+  command: |-
+    ../../../../../bin/pkjutil.js --file invalid.json upgrade-version; status=$?; grep -q '"version": "1.2.3",' invalid.json || exit 2; exit $status
+  exitcode: 1
+  output: 'Unable to parse invalid.json'
+
 - description: Command sort-dependencies should sort dependencies
   command: '{pkjutil} sort-dependencies'
   exitcode: 0

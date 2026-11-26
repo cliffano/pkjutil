@@ -75,6 +75,19 @@ describe("pkjutil - listDependencies error", function () {
       done();
     });
   });
+
+  it("should pass error to callback when package file contains invalid JSON", function (done) {
+    this.mockFs
+      .expects("readFile")
+      .once()
+      .withArgs("missing.json")
+      .callsArgWith(1, null, '{"dependencies": ');
+    this.pkjUtil.listDependencies("dependencies", function (err, deps) {
+      assert.match(err.message, /^Unable to parse missing.json: /);
+      assert.isUndefined(deps);
+      done();
+    });
+  });
 });
 
 describe("pkjutil - setNodeEngine", function () {
@@ -324,6 +337,20 @@ describe("pkjutil - upgradeVersion", function () {
       .callsArgWith(1, new Error("some error"));
     this.pkjUtil.upgradeVersion(null, function (err, pkg) {
       assert.equals(err.message, "some error");
+      assert.isUndefined(pkg);
+      done();
+    });
+  });
+
+  it("should pass error to callback and not write package file when package file contains invalid JSON", function (done) {
+    this.mockFs
+      .expects("readFile")
+      .once()
+      .withArgs("package.json")
+      .callsArgWith(1, null, '{"version": "9.8.1",}');
+    this.mockFs.expects("writeFile").never();
+    this.pkjUtil.upgradeVersion(null, function (err, pkg) {
+      assert.match(err.message, /^Unable to parse package.json: /);
       assert.isUndefined(pkg);
       done();
     });
