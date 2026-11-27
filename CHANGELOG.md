@@ -34,23 +34,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Set min node engine to >= 20.0.0
 
-## 1.0.1
+## 1.0.1 - 2016-08-09
 ### Added
 - Add set-node-engine command
 
-## 1.0.0
+## 1.0.0 - 2016-02-03
 ### Changed
 - Major version upgrade only
 
-## 0.1.3
+## 0.1.3 - 2015-06-22
 ### Changed
 - Modify traverseDependencies to check for the existence of package.json and node_modules
 
-## 0.1.2
+## 0.1.2 - 2014-11-12
 ### Added
 - Add optDependencies to the list of dependency types to upgrade
 
-## 0.1.1
+## 0.1.1 - 2014-11-05
 ### Added
 - Add list-peerdependencies, sort-peerdependencies, list-optdependencies, and sort-optdependencies commands
 - Add traverse-dependencies command
@@ -58,19 +58,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Modify upgradeDependencies to also upgrade dependencies in devDependencies and peerDependencies properties
 
-## 0.1.0
+## 0.1.0 - 2014-09-11
 ### Changed
 - Set min node engine to >= v0.10.0
 
-## 0.0.6
+## 0.0.6 - 2013-11-05
 ### Added
 - Add --parsable flag to upgrade-version* commands
 
-## 0.0.5
+## 0.0.5 - 2013-10-27
 ### Fixed
 - Fix error handling on sort-* and upgrade-* commands
 
-## 0.0.4
+## 0.0.4 - 2013-10-26
 ### Added
 - Change test lib to buster-node + referee
 
@@ -80,15 +80,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix file arg on list-*, sort-*, and upgrade-* commands
 
-## 0.0.3
+## 0.0.3 - 2013-08-25
 ### Added
 - Add list-dependencies, list-devdependencies, list-alldependencies commands
 - Add sort-dependencies, sort-devdependencies, sort-alldependencies commands
 
-## 0.0.2
+## 0.0.2 - 2013-08-20
 ### Added
 - Add range version support to dependencies upgrade
 
-## 0.0.1
+## 0.0.1 - 2013-07-11
 ### Added
 - Initial version
