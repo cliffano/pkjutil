@@ -47,9 +47,12 @@ describe("cli - list-*", function () {
   });
 
   afterEach(function () {
-    this.mockConsole.verify();
-    this.mockProcess.verify();
-    sinon.restore();
+    try {
+      this.mockConsole.verify();
+      this.mockProcess.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should list dependencies", function () {
@@ -148,9 +151,12 @@ describe("cli - sort-*", function () {
   });
 
   afterEach(function () {
-    this.mockConsole.verify();
-    this.mockProcess.verify();
-    sinon.restore();
+    try {
+      this.mockConsole.verify();
+      this.mockProcess.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should sort dependencies", function () {
@@ -236,9 +242,12 @@ describe("cli - traverse-dependencies", function () {
   });
 
   afterEach(function () {
-    this.mockConsole.verify();
-    this.mockProcess.verify();
-    sinon.restore();
+    try {
+      this.mockConsole.verify();
+      this.mockProcess.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should log packages with their dependencies", function () {
@@ -279,9 +288,12 @@ describe("cli - upgrade-version-*", function () {
   });
 
   afterEach(function () {
-    this.mockConsole.verify();
-    this.mockProcess.verify();
-    sinon.restore();
+    try {
+      this.mockConsole.verify();
+      this.mockProcess.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should pass patch type and log upgraded version when upgrade-version-patch is called", function () {
@@ -386,8 +398,11 @@ describe("cli - upgrade-dependencies", function () {
   });
 
   afterEach(function () {
-    this.mockProcess.verify();
-    sinon.restore();
+    try {
+      this.mockProcess.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should pass file and registry options when upgrade-dependencies is called with registry option", function () {
@@ -414,8 +429,11 @@ describe("cli - set-node-engine", function () {
   });
 
   afterEach(function () {
-    this.mockProcess.verify();
-    sinon.restore();
+    try {
+      this.mockProcess.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should pass version and exit when set-node-engine is called", function () {

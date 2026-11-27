@@ -23,8 +23,11 @@ describe("pkjutil - listDependencies", function () {
   });
 
   afterEach(function () {
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should pass dependency module names when type is dependencies", function (done) {
@@ -59,8 +62,11 @@ describe("pkjutil - listDependencies error", function () {
   });
 
   afterEach(function () {
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should pass error to callback when an error occurs while reading package file", function (done) {
@@ -103,8 +109,11 @@ describe("pkjutil - setNodeEngine", function () {
   });
 
   afterEach(function () {
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should set node engine value", function (done) {
@@ -124,8 +133,11 @@ describe("pkjutil - setNodeEngine engines field", function () {
   });
 
   afterEach(function () {
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should add engines field with node engine value when engines field does not exist", function (done) {
@@ -176,8 +188,11 @@ describe("pkjutil - sortDependencies", function () {
   });
 
   afterEach(function () {
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should sort dependency module names when type is dependencies", function (done) {
@@ -224,8 +239,11 @@ describe("pkjutil - traverseDependencies", function () {
   });
 
   afterEach(function () {
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should pass error when prod load gets an error", async function () {
@@ -325,8 +343,11 @@ describe("pkjutil - upgradeVersion", function () {
   });
 
   afterEach(function () {
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should pass error to callback when an error occurs while reading package file", function (done) {
@@ -495,9 +516,12 @@ describe("pkjutil - upgradeDependencies", function () {
   });
 
   afterEach(function () {
-    this.mockConsole.verify();
-    this.mockFs.verify();
-    sinon.restore();
+    try {
+      this.mockConsole.verify();
+      this.mockFs.verify();
+    } finally {
+      sinon.restore();
+    }
   });
 
   it("should set all deps to latest version and log messages", function (done) {
