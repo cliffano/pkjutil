@@ -41,6 +41,7 @@ describe("cli - exec", function () {
 
 describe("cli - list-*", function () {
   beforeEach(function () {
+    sinon.stub(commander, "opts").returns({ file: "somepackage.json" });
     this.mockConsole = sinon.mock(console);
     this.mockProcess = sinon.mock(process);
   });
@@ -55,14 +56,14 @@ describe("cli - list-*", function () {
     this.mockConsole.expects("log").once().withExactArgs("dep1");
     this.mockConsole.expects("log").once().withExactArgs("dep2");
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["list-dependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["list-dependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "listDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "dependencies");
         cb(null, ["dep1", "dep2"]);
       });
     cli.exec();
@@ -72,14 +73,14 @@ describe("cli - list-*", function () {
     this.mockConsole.expects("log").once().withExactArgs("dep1");
     this.mockConsole.expects("log").once().withExactArgs("dep2");
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["list-devdependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["list-devdependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "listDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "devDependencies");
         cb(null, ["dep1", "dep2"]);
       });
     cli.exec();
@@ -89,14 +90,14 @@ describe("cli - list-*", function () {
     this.mockConsole.expects("log").once().withExactArgs("dep1");
     this.mockConsole.expects("log").once().withExactArgs("dep2");
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["list-peerdependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["list-peerdependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "listDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "peerDependencies");
         cb(null, ["dep1", "dep2"]);
       });
     cli.exec();
@@ -106,14 +107,14 @@ describe("cli - list-*", function () {
     this.mockConsole.expects("log").once().withExactArgs("dep1");
     this.mockConsole.expects("log").once().withExactArgs("dep2");
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["list-optdependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["list-optdependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "listDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "optDependencies");
         cb(null, ["dep1", "dep2"]);
       });
     cli.exec();
@@ -123,14 +124,14 @@ describe("cli - list-*", function () {
     this.mockConsole.expects("log").once().withExactArgs("dep1");
     this.mockConsole.expects("log").once().withExactArgs("dep2");
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["list-alldependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["list-alldependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "listDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.isNull(type);
         cb(null, ["dep1", "dep2"]);
       });
     cli.exec();
@@ -139,6 +140,7 @@ describe("cli - list-*", function () {
 
 describe("cli - sort-*", function () {
   beforeEach(function () {
+    sinon.stub(commander, "opts").returns({ file: "somepackage.json" });
     this.mockConsole = sinon.mock(console);
     this.mockProcess = sinon.mock(process);
 
@@ -153,14 +155,14 @@ describe("cli - sort-*", function () {
 
   it("should sort dependencies", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["sort-dependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["sort-dependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "sortDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "dependencies");
         cb(null, {});
       });
     cli.exec();
@@ -168,14 +170,14 @@ describe("cli - sort-*", function () {
 
   it("should sort dev dependencies", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["sort-devdependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["sort-devdependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "sortDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "devDependencies");
         cb(null, {});
       });
     cli.exec();
@@ -183,14 +185,14 @@ describe("cli - sort-*", function () {
 
   it("should sort peer dependencies", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["sort-peerdependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["sort-peerdependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "sortDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "peerDependencies");
         cb(null, {});
       });
     cli.exec();
@@ -198,14 +200,14 @@ describe("cli - sort-*", function () {
 
   it("should sort opt dependencies", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["sort-optdependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["sort-optdependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "sortDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(type, "optDependencies");
         cb(null, {});
       });
     cli.exec();
@@ -213,14 +215,14 @@ describe("cli - sort-*", function () {
 
   it("should sort all dependencies", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["sort-alldependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["sort-alldependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
       .stub(PkjUtil.prototype, "sortDependencies")
-      .callsFake(function (opts, cb) {
+      .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.isNull(type);
         cb(null, {});
       });
     cli.exec();
@@ -250,9 +252,7 @@ describe("cli - traverse-dependencies", function () {
       .once()
       .withExactArgs("    - %s: %s", "subdep1", "0.0.1");
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["traverse-dependencies"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["traverse-dependencies"].action({});
     });
     this.mockProcess.expects("exit").once().withExactArgs(0);
     sinon
@@ -273,6 +273,7 @@ describe("cli - traverse-dependencies", function () {
 
 describe("cli - upgrade-version-*", function () {
   beforeEach(function () {
+    sinon.stub(commander, "opts").returns({ file: "somepackage.json" });
     this.mockConsole = sinon.mock(console);
     this.mockProcess = sinon.mock(process);
   });
@@ -283,11 +284,9 @@ describe("cli - upgrade-version-*", function () {
     sinon.restore();
   });
 
-  it("upgraded-version-patch should pass correct type, log upgraded version, then exit", function () {
+  it("should pass patch type and log upgraded version when upgrade-version-patch is called", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["upgrade-version-patch"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["upgrade-version-patch"].action({});
     });
     this.mockConsole
       .expects("log")
@@ -297,17 +296,17 @@ describe("cli - upgrade-version-*", function () {
     sinon
       .stub(PkjUtil.prototype, "upgradeVersion")
       .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
         assert.equals(type, "patch");
         cb(null, { version: "0.0.1" });
       });
     cli.exec();
   });
 
-  it("upgraded-version-patch with parsable arg should log the upgraded version only", function () {
+  it("should log the upgraded version only when upgrade-version-patch is called with parsable option", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
       actions.commands["upgrade-version-patch"].action({
         parsable: true,
-        parent: { file: "somepackage.json" },
       });
     });
     this.mockConsole.expects("log").once().withExactArgs("0.0.1");
@@ -315,17 +314,16 @@ describe("cli - upgrade-version-*", function () {
     sinon
       .stub(PkjUtil.prototype, "upgradeVersion")
       .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
         assert.equals(type, "patch");
         cb(null, { version: "0.0.1" });
       });
     cli.exec();
   });
 
-  it("upgraded-version-minor should pass correct type, log upgraded version, then exit", function () {
+  it("should pass minor type and log upgraded version when upgrade-version-minor is called", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["upgrade-version-minor"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["upgrade-version-minor"].action({});
     });
     this.mockConsole
       .expects("log")
@@ -335,17 +333,16 @@ describe("cli - upgrade-version-*", function () {
     sinon
       .stub(PkjUtil.prototype, "upgradeVersion")
       .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
         assert.equals(type, "minor");
         cb(null, { version: "0.1.0" });
       });
     cli.exec();
   });
 
-  it("upgraded-version-major should pass correct type, log upgraded version, then exit", function () {
+  it("should pass major type and log upgraded version when upgrade-version-major is called", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["upgrade-version-major"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["upgrade-version-major"].action({});
     });
     this.mockConsole
       .expects("log")
@@ -355,17 +352,16 @@ describe("cli - upgrade-version-*", function () {
     sinon
       .stub(PkjUtil.prototype, "upgradeVersion")
       .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
         assert.equals(type, "major");
         cb(null, { version: "1.0.0" });
       });
     cli.exec();
   });
 
-  it("upgraded-version should pass correct type, log upgraded version, then exit", function () {
+  it("should pass patch type and log upgraded version when upgrade-version alias is called", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
-      actions.commands["upgrade-version"].action({
-        parent: { file: "somepackage.json" },
-      });
+      actions.commands["upgrade-version"].action({});
     });
     this.mockConsole
       .expects("log")
@@ -375,6 +371,7 @@ describe("cli - upgrade-version-*", function () {
     sinon
       .stub(PkjUtil.prototype, "upgradeVersion")
       .callsFake(function (type, cb) {
+        assert.equals(this.file, "somepackage.json");
         assert.equals(type, "patch");
         cb(null, { version: "0.0.1" });
       });
@@ -384,6 +381,7 @@ describe("cli - upgrade-version-*", function () {
 
 describe("cli - upgrade-dependencies", function () {
   beforeEach(function () {
+    sinon.stub(commander, "opts").returns({ file: "somepackage.json" });
     this.mockProcess = sinon.mock(process);
   });
 
@@ -392,10 +390,9 @@ describe("cli - upgrade-dependencies", function () {
     sinon.restore();
   });
 
-  it("upgraded-version should pass correct type, log upgraded version, then exit", function () {
+  it("should pass file and registry options when upgrade-dependencies is called with registry option", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
       actions.commands["upgrade-dependencies"].action({
-        parent: { file: "somepackage.json" },
         registry: "http://someregistry",
       });
     });
@@ -403,6 +400,8 @@ describe("cli - upgrade-dependencies", function () {
     sinon
       .stub(PkjUtil.prototype, "upgradeDependencies")
       .callsFake(function (opts, cb) {
+        assert.equals(this.file, "somepackage.json");
+        assert.equals(opts, { registry: "http://someregistry" });
         cb(null);
       });
     cli.exec();
@@ -419,7 +418,7 @@ describe("cli - set-node-engine", function () {
     sinon.restore();
   });
 
-  it("set-node-engine should pass correct version, then exit", function () {
+  it("should pass version and exit when set-node-engine is called", function () {
     sinon.stub(bag, "command").value(function (base, actions) {
       actions.commands["set-node-engine"].action({ args: [">= 4.0"] });
     });
