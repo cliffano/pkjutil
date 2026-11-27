@@ -56,9 +56,20 @@
   [32m  [32m✔[39m[0m[90m should sort all dependency types module names when type is null[0m
 
 [0m  pkjutil - traverseDependencies[0m
-  [32m  [32m✔[39m[0m[90m should pass error when prod load gets an error[0m
-  [32m  [32m✔[39m[0m[90m should format dependencies result[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when reading installed packages fails[0m
+  [32m  [32m✔[39m[0m[90m should format dependencies result when installed packages are read[0m
+  [32m  [32m✔[39m[0m[90m should read installed packages when only node_modules exists[0m
   [32m  [32m✔[39m[0m[90m should pass error to callback when neither package.json nor node_modules exist[0m
+
+[0m  pkjutil - _readInstalled[0m
+  [32m  [32m✔[39m[0m[90m should read root, top level, scoped, and nested packages when they are installed[0m
+  [32m  [32m✔[39m[0m[90m should read a package once when it is reachable via a symlink[0m
+  [32m  [32m✔[39m[0m[90m should skip directories and files without package.json when they are in node_modules[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when a package.json contains invalid JSON[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when reading node_modules fails[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when reading a scope directory fails[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when reading a package.json fails[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when resolving a real path fails[0m
 
 [0m  pkjutil - upgradeVersion[0m
   [32m  [32m✔[39m[0m[90m should pass error to callback when an error occurs while reading package file[0m
@@ -89,5 +100,5 @@
   [32m  [32m✔[39m[0m[90m should call back only once when callback throws an error[0m
 
 
-[92m [0m[32m 56 passing[0m[90m (72ms)[0m
+[92m [0m[32m 65 passing[0m[90m (113ms)[0m
 

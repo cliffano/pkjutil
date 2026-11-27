@@ -47,7 +47,7 @@ import _ from "lodash";
 import async from "async";
 import "colors";
 import fs from "fs";
-import prod from "prod";
+import p from "path";
 import semver from "semver";
 import util from "util";
 
@@ -135,22 +135,28 @@ class PkjUtil {
    */
   traverseDependencies(cb) {
     if (fs.existsSync("package.json") || fs.existsSync("node_modules")) {
-      prod().load(function (err, dependencies) {
+      this._readInstalled(process.cwd(), function (err, pkgs) {
         let result;
         if (!err) {
           result = {};
-          dependencies.map(function (pkg) {
-            function filter(type) {
-              const checkType =
-                type === "dependencies" ? "_dependencies" : type;
-              return pkg[checkType] &amp;&amp; !_.isEmpty(pkg[checkType]);
-            }
+          pkgs.forEach(function (pkg) {
+            // optional dependencies are also dependencies, as per npm
+            const types = {
+              dependencies: _.assign(
+                {},
+                pkg.dependencies,
+                pkg.optionalDependencies,
+              ),
+              devDependencies: pkg.devDependencies,
+              peerDependencies: pkg.peerDependencies,
+              optDependencies: pkg.optDependencies,
+            };
             const name = util.format("%s@%s", pkg.name, pkg.version);
             result[name] = {};
-            _.filter(DEPENDENCY_TYPES, filter).forEach(function (type) {
-              const checkType =
-                type === "dependencies" ? "_dependencies" : type;
-              result[name][type] = pkg[checkType];
+            _.filter(DEPENDENCY_TYPES, function (type) {
+              return !_.isEmpty(types[type]);
+            }).forEach(function (type) {
+              result[name][type] = types[type];
             });
           });
         }
@@ -309,6 +315,106 @@ class PkjUtil {
   }
 
   /**
+   * Read the package.json of a package directory and of every package
+   * installed under its node_modules directory, recursively, including
+   * scoped packages and nested node_modules directories.
+   * Each package is read once, identified by its real path, so symlinked
+   * packages (e.g. via npm link) are followed but not repeated.
+   * Directories without package.json are skipped.
+   *
+   * @private
+   * @param {String} dir - root package directory
+   * @param {Function} cb - standard cb(err, result) callback, result is an
+   *   array of parsed package.json objects, root package first
+   */
+  _readInstalled(dir, cb) {
+    const seen = {};
+    const pkgs = [];
+    const MISSING = ["ENOENT", "ENOTDIR"];
+
+    function visible(names) {
+      return names.filter(function (name) {
+        return !name.startsWith(".");
+      });
+    }
+
+    function readNodeModules(nodeModulesDir, cb) {
+      fs.readdir(nodeModulesDir, function (err, names) {
+        if (err) {
+          cb(MISSING.includes(err.code) ? null : err);
+          return;
+        }
+        async.eachSeries(
+          visible(names),
+          function (name, next) {
+            const entry = p.join(nodeModulesDir, name);
+            if (!name.startsWith("@")) {
+              readPackageDir(entry, next);
+              return;
+            }
+            fs.readdir(entry, function (err, scopedNames) {
+              if (err) {
+                next(err);
+                return;
+              }
+              async.eachSeries(
+                visible(scopedNames),
+                function (scopedName, nextScoped) {
+                  readPackageDir(p.join(entry, scopedName), nextScoped);
+                },
+                next,
+              );
+            });
+          },
+          cb,
+        );
+      });
+    }
+
+    function readPackageDir(pkgDir, cb) {
+      fs.realpath(pkgDir, function (err, realDir) {
+        if (err) {
+          cb(err);
+          return;
+        }
+        if (seen[realDir]) {
+          cb();
+          return;
+        }
+        seen[realDir] = true;
+        const file = p.join(realDir, "package.json");
+        fs.readFile(file, "utf8", function (err, data) {
+          if (err &amp;&amp; !MISSING.includes(err.code)) {
+            cb(err);
+            return;
+          }
+          if (!err) {
+            try {
+              pkgs.push(JSON.parse(data));
+            } catch (parseErr) {
+              cb(
+                new Error(
+                  util.format("Unable to parse %s: %s", file, parseErr.message),
+                ),
+              );
+              return;
+            }
+          }
+          readNodeModules(p.join(realDir, "node_modules"), cb);
+        });
+      });
+    }
+
+    readPackageDir(dir, function (err) {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, pkgs);
+      }
+    });
+  }
+
+  /**
    * Send an HTTP GET request using Node.js built-in fetch.
    * Credentials in the URL (http://user:pass@host) are sent as a Basic
    * Authorization header, since fetch does not accept them in the URL.
@@ -445,7 +551,7 @@ export { PkjUtil as default };
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Fri Nov 27 2026 10:23:35 GMT+0000 (Coordinated Universal Time) using the Minami theme.
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.5</a> on Fri Nov 27 2026 10:45:06 GMT+0000 (Coordinated Universal Time) using the Minami theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">75.02</p>
+      <p class="stat">74.79</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">394</p>
+      <p class="stat">500</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">57.50</p>
+      <p class="stat">60.53</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">2.44</p>
+      <p class="stat">3.19</p>
     </div>
   </div>
 </div>
@@ -97,7 +97,7 @@ import _ from &quot;lodash&quot;;
 import async from &quot;async&quot;;
 import &quot;colors&quot;;
 import fs from &quot;fs&quot;;
-import prod from &quot;prod&quot;;
+import p from &quot;path&quot;;
 import semver from &quot;semver&quot;;
 import util from &quot;util&quot;;
 
@@ -185,22 +185,28 @@ class PkjUtil {
    */
   traverseDependencies(cb) {
     if (fs.existsSync(&quot;package.json&quot;) || fs.existsSync(&quot;node_modules&quot;)) {
-      prod().load(function (err, dependencies) {
+      this._readInstalled(process.cwd(), function (err, pkgs) {
         let result;
         if (!err) {
           result = {};
-          dependencies.map(function (pkg) {
-            function filter(type) {
-              const checkType =
-                type === &quot;dependencies&quot; ? &quot;_dependencies&quot; : type;
-              return pkg[checkType] &amp;&amp; !_.isEmpty(pkg[checkType]);
-            }
+          pkgs.forEach(function (pkg) {
+            // optional dependencies are also dependencies, as per npm
+            const types = {
+              dependencies: _.assign(
+                {},
+                pkg.dependencies,
+                pkg.optionalDependencies,
+              ),
+              devDependencies: pkg.devDependencies,
+              peerDependencies: pkg.peerDependencies,
+              optDependencies: pkg.optDependencies,
+            };
             const name = util.format(&quot;%s@%s&quot;, pkg.name, pkg.version);
             result[name] = {};
-            _.filter(DEPENDENCY_TYPES, filter).forEach(function (type) {
-              const checkType =
-                type === &quot;dependencies&quot; ? &quot;_dependencies&quot; : type;
-              result[name][type] = pkg[checkType];
+            _.filter(DEPENDENCY_TYPES, function (type) {
+              return !_.isEmpty(types[type]);
+            }).forEach(function (type) {
+              result[name][type] = types[type];
             });
           });
         }
@@ -356,6 +362,106 @@ class PkjUtil {
     }
 
     this._updatePackage(process, cb);
+  }
+
+  /**
+   * Read the package.json of a package directory and of every package
+   * installed under its node_modules directory, recursively, including
+   * scoped packages and nested node_modules directories.
+   * Each package is read once, identified by its real path, so symlinked
+   * packages (e.g. via npm link) are followed but not repeated.
+   * Directories without package.json are skipped.
+   *
+   * @private
+   * @param {String} dir - root package directory
+   * @param {Function} cb - standard cb(err, result) callback, result is an
+   *   array of parsed package.json objects, root package first
+   */
+  _readInstalled(dir, cb) {
+    const seen = {};
+    const pkgs = [];
+    const MISSING = [&quot;ENOENT&quot;, &quot;ENOTDIR&quot;];
+
+    function visible(names) {
+      return names.filter(function (name) {
+        return !name.startsWith(&quot;.&quot;);
+      });
+    }
+
+    function readNodeModules(nodeModulesDir, cb) {
+      fs.readdir(nodeModulesDir, function (err, names) {
+        if (err) {
+          cb(MISSING.includes(err.code) ? null : err);
+          return;
+        }
+        async.eachSeries(
+          visible(names),
+          function (name, next) {
+            const entry = p.join(nodeModulesDir, name);
+            if (!name.startsWith(&quot;@&quot;)) {
+              readPackageDir(entry, next);
+              return;
+            }
+            fs.readdir(entry, function (err, scopedNames) {
+              if (err) {
+                next(err);
+                return;
+              }
+              async.eachSeries(
+                visible(scopedNames),
+                function (scopedName, nextScoped) {
+                  readPackageDir(p.join(entry, scopedName), nextScoped);
+                },
+                next,
+              );
+            });
+          },
+          cb,
+        );
+      });
+    }
+
+    function readPackageDir(pkgDir, cb) {
+      fs.realpath(pkgDir, function (err, realDir) {
+        if (err) {
+          cb(err);
+          return;
+        }
+        if (seen[realDir]) {
+          cb();
+          return;
+        }
+        seen[realDir] = true;
+        const file = p.join(realDir, &quot;package.json&quot;);
+        fs.readFile(file, &quot;utf8&quot;, function (err, data) {
+          if (err &amp;&amp; !MISSING.includes(err.code)) {
+            cb(err);
+            return;
+          }
+          if (!err) {
+            try {
+              pkgs.push(JSON.parse(data));
+            } catch (parseErr) {
+              cb(
+                new Error(
+                  util.format(&quot;Unable to parse %s: %s&quot;, file, parseErr.message),
+                ),
+              );
+              return;
+            }
+          }
+          readNodeModules(p.join(realDir, &quot;node_modules&quot;), cb);
+        });
+      });
+    }
+
+    readPackageDir(dir, function (err) {
+      if (err) {
+        cb(err);
+      } else {
+        cb(null, pkgs);
+      }
+    });
   }
 
   /**
