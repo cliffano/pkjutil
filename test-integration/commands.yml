@@ -102,7 +102,7 @@
 
 - description: Command upgrade-version should write package file with trailing newline
   command: |-
-    {pkjutil} upgrade-version > /dev/null && [ "$(tail -c 1 somepackage.json | od -An -c | tr -d ' ')" = '\n' ]
+    {pkjutil} upgrade-version > /dev/null && [ -z "$(tail -c 1 somepackage.json)" ]
   exitcode: 0
 
 - description: Command set-node-engine should set node engine version in the specified file
