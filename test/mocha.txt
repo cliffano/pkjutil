@@ -21,25 +21,34 @@
   [32m  [32m✔[39m[0m[90m should log packages with their dependencies[0m
 
 [0m  cli - upgrade-version-*[0m
-  [32m  [32m✔[39m[0m[90m upgraded-version-patch should pass correct type, log upgraded version, then exit[0m
-  [32m  [32m✔[39m[0m[90m upgraded-version-patch with parsable arg should log the upgraded version only[0m
-  [32m  [32m✔[39m[0m[90m upgraded-version-minor should pass correct type, log upgraded version, then exit[0m
-  [32m  [32m✔[39m[0m[90m upgraded-version-major should pass correct type, log upgraded version, then exit[0m
-  [32m  [32m✔[39m[0m[90m upgraded-version should pass correct type, log upgraded version, then exit[0m
+  [32m  [32m✔[39m[0m[90m should pass patch type and log upgraded version when upgrade-version-patch is called[0m
+  [32m  [32m✔[39m[0m[90m should log the upgraded version only when upgrade-version-patch is called with parsable option[0m
+  [32m  [32m✔[39m[0m[90m should pass minor type and log upgraded version when upgrade-version-minor is called[0m
+  [32m  [32m✔[39m[0m[90m should pass major type and log upgraded version when upgrade-version-major is called[0m
+  [32m  [32m✔[39m[0m[90m should pass patch type and log upgraded version when upgrade-version alias is called[0m
 
 [0m  cli - upgrade-dependencies[0m
-  [32m  [32m✔[39m[0m[90m upgraded-version should pass correct type, log upgraded version, then exit[0m
+  [32m  [32m✔[39m[0m[90m should pass file and registry options when upgrade-dependencies is called with registry option[0m
 
 [0m  cli - set-node-engine[0m
-  [32m  [32m✔[39m[0m[90m set-node-engine should pass correct version, then exit[0m
+  [32m  [32m✔[39m[0m[90m should pass version and exit when set-node-engine is called[0m
+  [32m  [32m✔[39m[0m[90m should use the file from global option when file option is specified[0m
 
 [0m  pkjutil - listDependencies[0m
   [32m  [32m✔[39m[0m[90m should pass dependency module names when type is dependencies[0m
   [32m  [32m✔[39m[0m[90m should pass dev dependency module names when type is devDependencies[0m
   [32m  [32m✔[39m[0m[90m should pass all dependency types module names when type is null[0m
 
+[0m  pkjutil - listDependencies error[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when an error occurs while reading package file[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when package file contains invalid JSON[0m
+
 [0m  pkjutil - setNodeEngine[0m
   [32m  [32m✔[39m[0m[90m should set node engine value[0m
+
+[0m  pkjutil - setNodeEngine engines field[0m
+  [32m  [32m✔[39m[0m[90m should add engines field with node engine value when engines field does not exist[0m
+  [32m  [32m✔[39m[0m[90m should keep other engines values when setting node engine value[0m
 
 [0m  pkjutil - sortDependencies[0m
   [32m  [32m✔[39m[0m[90m should sort dependency module names when type is dependencies[0m
@@ -53,6 +62,8 @@
 
 [0m  pkjutil - upgradeVersion[0m
   [32m  [32m✔[39m[0m[90m should pass error to callback when an error occurs while reading package file[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback and not write package file when package file contains invalid JSON[0m
+  [32m  [32m✔[39m[0m[90m should write package file with trailing newline when upgrading version[0m
   [32m  [32m✔[39m[0m[90m should pass error to callback when an error occurs while writing package file[0m
   [32m  [32m✔[39m[0m[90m should upgrade patch number when type is not specified[0m
   [32m  [32m✔[39m[0m[90m should upgrade patch number when type is patch[0m
@@ -69,5 +80,5 @@
   [32m  [32m✔[39m[0m[90m should do nothing when package.json does not specify dependencies, devDependencies, peerDependencies field[0m
 
 
-[92m [0m[32m 42 passing[0m[90m (60ms)[0m
+[92m [0m[32m 49 passing[0m[90m (101ms)[0m
 

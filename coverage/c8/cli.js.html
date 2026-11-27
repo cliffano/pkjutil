@@ -422,11 +422,11 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -586,31 +586,31 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
-<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -636,7 +636,7 @@ const DIRNAME = p.dirname(fileURLToPath(import.meta.url));
  * @param {String} [type] - dependencies type, all types when not provided
  * @param {String} [file] - path to package.json file
  */
-function __list(type, file) {
+function _list(type, file) {
   const pkjUtil = new PkjUtil(file);
   pkjUtil.listDependencies(
     type,
@@ -654,7 +654,7 @@ function __list(type, file) {
  * @private
  */
 function _listDependencies() {
-  __list("dependencies", commander.opts().file);
+  _list("dependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -663,7 +663,7 @@ function _listDependencies() {
  * @private
  */
 function _listDevDependencies() {
-  __list("devDependencies", commander.opts().file);
+  _list("devDependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -672,7 +672,7 @@ function _listDevDependencies() {
  * @private
  */
 function _listPeerDependencies() {
-  __list("peerDependencies", commander.opts().file);
+  _list("peerDependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -681,7 +681,7 @@ function _listPeerDependencies() {
  * @private
  */
 function _listOptDependencies() {
-  __list("optDependencies", commander.opts().file);
+  _list("optDependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -690,7 +690,7 @@ function _listOptDependencies() {
  * @private
  */
 function _listAllDependencies() {
-  __list(null, commander.opts().file);
+  _list(null, commander.opts().file);
 }
 &nbsp;
 /**
@@ -701,7 +701,7 @@ function _listAllDependencies() {
  */
 function _setNodeEngine(args) {
   const version = args.args[0];
-  const pkjUtil = new PkjUtil();
+  const pkjUtil = new PkjUtil(commander.opts().file);
   pkjUtil.setNodeEngine(version, bag.exit);
 }
 &nbsp;
@@ -712,7 +712,7 @@ function _setNodeEngine(args) {
  * @param {String} [type] - dependencies type, all types when not provided
  * @param {String} [file] - path to package.json file
  */
-function __sort(type, file) {
+function _sort(type, file) {
   const pkjUtil = new PkjUtil(file);
   pkjUtil.sortDependencies(
     type,
@@ -728,7 +728,7 @@ function __sort(type, file) {
  * @private
  */
 function _sortDependencies() {
-  __sort("dependencies", commander.opts().file);
+  _sort("dependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -737,7 +737,7 @@ function _sortDependencies() {
  * @private
  */
 function _sortDevDependencies() {
-  __sort("devDependencies", commander.opts().file);
+  _sort("devDependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -746,7 +746,7 @@ function _sortDevDependencies() {
  * @private
  */
 function _sortPeerDependencies() {
-  __sort("peerDependencies", commander.opts().file);
+  _sort("peerDependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -755,7 +755,7 @@ function _sortPeerDependencies() {
  * @private
  */
 function _sortOptDependencies() {
-  __sort("optDependencies", commander.opts().file);
+  _sort("optDependencies", commander.opts().file);
 }
 &nbsp;
 /**
@@ -764,7 +764,7 @@ function _sortOptDependencies() {
  * @private
  */
 function _sortAllDependencies() {
-  __sort(null, commander.opts().file);
+  _sort(null, commander.opts().file);
 }
 &nbsp;
 /**
@@ -801,7 +801,7 @@ function _traverseDependencies() {
  * @param {String} [file] - path to package.json file
  * @param {Boolean} [parsable] - print only the version number when true
  */
-function __upgradeVersion(type, file, parsable) {
+function _upgradeVersion(type, file, parsable) {
   const pkjUtil = new PkjUtil(file);
   pkjUtil.upgradeVersion(
     type,
@@ -823,7 +823,7 @@ function __upgradeVersion(type, file, parsable) {
  * @param {Boolean} [args.parsable] - print only the version number when true
  */
 function _upgradeVersionPatch(args) {
-  __upgradeVersion("patch", commander.opts().file, args.parsable);
+  _upgradeVersion("patch", commander.opts().file, args.parsable);
 }
 &nbsp;
 /**
@@ -834,7 +834,7 @@ function _upgradeVersionPatch(args) {
  * @param {Boolean} [args.parsable] - print only the version number when true
  */
 function _upgradeVersionMinor(args) {
-  __upgradeVersion("minor", commander.opts().file, args.parsable);
+  _upgradeVersion("minor", commander.opts().file, args.parsable);
 }
 &nbsp;
 /**
@@ -845,7 +845,7 @@ function _upgradeVersionMinor(args) {
  * @param {Boolean} [args.parsable] - print only the version number when true
  */
 function _upgradeVersionMajor(args) {
-  __upgradeVersion("major", commander.opts().file, args.parsable);
+  _upgradeVersion("major", commander.opts().file, args.parsable);
 }
 &nbsp;
 /**
@@ -901,7 +901,7 @@ export { exports as default };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-11-26T07:38:59.208Z
+                at 2026-11-27T08:55:13.876Z
             </div>
         <script src="prettify.js"></script>
         <script>

@@ -1,6 +1,9 @@
 {
   "name": "somename",
-  "version": "2.0.2",
+  "version": "2.0.3",
+  "engines": {
+    "node": ">= 22.0.0"
+  },
   "dependencies": {
     "a": "~4.0.8",
     "m": "~1.10.0",
