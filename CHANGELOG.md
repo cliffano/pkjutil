@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 ### Changed
 - Change module type to ESM
-- Replace test framework from buster-node + proxyquire to Mocha + Sinon + @sinonjs/referee + esmock
+- Replace test framework from buster-node + proxyquire to Mocha + Sinon + @sinonjs/referee
 - Replace lint type from jshint to eslint, add Prettier style checking
 - Replace coverage from buster-istanbul to c8
 - Replace doc type from dox-foundation to jsdoc
@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replace bagofrequest with Node.js built-in fetch in upgrade-dependencies, removing the deprecated request module and its vulnerable transitive dependencies (form-data, tough-cookie, qs, and others)
 - Require `NODE_USE_ENV_PROXY=1` for upgrade-dependencies to use `http_proxy` / `https_proxy` environment variables
 - Verify registry TLS certificates in upgrade-dependencies, use `NODE_EXTRA_CA_CERTS` for registries with self-signed certificates
+- Replace prod with a built-in installed-package walker in traverse-dependencies, removing the deprecated read-installed module and its outdated transitive dependencies (async 2.x, glob 7, inflight, and others)
+- Stop listing peerDependencies under dependencies in traverse-dependencies output, and show declared dependency values as written in package.json instead of normalised
 
 ### Fixed
 - Fix set-node-engine ignoring the --file option

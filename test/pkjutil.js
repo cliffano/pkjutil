@@ -1,5 +1,4 @@
 "use strict";
-import esmock from "esmock";
 import fs from "fs";
 import referee from "@sinonjs/referee";
 import sinon from "sinon";
@@ -245,71 +244,83 @@ describe("pkjutil - traverseDependencies", function () {
     }
   });
 
-  it("should pass error when prod load gets an error", async function () {
+  it("should pass error to callback when reading installed packages fails", function (done) {
     this.mockFs
       .expects("existsSync")
       .once()
       .withArgs("package.json")
       .returns(true);
-    const PkjUtilMocked = await esmock("../lib/pkjutil.js", {
-      prod: () => ({
-        load: function (cb) {
-          cb(new Error("some error"));
-        },
-      }),
-    });
-    const pkjUtil = new PkjUtilMocked();
-    await new Promise((resolve) => {
-      pkjUtil.traverseDependencies(function (err, result) {
-        assert.equals(err.message, "some error");
-        assert.isUndefined(result);
-        resolve();
+    sinon
+      .stub(PkjUtil.prototype, "_readInstalled")
+      .callsFake(function (dir, cb) {
+        assert.equals(dir, process.cwd());
+        cb(new Error("some error"));
       });
+    new PkjUtil().traverseDependencies(function (err, result) {
+      assert.equals(err.message, "some error");
+      assert.isUndefined(result);
+      done();
     });
   });
 
-  it("should format dependencies result", async function () {
+  it("should format dependencies result when installed packages are read", function (done) {
     this.mockFs
       .expects("existsSync")
       .once()
       .withArgs("package.json")
       .returns(true);
-    const PkjUtilMocked = await esmock("../lib/pkjutil.js", {
-      prod: () => ({
-        load: function (cb) {
-          const dependencies = [
-            {
-              name: "dep1",
-              version: "0.0.1",
-              _dependencies: {
-                subdep: "1.0.0",
-              },
-              devDependencies: {
-                subdevdep: "2.0.0",
-              },
-              peerDependencies: {
-                subpeerdep: "3.0.0",
-              },
-              foo: "bar",
-            },
-          ];
-          cb(null, dependencies);
-        },
-      }),
-    });
-    const pkjUtil = new PkjUtilMocked();
-
-    await new Promise((resolve) => {
-      pkjUtil.traverseDependencies(function (err, result) {
-        assert.isNull(err);
-
-        const dep = result["dep1@0.0.1"];
-        assert.isObject(dep);
-        assert.equals(dep.dependencies.subdep, "1.0.0");
-        assert.equals(dep.devDependencies.subdevdep, "2.0.0");
-        assert.equals(dep.peerDependencies.subpeerdep, "3.0.0");
-        resolve();
+    sinon
+      .stub(PkjUtil.prototype, "_readInstalled")
+      .callsFake(function (dir, cb) {
+        cb(null, [
+          {
+            name: "dep1",
+            version: "0.0.1",
+            dependencies: { subdep: "1.0.0" },
+            optionalDependencies: { suboptionaldep: "1.1.0" },
+            devDependencies: { subdevdep: "2.0.0" },
+            peerDependencies: { subpeerdep: "3.0.0" },
+            optDependencies: { suboptdep: "4.0.0" },
+            foo: "bar",
+          },
+          { name: "dep2", version: "0.0.2", dependencies: {} },
+        ]);
       });
+    new PkjUtil().traverseDependencies(function (err, result) {
+      assert.isNull(err);
+      assert.equals(result, {
+        "dep1@0.0.1": {
+          dependencies: { subdep: "1.0.0", suboptionaldep: "1.1.0" },
+          devDependencies: { subdevdep: "2.0.0" },
+          peerDependencies: { subpeerdep: "3.0.0" },
+          optDependencies: { suboptdep: "4.0.0" },
+        },
+        "dep2@0.0.2": {},
+      });
+      done();
+    });
+  });
+
+  it("should read installed packages when only node_modules exists", function (done) {
+    this.mockFs
+      .expects("existsSync")
+      .once()
+      .withArgs("package.json")
+      .returns(false);
+    this.mockFs
+      .expects("existsSync")
+      .once()
+      .withArgs("node_modules")
+      .returns(true);
+    sinon
+      .stub(PkjUtil.prototype, "_readInstalled")
+      .callsFake(function (dir, cb) {
+        cb(null, []);
+      });
+    new PkjUtil().traverseDependencies(function (err, result) {
+      assert.isNull(err);
+      assert.equals(result, {});
+      done();
     });
   });
 
@@ -335,6 +346,192 @@ describe("pkjutil - traverseDependencies", function () {
   });
 });
 
+describe("pkjutil - _readInstalled", function () {
+  // Fake filesystem: dirs map to entry names, files map to contents,
+  // links map a path to its real path, errors map a path to an error code.
+  function fakeFs(tree) {
+    function fsError(code) {
+      const err = new Error(code);
+      err.code = code;
+      return err;
+    }
+    sinon.stub(fs, "realpath").callsFake(function (path, cb) {
+      if (tree.errors && tree.errors[path]) {
+        cb(fsError(tree.errors[path]));
+      } else {
+        cb(null, (tree.links && tree.links[path]) || path);
+      }
+    });
+    sinon.stub(fs, "readdir").callsFake(function (path, cb) {
+      if (tree.errors && tree.errors[path]) {
+        cb(fsError(tree.errors[path]));
+      } else if (tree.dirs[path]) {
+        cb(null, tree.dirs[path]);
+      } else {
+        cb(fsError(tree.files[path] !== undefined ? "ENOTDIR" : "ENOENT"));
+      }
+    });
+    sinon.stub(fs, "readFile").callsFake(function (path, encoding, cb) {
+      assert.equals(encoding, "utf8");
+      if (tree.errors && tree.errors[path]) {
+        cb(fsError(tree.errors[path]));
+      } else if (tree.files[path] !== undefined) {
+        cb(null, tree.files[path]);
+      } else {
+        cb(fsError("ENOENT"));
+      }
+    });
+  }
+
+  function pkgJson(name, version) {
+    return JSON.stringify({ name: name, version: version });
+  }
+
+  function names(pkgs) {
+    return pkgs.map(function (pkg) {
+      return pkg.name + "@" + pkg.version;
+    });
+  }
+
+  afterEach(function () {
+    sinon.restore();
+  });
+
+  it("should read root, top level, scoped, and nested packages when they are installed", function (done) {
+    fakeFs({
+      dirs: {
+        "/app/node_modules": [".bin", ".package-lock.json", "a", "@scope"],
+        "/app/node_modules/@scope": ["b", ".hidden"],
+        "/app/node_modules/a/node_modules": ["c"],
+      },
+      files: {
+        "/app/package.json": pkgJson("app", "1.0.0"),
+        "/app/node_modules/a/package.json": pkgJson("a", "1.1.0"),
+        "/app/node_modules/@scope/b/package.json": pkgJson("@scope/b", "2.0.0"),
+        "/app/node_modules/a/node_modules/c/package.json": pkgJson(
+          "c",
+          "3.0.0",
+        ),
+      },
+    });
+    new PkjUtil()._readInstalled("/app", function (err, pkgs) {
+      assert.isNull(err);
+      assert.equals(names(pkgs), [
+        "app@1.0.0",
+        "a@1.1.0",
+        "c@3.0.0",
+        "@scope/b@2.0.0",
+      ]);
+      done();
+    });
+  });
+
+  it("should read a package once when it is reachable via a symlink", function (done) {
+    fakeFs({
+      dirs: {
+        "/app/node_modules": ["a", "b"],
+        "/app/node_modules/b/node_modules": ["a"],
+      },
+      links: {
+        "/app/node_modules/b/node_modules/a": "/app/node_modules/a",
+      },
+      files: {
+        "/app/package.json": pkgJson("app", "1.0.0"),
+        "/app/node_modules/a/package.json": pkgJson("a", "1.0.0"),
+        "/app/node_modules/b/package.json": pkgJson("b", "1.0.0"),
+      },
+    });
+    new PkjUtil()._readInstalled("/app", function (err, pkgs) {
+      assert.isNull(err);
+      assert.equals(names(pkgs), ["app@1.0.0", "a@1.0.0", "b@1.0.0"]);
+      done();
+    });
+  });
+
+  it("should skip directories and files without package.json when they are in node_modules", function (done) {
+    fakeFs({
+      dirs: {
+        "/app/node_modules": ["nopkg", "somefile", "a"],
+        "/app/node_modules/nopkg": [],
+      },
+      files: {
+        "/app/node_modules/somefile": "not a package",
+        "/app/node_modules/a/package.json": pkgJson("a", "1.0.0"),
+      },
+    });
+    new PkjUtil()._readInstalled("/app", function (err, pkgs) {
+      assert.isNull(err);
+      assert.equals(names(pkgs), ["a@1.0.0"]);
+      done();
+    });
+  });
+
+  it("should pass error to callback when a package.json contains invalid JSON", function (done) {
+    fakeFs({
+      dirs: { "/app/node_modules": ["a"] },
+      files: {
+        "/app/package.json": pkgJson("app", "1.0.0"),
+        "/app/node_modules/a/package.json": '{"name": ',
+      },
+    });
+    new PkjUtil()._readInstalled("/app", function (err, pkgs) {
+      assert.match(
+        err.message,
+        /^Unable to parse \/app\/node_modules\/a\/package.json: /,
+      );
+      assert.isUndefined(pkgs);
+      done();
+    });
+  });
+
+  it("should pass error to callback when reading node_modules fails", function (done) {
+    fakeFs({
+      dirs: {},
+      files: { "/app/package.json": pkgJson("app", "1.0.0") },
+      errors: { "/app/node_modules": "EACCES" },
+    });
+    new PkjUtil()._readInstalled("/app", function (err) {
+      assert.equals(err.code, "EACCES");
+      done();
+    });
+  });
+
+  it("should pass error to callback when reading a scope directory fails", function (done) {
+    fakeFs({
+      dirs: { "/app/node_modules": ["@scope"] },
+      files: { "/app/package.json": pkgJson("app", "1.0.0") },
+      errors: { "/app/node_modules/@scope": "EACCES" },
+    });
+    new PkjUtil()._readInstalled("/app", function (err) {
+      assert.equals(err.code, "EACCES");
+      done();
+    });
+  });
+
+  it("should pass error to callback when reading a package.json fails", function (done) {
+    fakeFs({
+      dirs: {},
+      files: {},
+      errors: { "/app/package.json": "EACCES" },
+    });
+    new PkjUtil()._readInstalled("/app", function (err) {
+      assert.equals(err.code, "EACCES");
+      done();
+    });
+  });
+
+  it("should pass error to callback when resolving a real path fails", function (done) {
+    fakeFs({
+      dirs: {},
+      files: {},
+      errors: { "/app": "ELOOP" },
+    });
+    new PkjUtil()._readInstalled("/app", function (err) {
+      assert.equals(err.code, "ELOOP");
+      done();
+    });
+  });
+});
 describe("pkjutil - upgradeVersion", function () {
   beforeEach(function () {
     this.mockFs = sinon.mock(fs);

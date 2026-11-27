@@ -13,4 +13,9 @@
 - description: Command traverse-dependencies should display dependencies list
   command: '{pkjutil} traverse-dependencies'
   exitcode: 0
-  output: '\* pkjutil@.+'
+  output: '\* pkjutil@.+\n  - dependencies:\n    - async: '
+
+- description: Command traverse-dependencies should list installed dependencies
+  command: '{pkjutil} traverse-dependencies'
+  exitcode: 0
+  output: '\* lodash@[0-9]+\.[0-9]+\.[0-9]+'
