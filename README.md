@@ -55,6 +55,12 @@ Upgrade dependencies using custom registry:
 pkjutil upgrade-dependencies --registry http://someregistry
 ```
 
+Upgrade dependencies through a proxy set in `http_proxy` / `https_proxy` environment variables (requires a Node.js version that supports `NODE_USE_ENV_PROXY`):
+
+```bash
+NODE_USE_ENV_PROXY=1 https_proxy=http://someproxy:8080 pkjutil upgrade-dependencies
+```
+
 List dependencies:
 
 ```bash

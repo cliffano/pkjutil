@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add AGENTS.md with Node.js project conventions
 - Upgrade bagofcli to 4.x, read global CLI options via commander's `program.opts()` and positional args via `args.args` instead of the old `args.parent`/variadic-arguments convention
 - Set min node engine to >= 22.0.0
+- Replace bagofrequest with Node.js built-in fetch in upgrade-dependencies, removing the deprecated request module and its vulnerable transitive dependencies (form-data, tough-cookie, qs, and others)
+- Require `NODE_USE_ENV_PROXY=1` for upgrade-dependencies to use `http_proxy` / `https_proxy` environment variables
+- Verify registry TLS certificates in upgrade-dependencies, use `NODE_EXTRA_CA_CERTS` for registries with self-signed certificates
 
 ### Fixed
 - Fix set-node-engine ignoring the --file option

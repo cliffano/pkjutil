@@ -2,7 +2,6 @@
 import esmock from "esmock";
 import fs from "fs";
 import referee from "@sinonjs/referee";
-import req from "bagofrequest";
 import sinon from "sinon";
 import PkjUtil from "../lib/pkjutil.js";
 const assert = referee.assert;
@@ -589,15 +588,14 @@ describe("pkjutil - upgradeDependencies", function () {
       )
       .callsArgWith(2, null);
 
-    sinon.stub(req, "request").callsFake(function (method, url, opts, cb) {
-      assert.equals(method, "get");
+    sinon.stub(PkjUtil.prototype, "_httpGet").callsFake(function (url, cb) {
       let body;
       if (url === "https://registry.npmjs.org/dep1/latest") {
         body = '{"version":"0.0.2"}';
       } else if (url === "https://registry.npmjs.org/dep2/latest") {
         body = '{"version":"0.0.2"}';
       }
-      opts.handlers[200]({ statusCode: 200, body: body }, cb);
+      cb(null, body);
     });
 
     this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
@@ -619,13 +617,33 @@ describe("pkjutil - upgradeDependencies", function () {
         '{"dependencies":{"dep1":"0.0.1","dep2":"0.0.2"}}',
       );
 
-    sinon.stub(req, "request").callsFake(function (method, url, opts, cb) {
-      assert.equals(method, "get");
+    sinon.stub(PkjUtil.prototype, "_httpGet").callsFake(function (url, cb) {
       cb(new Error("some error"));
     });
 
     this.pkjUtil.upgradeDependencies(null, function (err) {
       assert.equals(err.message, "some error");
+      done();
+    });
+  });
+
+  it("should pass error to callback when registry response is not valid JSON", function (done) {
+    this.mockFs
+      .expects("readFile")
+      .once()
+      .withArgs("package.json")
+      .callsArgWith(1, null, '{"dependencies":{"dep1":"0.0.1"}}');
+    this.mockFs.expects("writeFile").never();
+
+    sinon.stub(PkjUtil.prototype, "_httpGet").callsFake(function (url, cb) {
+      cb(null, "<html>not json</html>");
+    });
+
+    this.pkjUtil.upgradeDependencies(null, function (err) {
+      assert.match(
+        err.message,
+        /^Unable to parse registry response for dep1: /,
+      );
       done();
     });
   });
@@ -668,15 +686,14 @@ describe("pkjutil - upgradeDependencies", function () {
       )
       .callsArgWith(2, null);
 
-    sinon.stub(req, "request").callsFake(function (method, url, opts, cb) {
-      assert.equals(method, "get");
+    sinon.stub(PkjUtil.prototype, "_httpGet").callsFake(function (url, cb) {
       let body;
       if (url === "http://someregistry/dep1/latest") {
         body = '{"version":"0.0.2"}';
       } else if (url === "http://someregistry/dep2/latest") {
         body = '{"version":"0.0.2"}';
       }
-      opts.handlers[200]({ statusCode: 200, body: body }, cb);
+      cb(null, body);
     });
 
     this.pkjUtil.upgradeDependencies(
@@ -728,15 +745,14 @@ describe("pkjutil - upgradeDependencies", function () {
       )
       .callsArgWith(2, null);
 
-    sinon.stub(req, "request").callsFake(function (method, url, opts, cb) {
-      assert.equals(method, "get");
+    sinon.stub(PkjUtil.prototype, "_httpGet").callsFake(function (url, cb) {
       let body;
       if (url === "https://registry.npmjs.org/dep1/latest") {
         body = '{"version":"0.0.2"}';
       } else if (url === "https://registry.npmjs.org/dep2/latest") {
         body = '{"version":"0.0.2"}';
       }
-      opts.handlers[200]({ statusCode: 200, body: body }, cb);
+      cb(null, body);
     });
 
     this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
@@ -781,15 +797,14 @@ describe("pkjutil - upgradeDependencies", function () {
       )
       .callsArgWith(2, null);
 
-    sinon.stub(req, "request").callsFake(function (method, url, opts, cb) {
-      assert.equals(method, "get");
+    sinon.stub(PkjUtil.prototype, "_httpGet").callsFake(function (url, cb) {
       let body;
       if (url === "https://registry.npmjs.org/dep1/latest") {
         body = '{"version":"0.0.2"}';
       } else if (url === "https://registry.npmjs.org/dep2/latest") {
         body = '{"version":"0.0.2"}';
       }
-      opts.handlers[200]({ statusCode: 200, body: body }, cb);
+      cb(null, body);
     });
 
     this.pkjUtil.upgradeDependencies(null, function (err, pkg) {
@@ -818,6 +833,119 @@ describe("pkjutil - upgradeDependencies", function () {
       assert.isUndefined(pkg.devDependencies);
       assert.isUndefined(pkg.peerDependencies);
       done();
+    });
+  });
+});
+
+describe("pkjutil - _httpGet", function () {
+  beforeEach(function () {
+    this.pkjUtil = new PkjUtil();
+  });
+
+  afterEach(function () {
+    sinon.restore();
+  });
+
+  function response(status, body) {
+    return {
+      status: status,
+      text: function () {
+        return Promise.resolve(body);
+      },
+    };
+  }
+
+  it("should pass response body to callback when status code is 200", function (done) {
+    const stub = sinon
+      .stub(globalThis, "fetch")
+      .resolves(response(200, '{"version":"1.2.3"}'));
+    this.pkjUtil._httpGet(
+      "https://someregistry/dep1/latest",
+      function (err, body) {
+        assert.isNull(err);
+        assert.equals(body, '{"version":"1.2.3"}');
+        assert.equals(
+          stub.firstCall.args[0],
+          "https://someregistry/dep1/latest",
+        );
+        assert.equals(stub.firstCall.args[1].headers, {});
+        assert.isTrue(stub.firstCall.args[1].signal instanceof AbortSignal);
+        done();
+      },
+    );
+  });
+
+  it("should pass error with status code and body to callback when status code is not 200", function (done) {
+    sinon.stub(globalThis, "fetch").resolves(response(404, "Not found"));
+    this.pkjUtil._httpGet(
+      "https://someregistry/dep1/latest",
+      function (err, body) {
+        assert.equals(
+          err.message,
+          "Unexpected status code: 404\nResponse body:\nNot found",
+        );
+        assert.isUndefined(body);
+        done();
+      },
+    );
+  });
+
+  it("should pass error cause to callback when fetch fails with a network error", function (done) {
+    const cause = new Error("getaddrinfo ENOTFOUND someregistry");
+    const err = new TypeError("fetch failed");
+    err.cause = cause;
+    sinon.stub(globalThis, "fetch").rejects(err);
+    this.pkjUtil._httpGet("https://someregistry/dep1/latest", function (err) {
+      assert.equals(err.message, "getaddrinfo ENOTFOUND someregistry");
+      done();
+    });
+  });
+
+  it("should pass error to callback when fetch fails without a cause", function (done) {
+    sinon.stub(globalThis, "fetch").rejects(new Error("some error"));
+    this.pkjUtil._httpGet("https://someregistry/dep1/latest", function (err) {
+      assert.equals(err.message, "some error");
+      done();
+    });
+  });
+
+  it("should send credentials as basic authorization header when URL contains credentials", function (done) {
+    const stub = sinon.stub(globalThis, "fetch").resolves(response(200, "{}"));
+    this.pkjUtil._httpGet(
+      "http://some%40user:some%3Apass@someregistry:8080/dep1/latest",
+      function (err) {
+        assert.isNull(err);
+        assert.equals(
+          stub.firstCall.args[0],
+          "http://someregistry:8080/dep1/latest",
+        );
+        assert.equals(stub.firstCall.args[1].headers, {
+          Authorization:
+            "Basic " + Buffer.from("some@user:some:pass").toString("base64"),
+        });
+        done();
+      },
+    );
+  });
+
+  it("should call back only once when callback throws an error", function (done) {
+    sinon.stub(globalThis, "fetch").resolves(response(200, "{}"));
+    let calls = 0;
+    const listeners = process.listeners("uncaughtException");
+    process.removeAllListeners("uncaughtException");
+    process.once("uncaughtException", function (err) {
+      listeners.forEach(function (listener) {
+        process.on("uncaughtException", listener);
+      });
+      assert.equals(err.message, "callback error");
+      setImmediate(function () {
+        assert.equals(calls, 1);
+        done();
+      });
+    });
+    this.pkjUtil._httpGet("https://someregistry/dep1/latest", function () {
+      calls++;
+      throw new Error("callback error");
     });
   });
 });
