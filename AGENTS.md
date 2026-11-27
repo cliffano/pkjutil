@@ -770,7 +770,7 @@ This repository defines the following workflows under `.github/workflows/`:
 
 - **CodeQL** (`codeql-analysis.yml`): Trigger: `push` to `main`, `pull_request` targeting `main`, and weekly scheduled run (`cron`). Purpose: Performs GitHub CodeQL static security analysis for JavaScript and uploads code scanning results.
 
-- **Publish** (`publish-workflow.yaml`): Trigger: `push` of any Git tag. Purpose: Builds and installs the package, then publishes it using `bob publish` via npm's trusted publishing (no stored token required).
+- **Publish** (`publish-workflow.yaml`): Trigger: `push` of any Git tag. Purpose: Builds and installs the package, then publishes it using `npm publish` via npm's trusted publishing (no stored token required).
 
 - **Release Major** (`release-major-workflow.yaml`): Trigger: Manual `workflow_dispatch`. Purpose: Creates a major release via `cliffano/release-action` (`release_type: major`).
 
