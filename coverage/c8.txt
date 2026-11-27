@@ -1,4 +1,4 @@
-test | /opt/hostedtoolcache/node/26.13.1/x64/lib/node_modules/bob/node_modules/.bin/mocha --colors --reporter spec --recursive test/
+test | /opt/hostedtoolcache/node/22.23.5/x64/lib/node_modules/bob/node_modules/.bin/mocha --colors --reporter spec --recursive test/
 
 [0m[0m
 [0m  cli - exec[0m
@@ -75,13 +75,22 @@ test | /opt/hostedtoolcache/node/26.13.1/x64/lib/node_modules/bob/node_modules/.
 [0m  pkjutil - upgradeDependencies[0m
   [32m  [32m✔[39m[0m[90m should set all deps to latest version and log messages[0m
   [32m  [32m✔[39m[0m[90m should pass error to callback when upgrade dependencies fail[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when registry response is not valid JSON[0m
   [32m  [32m✔[39m[0m[90m should add trailing slash when custom registry does not have trailing slash[0m
   [32m  [32m✔[39m[0m[90m should keep version range[0m
   [32m  [32m✔[39m[0m[90m should upgrade wildcards to latest version[0m
   [32m  [32m✔[39m[0m[90m should do nothing when package.json does not specify dependencies, devDependencies, peerDependencies field[0m
 
+[0m  pkjutil - _httpGet[0m
+  [32m  [32m✔[39m[0m[90m should pass response body to callback when status code is 200[0m
+  [32m  [32m✔[39m[0m[90m should pass error with status code and body to callback when status code is not 200[0m
+  [32m  [32m✔[39m[0m[90m should pass error cause to callback when fetch fails with a network error[0m
+  [32m  [32m✔[39m[0m[90m should pass error to callback when fetch fails without a cause[0m
+  [32m  [32m✔[39m[0m[90m should send credentials as basic authorization header when URL contains credentials[0m
+  [32m  [32m✔[39m[0m[90m should call back only once when callback throws an error[0m
 
-[92m [0m[32m 49 passing[0m[90m (61ms)[0m
+
+[92m [0m[32m 56 passing[0m[90m (79ms)[0m
 
 SUCCESS | exit code 0
 ------------|---------|----------|---------|---------|-------------------

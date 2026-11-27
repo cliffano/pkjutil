@@ -44,11 +44,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
-      <p class="stat">75.81</p>
+      <p class="stat">75.02</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
-      <p class="stat">324</p>
+      <p class="stat">394</p>
     </div>
   </div>
   <div class="row historical">
@@ -62,11 +62,11 @@
   <div class="row">
     <div class="col-md-6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
-      <p class="stat">51.18</p>
+      <p class="stat">57.50</p>
     </div>
     <div class="col-md-6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
-      <p class="stat">1.96</p>
+      <p class="stat">2.44</p>
     </div>
   </div>
 </div>
@@ -98,9 +98,10 @@ import async from &quot;async&quot;;
 import &quot;colors&quot;;
 import fs from &quot;fs&quot;;
 import prod from &quot;prod&quot;;
-import req from &quot;bagofrequest&quot;;
 import semver from &quot;semver&quot;;
 import util from &quot;util&quot;;
+
+const HTTP_TIMEOUT = 30000;
 
 const DEPENDENCY_TYPES = [
   &quot;dependencies&quot;,
@@ -254,6 +255,7 @@ class PkjUtil {
    */
   upgradeDependencies(opts, cb) {
     const LIMIT = 5;
+    const self = this;
 
     opts = opts || {};
     opts.registry = opts.registry || &quot;https://registry.npmjs.org/&quot;;
@@ -263,59 +265,68 @@ class PkjUtil {
 
     function process(pkg, cb) {
       function iterator(dependency, cb) {
-        const requestOpts = {
-          handlers: {
-            200: function (result, cb) {
-              const latestVersion = JSON.parse(result.body).version;
+        const url = opts.registry + dependency + &quot;/latest&quot;;
+        self._httpGet(url, function (err, body) {
+          if (err) {
+            cb(err);
+            return;
+          }
+          let latestVersion;
+          try {
+            latestVersion = JSON.parse(body).version;
+          } catch (parseErr) {
+            cb(
+              new Error(
+                util.format(
+                  &quot;Unable to parse registry response for %s: %s&quot;,
+                  dependency,
+                  parseErr.message,
+                ),
+              ),
+            );
+            return;
+          }
 
-              function update(type) {
-                const dependencies = pkg[type];
-                const currVersionMatch = dependencies[dependency].match(
-                  /[0-9]+\.[0-9]+\.[0-9]+/,
-                );
-                const currVersion = currVersionMatch
-                  ? currVersionMatch.toString()
-                  : null;
-                const range = currVersionMatch
-                  ? dependencies[dependency].replace(
-                      /[0-9]+\.[0-9]+\.[0-9]+.*$/,
-                      &quot;&quot;,
-                    )
-                  : null;
+          function update(type) {
+            const dependencies = pkg[type];
+            const currVersionMatch = dependencies[dependency].match(
+              /[0-9]+\.[0-9]+\.[0-9]+/,
+            );
+            const currVersion = currVersionMatch
+              ? currVersionMatch.toString()
+              : null;
+            const range = currVersionMatch
+              ? dependencies[dependency].replace(
+                  /[0-9]+\.[0-9]+\.[0-9]+.*$/,
+                  &quot;&quot;,
+                )
+              : null;
 
-                if (currVersion != latestVersion) {
-                  dependencies[dependency] = (range || &quot;&quot;) + latestVersion;
-                  console.log(
-                    &quot;%s - %s - upgraded to %s&quot;,
-                    dependency.green,
-                    type,
-                    dependencies[dependency],
-                  );
-                } else {
-                  console.log(
-                    &quot;%s - %s - already latest %s&quot;,
-                    dependency.grey,
-                    type,
-                    dependencies[dependency],
-                  );
-                }
-              }
+            if (currVersion != latestVersion) {
+              dependencies[dependency] = (range || &quot;&quot;) + latestVersion;
+              console.log(
+                &quot;%s - %s - upgraded to %s&quot;,
+                dependency.green,
+                type,
+                dependencies[dependency],
+              );
+            } else {
+              console.log(
+                &quot;%s - %s - already latest %s&quot;,
+                dependency.grey,
+                type,
+                dependencies[dependency],
+              );
+            }
+          }
 
-              _.filter(DEPENDENCY_TYPES, function (type) {
-                return pkg[type] &amp;&amp; pkg[type][dependency];
-              }).forEach(function (type) {
-                update(type);
-              });
-              cb();
-            },
-          },
-        };
-        req.request(
-          &quot;get&quot;,
-          opts.registry + dependency + &quot;/latest&quot;,
-          requestOpts,
-          cb,
-        );
+          _.filter(DEPENDENCY_TYPES, function (type) {
+            return pkg[type] &amp;&amp; pkg[type][dependency];
+          }).forEach(function (type) {
+            update(type);
+          });
+          cb();
+        });
       }
 
       let dependencies = [];
@@ -345,6 +356,65 @@ class PkjUtil {
     }
 
     this._updatePackage(process, cb);
+  }
+
+  /**
+   * Send an HTTP GET request using Node.js built-in fetch.
+   * Credentials in the URL (http://user:pass@host) are sent as a Basic
+   * Authorization header, since fetch does not accept them in the URL.
+   * Proxy environment variables are honoured when Node.js is run with
+   * NODE_USE_ENV_PROXY=1.
+   *
+   * @private
+   * @param {String} url - URL to request
+   * @param {Function} cb - standard cb(err, result) callback, result is the
+   *   response body when the status code is 200
+   */
+  _httpGet(url, cb) {
+    const parsedUrl = new URL(url);
+    const headers = {};
+    if (parsedUrl.username || parsedUrl.password) {
+      const credentials = util.format(
+        &quot;%s:%s&quot;,
+        decodeURIComponent(parsedUrl.username),
+        decodeURIComponent(parsedUrl.password),
+      );
+      headers.Authorization =
+        &quot;Basic &quot; + Buffer.from(credentials).toString(&quot;base64&quot;);
+      parsedUrl.username = &quot;&quot;;
+      parsedUrl.password = &quot;&quot;;
+    }
+
+    fetch(parsedUrl.toString(), {
+      headers: headers,
+      signal: AbortSignal.timeout(HTTP_TIMEOUT),
+    })
+      .then(function (response) {
+        return response.text().then(function (body) {
+          if (response.status !== 200) {
+            throw new Error(
+              util.format(
+                &quot;Unexpected status code: %d\nResponse body:\n%s&quot;,
+                response.status,
+                body,
+              ),
+            );
+          }
+          return body;
+        });
+      })
+      .then(
+        function (body) {
+          // call back outside the promise chain so that errors thrown by the
+          // callback are not caught and passed to the callback a second time
+          process.nextTick(cb, null, body);
+        },
+        function (err) {
+          // fetch wraps network errors in a generic &quot;fetch failed&quot; TypeError,
+          // the cause carries the system error e.g. getaddrinfo ENOTFOUND
+          process.nextTick(cb, err.cause instanceof Error ? err.cause : err);
+        },
+      );
   }
 
   /**
