@@ -1,4 +1,4 @@
-[90mlib/cli.js[39m 74ms (unchanged)
-[90mlib/pkjutil.js[39m 33ms (unchanged)
-[90mtest/cli.js[39m 57ms (unchanged)
-[90mtest/pkjutil.js[39m 66ms (unchanged)
+[90mlib/cli.js[39m 79ms (unchanged)
+[90mlib/pkjutil.js[39m 49ms (unchanged)
+[90mtest/cli.js[39m 79ms (unchanged)
+[90mtest/pkjutil.js[39m 58ms (unchanged)
